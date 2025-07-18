@@ -36,19 +36,13 @@ sc070::RAlt
 AppsKey::RCtrl
 
 ; ホットキーの一覧表示。
-^#h::{
-    ListHotkeys()
-}
+^#h::ListHotkeys()
 
 ; キーヒストリーの表示。
-^#k::{
-    KeyHistory()
-}
+^#k::KeyHistory()
 
 ; マウスポインターの速度を表示。
-^#p::{
-    MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
-}
+^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
 ; マウスポインターの速度を遅くする。
 ~Ctrl::{
