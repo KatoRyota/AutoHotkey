@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 
+; ソースコードは、以下のGitHubリポジトリで管理してます。
+; https://github.com/KatoRyota/AutoHotkey
+
 SendMode "Input"
 SetKeyDelay 20
 SetMouseDelay 20
@@ -23,17 +26,14 @@ ExitFunc(ExitReason, ExitCode) {
 
 OnExit ExitFunc
 
-; 半角/全角キーを、Backspaceキーにリマップ。
+; 半角／全角キーを、Backspaceキーにリマップ。
 sc029::Backspace
 
-; 英数キーを、F13キーにリマップ。
-sc03A::F13
+; AppsKeyキーを、右Ctrlキーにリマップ。
+AppsKey::RControl
 
-; カナ/かなキーを、RAltキーにリマップ。
+; カタカナ・ひらがなキーを、右Altキーにリマップ。
 sc070::RAlt
-
-; AppsKeyキーを、RCtrlキーにリマップ。
-AppsKey::RCtrl
 
 ; ホットキーの一覧表示。
 ^#h::ListHotkeys()
@@ -44,19 +44,8 @@ AppsKey::RCtrl
 ; マウスポインターの速度を表示。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
-; マウスポインターの速度を遅くする。
-~Ctrl::{
-    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
-    KeyWait "Ctrl"
-}
-
-; マウスポインターの速度を元に戻す。
-~Ctrl Up::{
-    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
-}
-
-; F13キーで、マウスポインターの速度を変更。トグル方式。
-F13::{
+; 英数キーで、マウスポインターの速度を変更。トグル方式。
+sc03A::{
     global MouseSpeedToggle
     MouseSpeedToggle := !MouseSpeedToggle
 
@@ -69,45 +58,66 @@ F13::{
     }
 }
 
-; CapsLockキー
-+F13::SetCapsLockState !GetKeyState("CapsLock", "T")
+; マウスポインターの速度を遅くする。
+~LControl::{
+    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
+    KeyWait "LControl"
+}
 
-; 水平スクロール１
+; マウスポインターの速度を元に戻す。
+~LControl Up::{
+    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
+}
+
+; CapsLockキー
++sc03A::SetCapsLockState !GetKeyState("CapsLock", "T")
+
+; 左水平スクロール
 +!WheelUp::Send "{WheelLeft}"
+; 右水平スクロール
 +!WheelDown::Send "{WheelRight}"
 
-; 水平スクロール２
+; 左水平スクロール
 +#WheelUp::Send "{WheelLeft}"
+; 右水平スクロール
 +#WheelDown::Send "{WheelRight}"
 
-; 水平スクロール３
+; 左水平スクロール2倍
 XButton1::Send "{WheelLeft}{WheelLeft}"
+; 右水平スクロール2倍
 XButton2::Send "{WheelRight}{WheelRight}"
 
-; 『戻る, 進む』キー
-^+XButton1::Send "{Browser_Back}"
-^+XButton2::Send "{Browser_Forward}"
+; Alt + Leftキー
+^+XButton1::Send "!{Left}"
+; Alt + Rightキー
+^+XButton2::Send "!{Right}"
 
-; 『Home, End』キー
+; Homeキー
 ^XButton1::Send "{Home}"
+; Endキー
 ^XButton2::Send "{End}"
 
-; 『PgUp, PgDn』キー
+; PgUpキー
 +XButton1::Send "{PgUp}"
+; PgDnキー
 +XButton2::Send "{PgDn}"
 
-; 『ctrl + Home, ctrl + End』キー
+; Ctrl + Homeキー
 ^!XButton1::Send "^{Home}"
+; Ctrl + Endキー
 ^!XButton2::Send "^{End}"
 
-; 『ctrl + PgUp, ctrl + PgDn』キー
+; Ctrl + PgUpキー
 ^#XButton1::Send "^{PgUp}"
+; Ctrl + PgDnキー
 ^#XButton2::Send "^{PgDn}"
 
-; 『shift + Home, shift + End』キー
+; Shift + Homeキー
 +!XButton1::Send "+{Home}"
+; Shift + Endキー
 +!XButton2::Send "+{End}"
 
-; 『ctrl + shift + Home, ctrl + shift + End』キー
+; Ctrl + Shift + Homeキー
 +#XButton1::Send "^+{Home}"
+; Ctrl + Shift + Endキー
 +#XButton2::Send "^+{End}"
