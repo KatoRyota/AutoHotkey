@@ -3,7 +3,10 @@
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
-SendMode "Input"
+;;SendMode "Input"
+;;SendMode "Event"
+;;SetKeyDelay 10
+;;SetMouseDelay 10
 
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
@@ -70,46 +73,46 @@ ToggleMouseSpeed() {
 sc03A::ToggleMouseSpeed()
 
 ; 左水平スクロール
-+!WheelUp::Send "{WheelLeft}"
++!WheelUp::SendEvent "{WheelLeft}"
 ; 右水平スクロール
-+!WheelDown::Send "{WheelRight}"
++!WheelDown::SendEvent "{WheelRight}"
 
 ; 左水平スクロール2倍
-XButton1::Send "{WheelLeft}{WheelLeft}"
+XButton1::SendEvent "{WheelLeft}{WheelLeft}"
 ; 右水平スクロール2倍
-XButton2::Send "{WheelRight}{WheelRight}"
+XButton2::SendEvent "{WheelRight}{WheelRight}"
 
 ; Alt + Leftキー
-^+XButton1::Send "!{Left}"
+^+XButton1::SendEvent "!{Left}"
 ; Alt + Rightキー
-^+XButton2::Send "!{Right}"
+^+XButton2::SendEvent "!{Right}"
 
 ; Homeキー
-^XButton1::Send "{Home}"
+^XButton1::SendEvent "{Home}"
 ; Endキー
-^XButton2::Send "{End}"
+^XButton2::SendEvent "{End}"
 
 ; PgUpキー
-+XButton1::Send "{PgUp}"
++XButton1::SendEvent "{PgUp}"
 ; PgDnキー
-+XButton2::Send "{PgDn}"
++XButton2::SendEvent "{PgDn}"
 
 ; Ctrl + Homeキー
-^!XButton1::Send "^{Home}"
+^!XButton1::SendEvent "^{Home}"
 ; Ctrl + Endキー
-^!XButton2::Send "^{End}"
+^!XButton2::SendEvent "^{End}"
 
 ; Ctrl + PgUpキー
-^#XButton1::Send "^{PgUp}"
+^#XButton1::SendEvent "^{PgUp}"
 ; Ctrl + PgDnキー
-^#XButton2::Send "^{PgDn}"
+^#XButton2::SendEvent "^{PgDn}"
 
 ; Shift + Homeキー
-+!XButton1::Send "+{Home}"
++!XButton1::SendEvent "+{Home}"
 ; Shift + Endキー
-+!XButton2::Send "+{End}"
++!XButton2::SendEvent "+{End}"
 
 ; Ctrl + Shift + Homeキー
-+#XButton1::Send "^+{Home}"
++#XButton1::SendEvent "^+{Home}"
 ; Ctrl + Shift + Endキー
-+#XButton2::Send "^+{End}"
++#XButton2::SendEvent "^+{End}"
