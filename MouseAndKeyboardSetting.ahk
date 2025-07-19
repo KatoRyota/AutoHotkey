@@ -44,8 +44,18 @@ sc070::RAlt
 ; マウスポインターの速度を表示。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
-; 英数キーで、マウスポインターの速度を変更。トグル方式。
-sc03A::{
+;;; マウスポインターの速度を遅くする。
+;;~LControl::{
+;;    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
+;;    KeyWait "LControl"
+;;}
+;;
+;;; マウスポインターの速度を元に戻す。
+;;~LControl Up::{
+;;    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
+;;}
+
+ToggleMouseSpeed() {
     global MouseSpeedToggle
     MouseSpeedToggle := !MouseSpeedToggle
 
@@ -58,16 +68,8 @@ sc03A::{
     }
 }
 
-; マウスポインターの速度を遅くする。
-~LControl::{
-    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
-    KeyWait "LControl"
-}
-
-; マウスポインターの速度を元に戻す。
-~LControl Up::{
-    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
-}
+; 英数キーで、マウスポインターの速度を変更。トグル方式。
+sc03A::ToggleMouseSpeed()
 
 ; CapsLockキー
 +sc03A::SetCapsLockState !GetKeyState("CapsLock", "T")
@@ -76,11 +78,6 @@ sc03A::{
 +!WheelUp::Send "{WheelLeft}"
 ; 右水平スクロール
 +!WheelDown::Send "{WheelRight}"
-
-; 左水平スクロール
-+#WheelUp::Send "{WheelLeft}"
-; 右水平スクロール
-+#WheelDown::Send "{WheelRight}"
 
 ; 左水平スクロール2倍
 XButton1::Send "{WheelLeft}{WheelLeft}"
