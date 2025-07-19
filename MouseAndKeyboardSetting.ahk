@@ -4,8 +4,6 @@
 ; https://github.com/KatoRyota/AutoHotkey
 
 SendMode "Input"
-SetKeyDelay -1
-SetMouseDelay -1
 
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
