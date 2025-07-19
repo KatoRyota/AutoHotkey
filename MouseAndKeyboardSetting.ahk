@@ -4,8 +4,8 @@
 ; https://github.com/KatoRyota/AutoHotkey
 
 SendMode "Input"
-SetKeyDelay 20
-SetMouseDelay 20
+SetKeyDelay -1
+SetMouseDelay -1
 
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
@@ -70,9 +70,6 @@ ToggleMouseSpeed() {
 
 ; 英数キーで、マウスポインターの速度を変更。トグル方式。
 sc03A::ToggleMouseSpeed()
-
-; CapsLockキー
-+sc03A::SetCapsLockState !GetKeyState("CapsLock", "T")
 
 ; 左水平スクロール
 +!WheelUp::Send "{WheelLeft}"
