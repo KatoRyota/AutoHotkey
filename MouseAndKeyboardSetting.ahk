@@ -3,10 +3,10 @@
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
-;;SendMode "Input"
+SendMode "Input"
 ;;SendMode "Event"
-;;SetKeyDelay 10
-;;SetMouseDelay 10
+SetKeyDelay 50
+SetMouseDelay 50
 
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
@@ -28,13 +28,15 @@ ExitFunc(ExitReason, ExitCode) {
 OnExit ExitFunc
 
 ; 半角／全角キーを、Backspaceキーにリマップ。
-sc029::Backspace
+;;sc029::Backspace ;このリマップを行うと、キー配列がおかしくなる。原因不明。
+sc029::Send "{Backspace}"
 
 ; AppsKeyキーを、右Ctrlキーにリマップ。
-AppsKey::RControl
+;;AppsKey::RControl ;このリマップを行うと、キー配列がおかしくなる。原因不明。
 
 ; カタカナ・ひらがなキーを、右Altキーにリマップ。
-sc070::RAlt
+;;sc070::RAlt ;このリマップを行うと、キー配列がおかしくなる。原因不明。
+sc070::Return
 
 ; ホットキーの一覧表示。
 ^#h::ListHotkeys()
@@ -73,46 +75,46 @@ ToggleMouseSpeed() {
 sc03A::ToggleMouseSpeed()
 
 ; 左水平スクロール
-+!WheelUp::SendEvent "{WheelLeft}"
++!WheelUp::Send "{WheelLeft}"
 ; 右水平スクロール
-+!WheelDown::SendEvent "{WheelRight}"
++!WheelDown::Send "{WheelRight}"
 
 ; 左水平スクロール2倍
-XButton1::SendEvent "{WheelLeft}{WheelLeft}"
+XButton1::Send "{WheelLeft}{WheelLeft}"
 ; 右水平スクロール2倍
-XButton2::SendEvent "{WheelRight}{WheelRight}"
+XButton2::Send "{WheelRight}{WheelRight}"
 
 ; Alt + Leftキー
-^+XButton1::SendEvent "!{Left}"
+^+XButton1::Send "!{Left}"
 ; Alt + Rightキー
-^+XButton2::SendEvent "!{Right}"
+^+XButton2::Send "!{Right}"
 
 ; Homeキー
-^XButton1::SendEvent "{Home}"
+^XButton1::Send "{Home}"
 ; Endキー
-^XButton2::SendEvent "{End}"
+^XButton2::Send "{End}"
 
 ; PgUpキー
-+XButton1::SendEvent "{PgUp}"
++XButton1::Send "{PgUp}"
 ; PgDnキー
-+XButton2::SendEvent "{PgDn}"
++XButton2::Send "{PgDn}"
 
 ; Ctrl + Homeキー
-^!XButton1::SendEvent "^{Home}"
+^!XButton1::Send "^{Home}"
 ; Ctrl + Endキー
-^!XButton2::SendEvent "^{End}"
+^!XButton2::Send "^{End}"
 
 ; Ctrl + PgUpキー
-^#XButton1::SendEvent "^{PgUp}"
+^#XButton1::Send "^{PgUp}"
 ; Ctrl + PgDnキー
-^#XButton2::SendEvent "^{PgDn}"
+^#XButton2::Send "^{PgDn}"
 
 ; Shift + Homeキー
-+!XButton1::SendEvent "+{Home}"
++!XButton1::Send "+{Home}"
 ; Shift + Endキー
-+!XButton2::SendEvent "+{End}"
++!XButton2::Send "+{End}"
 
 ; Ctrl + Shift + Homeキー
-+#XButton1::SendEvent "^+{Home}"
++#XButton1::Send "^+{Home}"
 ; Ctrl + Shift + Endキー
-+#XButton2::SendEvent "^+{End}"
++#XButton2::Send "^+{End}"
