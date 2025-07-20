@@ -14,16 +14,21 @@ MouseSpeedToggle := false
 OriginalMouseSpeed := GetMouseSpeed()
 OnExit ExitFunc
 
+; 現在のマウスポインターの速度を返します。
 GetMouseSpeed() {
     MouseSpeed := Buffer(4)
+    ; マウスポインターの速度を取得する。
     DllCall("SystemParametersInfo", "UInt", SPI_GETMOUSESPEED, "UInt", 0, "Ptr", MouseSpeed, "UInt", 0)
     return NumGet(MouseSpeed, 0, "UInt")
 }
 
+; スクリプトの終了処理を行います。
 ExitFunc(ExitReason, ExitCode) {
+    ; マウスポインターの速度を元に戻す。
     DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
 }
 
+; マウスポインターの速度を変更します。トグル方式。
 ToggleMouseSpeed() {
     global MouseSpeedToggle
     MouseSpeedToggle := !MouseSpeedToggle
