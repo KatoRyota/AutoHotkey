@@ -29,7 +29,6 @@ OnExit ExitFunc
 
 ; 半角／全角キーを、Backspaceキーにリマップ。
 ;;sc029::Backspace ;このリマップを行うと、キー配列がおかしくなる。原因不明。
-sc029::Send "{Backspace}"
 
 ; AppsKeyキーを、右Ctrlキーにリマップ。
 ;;AppsKey::RControl ;このリマップを行うと、キー配列がおかしくなる。原因不明。
@@ -83,6 +82,9 @@ sc03A::ToggleMouseSpeed()
 XButton1::Send "{WheelLeft}{WheelLeft}"
 ; 右水平スクロール2倍
 XButton2::Send "{WheelRight}{WheelRight}"
+
+; Backspaceキー
+sc029::Send "{Backspace}"
 
 ; Alt + Leftキー
 ^+XButton1::Send "!{Left}"
