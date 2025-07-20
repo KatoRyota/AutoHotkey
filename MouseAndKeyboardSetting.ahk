@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 #Warn
 #UseHook
+#InputLevel 100
 
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
@@ -23,10 +24,15 @@ GetMouseSpeed() {
     return NumGet(MouseSpeed, 0, "UInt")
 }
 
+; マウスポインターの速度を変更します。
+SetMouseSpeed(MouseSpeed) {
+    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MouseSpeed, "UInt", 0)
+}
+
 ; スクリプトの終了処理を行います。
 ExitFunc(ExitReason, ExitCode) {
     ; マウスポインターの速度を元に戻す。
-    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
+    SetMouseSpeed(OriginalMouseSpeed)
 }
 
 ; マウスポインターの速度を変更します。トグル方式。
@@ -36,10 +42,10 @@ ToggleMouseSpeed() {
 
     if MouseSpeedToggle {
         ; マウスポインターの速度を遅くする。
-        DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
+        SetMouseSpeed(MOUSE_SPEED_SLOW)
     } else {
         ; マウスポインターの速度を元に戻す。
-        DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
+        SetMouseSpeed(OriginalMouseSpeed)
     }
 }
 
