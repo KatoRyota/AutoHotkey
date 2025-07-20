@@ -60,22 +60,14 @@ ToggleMouseSpeed() {
 ; マウスポインターの速度を表示。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
-;;; マウスポインターの速度を遅くする。
-;;~LControl::{
-;;    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", MOUSE_SPEED_SLOW, "UInt", 0)
-;;    KeyWait "LControl"
-;;}
-;;
-;;; マウスポインターの速度を元に戻す。
-;;~LControl Up::{
-;;    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
-;;}
+; Backspaceキー (sc029 = 半角／全角キー)
+sc029::Send "{Backspace}"
 
-; カタカナ・ひらがなキーを無効化。
-sc070::Return
-
-; 英数キーで、マウスポインターの速度を変更。トグル方式。
+; マウスポインターの速度を変更。トグル方式。 (sc03A = 英数キー)
 sc03A::ToggleMouseSpeed()
+
+; カタカナ・ひらがなキーを無効化。 (sc070 = カタカナ・ひらがなキー)
+sc070::Return
 
 ; 左水平スクロール
 +!WheelUp::Send "{WheelLeft}"
@@ -86,9 +78,6 @@ sc03A::ToggleMouseSpeed()
 XButton1::Send "{WheelLeft}{WheelLeft}"
 ; 右水平スクロール2倍
 XButton2::Send "{WheelRight}{WheelRight}"
-
-; Backspaceキー
-sc029::Send "{Backspace}"
 
 ; Alt + Leftキー
 ^+XButton1::Send "!{Left}"
