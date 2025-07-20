@@ -19,7 +19,6 @@ OnExit ExitFunc
 ; 現在のマウスポインターの速度を返します。
 GetMouseSpeed() {
     MouseSpeed := Buffer(4)
-    ; マウスポインターの速度を取得する。
     DllCall("SystemParametersInfo", "UInt", SPI_GETMOUSESPEED, "UInt", 0, "Ptr", MouseSpeed, "UInt", 0)
     return NumGet(MouseSpeed, 0, "UInt")
 }
