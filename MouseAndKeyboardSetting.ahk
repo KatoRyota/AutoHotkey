@@ -50,7 +50,6 @@ ToggleMouseSpeed() {
 
 ; カタカナ・ひらがなキーを、右Altキーにリマップ。
 ;;sc070::RAlt ;このリマップを行うと、キー配列がおかしくなる。原因不明。
-sc070::Return
 
 ; ホットキーの一覧表示。
 ^#h::ListHotkeys()
@@ -71,6 +70,9 @@ sc070::Return
 ;;~LControl Up::{
 ;;    DllCall("SystemParametersInfo", "UInt", SPI_SETMOUSESPEED, "UInt", 0, "UInt", OriginalMouseSpeed, "UInt", 0)
 ;;}
+
+; カタカナ・ひらがなキーを無効化。
+sc070::Return
 
 ; 英数キーで、マウスポインターの速度を変更。トグル方式。
 sc03A::ToggleMouseSpeed()
