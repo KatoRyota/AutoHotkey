@@ -1,10 +1,11 @@
 #Requires AutoHotkey v2.0
+#Warn
+#UseHook
 
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
 SendMode "Input"
-;;SendMode "Event"
 SetKeyDelay 50
 SetMouseDelay 50
 SPI_GETMOUSESPEED := 0x70
