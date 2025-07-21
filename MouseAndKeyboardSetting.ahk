@@ -86,9 +86,9 @@ XButton1::Send "{WheelLeft}{WheelLeft}"
 XButton2::Send "{WheelRight}{WheelRight}"
 
 ; Alt + Leftキー
-^+XButton1::Send "!{Left}"
++^XButton1::Send "!{Left}"
 ; Alt + Rightキー
-^+XButton2::Send "!{Right}"
++^XButton2::Send "!{Right}"
 
 ; Homeキー
 ^XButton1::Send "{Home}"
@@ -116,6 +116,6 @@ XButton2::Send "{WheelRight}{WheelRight}"
 +!XButton2::Send "+{End}"
 
 ; Ctrl + Shift + Homeキー
-+#XButton1::Send "^+{Home}"
++#XButton1::Send "+^{Home}"
 ; Ctrl + Shift + Endキー
-+#XButton2::Send "^+{End}"
++#XButton2::Send "+^{End}"
