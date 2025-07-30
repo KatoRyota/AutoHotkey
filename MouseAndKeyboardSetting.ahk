@@ -67,7 +67,16 @@ ToggleMouseSpeed() {
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
 ; Backspaceキー (sc029 = 半角／全角キー)
-sc029::Send "{Backspace}"
+sc029 & 1::Send "{Backspace}"
+
+; Enterキー (sc029 = 半角／全角キー)
+sc029 & 2::Send "{Enter}"
+
+; Shift + Enterキー (sc029 = 半角／全角キー)
+sc029 & 3::Send "+{Enter}"
+
+; Ctrl + Enterキー (sc029 = 半角／全角キー)
+sc029 & 4::Send "^{Enter}"
 
 ; マウスポインターの速度を変更。トグル方式。 (sc03A = 英数キー)
 sc03A::ToggleMouseSpeed()
