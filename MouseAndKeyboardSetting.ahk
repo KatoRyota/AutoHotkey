@@ -58,10 +58,10 @@ ToggleMouseSpeed() {
 ;;sc070::RAlt ;このリマップを行うと、キー配列がおかしくなる。原因不明。
 
 ; ホットキーの一覧表示。
-^#h::ListHotkeys()
+^#h::ListHotkeys
 
 ; キーヒストリーの表示。
-^#k::KeyHistory()
+^#k::KeyHistory
 
 ; マウスポインターの速度を表示。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
