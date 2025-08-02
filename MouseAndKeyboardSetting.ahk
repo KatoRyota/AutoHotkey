@@ -8,8 +8,9 @@
 
 ProcessSetPriority "High"
 SendMode "Input"
-SetKeyDelay -1
-SetMouseDelay -1
+SendLevel 100
+SetKeyDelay 10
+SetMouseDelay 10
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
 MOUSE_SPEED_SLOW := 1
