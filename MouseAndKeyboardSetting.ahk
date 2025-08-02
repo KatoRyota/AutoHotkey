@@ -19,8 +19,7 @@ OnExit ExitFunc
 
 ; スクリプトの終了処理を行います。
 ExitFunc(ExitReason, ExitCode) {
-    ; マウスポインターの速度を元に戻す。
-    SetMouseSpeed(OriginalMouseSpeed)
+    ChangeOriginalMouseSpeed()
 }
 
 ; 現在のマウスポインターの速度を返します。
