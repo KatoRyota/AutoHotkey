@@ -6,9 +6,10 @@
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
+ProcessSetPriority "High"
 SendMode "Input"
-SetKeyDelay 50
-SetMouseDelay 50
+SetKeyDelay -1
+SetMouseDelay -1
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
 MOUSE_SPEED_SLOW := 1
