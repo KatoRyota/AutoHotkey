@@ -114,10 +114,10 @@ WheelUp::WheelUpOrLeft()
 ; 下スクロール or 右スクロール。
 WheelDown::WheelDownOrRight()
 
-; 垂直スクロールモードに切り替えます。
-XButton1::ChangeVerticalScrollMode()
 ; 水平スクロールモードに切り替えます。
-XButton2::ChangeHorizontalScrollMode()
+XButton1::ChangeHorizontalScrollMode()
+; 垂直スクロールモードに切り替えます。
+XButton2::ChangeVerticalScrollMode()
 
 ; Alt + Leftキー
 +^XButton1::Send "!{Left}"
