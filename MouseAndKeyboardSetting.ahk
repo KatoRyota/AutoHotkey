@@ -15,6 +15,7 @@ SPI_SETMOUSESPEED := 0x71
 MOUSE_SPEED_SLOW := 1
 MouseSpeedToggle := false
 OriginalMouseSpeed := GetMouseSpeed()
+ScrollMode := "vertical"
 OnExit ExitFunc
 
 ; 現在のマウスポインターの速度を返します。
@@ -40,12 +41,44 @@ ToggleMouseSpeed() {
     global MouseSpeedToggle
     MouseSpeedToggle := !MouseSpeedToggle
 
-    if MouseSpeedToggle {
+    if (MouseSpeedToggle) {
         ; マウスポインターの速度を遅くする。
         SetMouseSpeed(MOUSE_SPEED_SLOW)
     } else {
         ; マウスポインターの速度を元に戻す。
         SetMouseSpeed(OriginalMouseSpeed)
+    }
+}
+
+; 垂直スクロールモードに切り替えます。
+ChangeVerticalScrollMode() {
+    global ScrollMode
+    ScrollMode := "vertical"
+}
+
+; 水平スクロールモードに切り替えます。
+ChangeHorizontalScrollMode() {
+    global ScrollMode
+    ScrollMode := "horizontal"
+}
+
+; 上スクロール or 左スクロール。
+WheelUpOrLeft() {
+    global ScrollMode
+    if (ScrollMode == "vertical") {
+        Send "{WheelUp}"
+    } else {
+        Send "{WheelLeft}"
+    }
+}
+
+; 下スクロール or 右スクロール。
+WheelDownOrRight() {
+    global ScrollMode
+    if (ScrollMode == "vertical") {
+        Send "{WheelDown}"
+    } else {
+        Send "{WheelRight}"
     }
 }
 
@@ -76,15 +109,15 @@ sc03A::ToggleMouseSpeed()
 ; カタカナ・ひらがなキーを無効化。 (sc070 = カタカナ・ひらがなキー)
 sc070::Return
 
-; 左水平スクロール
-+!WheelUp::Send "{WheelLeft}"
-; 右水平スクロール
-+!WheelDown::Send "{WheelRight}"
+; 上スクロール or 左スクロール。
+WheelUp::WheelUpOrLeft()
+; 下スクロール or 右スクロール。
+WheelDown::WheelDownOrRight()
 
-; 左水平スクロール2倍
-XButton1::Send "{WheelLeft}{WheelLeft}"
-; 右水平スクロール2倍
-XButton2::Send "{WheelRight}{WheelRight}"
+; 垂直スクロールモードに切り替えます。
+XButton1::ChangeVerticalScrollMode()
+; 水平スクロールモードに切り替えます。
+XButton2::ChangeHorizontalScrollMode()
 
 ; Alt + Leftキー
 +^XButton1::Send "!{Left}"
