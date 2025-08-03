@@ -59,7 +59,6 @@ ChangeHorizontalScrollMode() {
 
 ; 上スクロール or 左スクロール。
 WheelUpOrLeft() {
-    global ScrollMode
     if (ScrollMode == "vertical") {
         Send "{WheelUp}"
     } else {
@@ -69,7 +68,6 @@ WheelUpOrLeft() {
 
 ; 下スクロール or 右スクロール。
 WheelDownOrRight() {
-    global ScrollMode
     if (ScrollMode == "vertical") {
         Send "{WheelDown}"
     } else {
@@ -86,13 +84,13 @@ WheelDownOrRight() {
 ; カタカナ・ひらがなキーを、右Altキーにリマップ。
 ;;sc070::RAlt ;このリマップを行うと、キー配列がおかしくなる。原因不明。
 
-; ホットキーの一覧表示。
+; ホットキーの一覧を表示します。
 ^#h::ListHotkeys
 
-; キーヒストリーの表示。
+; キーヒストリーを表示します。
 ^#k::KeyHistory
 
-; マウスポインターの速度を表示。
+; マウスポインターの速度を表示します。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
 ; マウスポインターの速度を元に戻します。 (sc029 = 半角／全角キー)
@@ -101,7 +99,7 @@ sc029::ChangeOriginalMouseSpeed()
 ; マウスポインターの速度を遅くします。 (sc03A = 英数キー)
 sc03A::ChangeSlowMouseSpeed()
 
-; カタカナ・ひらがなキーを無効化。 (sc070 = カタカナ・ひらがなキー)
+; カタカナ・ひらがなキーを無効化します。 (sc070 = カタカナ・ひらがなキー)
 sc070::Return
 
 ; 上スクロール or 左スクロール。
@@ -114,37 +112,37 @@ XButton1::ChangeHorizontalScrollMode()
 ; 垂直スクロールモードに切り替えます。
 XButton2::ChangeVerticalScrollMode()
 
-; Alt + Leftキー
+; `Alt + Left`キーを送信します。
 +^XButton1::Send "!{Left}"
-; Alt + Rightキー
+; `Alt + Right`キーを送信します。
 +^XButton2::Send "!{Right}"
 
-; Homeキー
+; `Home`キーを送信します。
 ^XButton1::Send "{Home}"
-; Endキー
+; `End`キーを送信します。
 ^XButton2::Send "{End}"
 
-; PgUpキー
+; `PgUp`キーを送信します。
 +XButton1::Send "{PgUp}"
-; PgDnキー
+; `PgDn`キーを送信します。
 +XButton2::Send "{PgDn}"
 
-; Ctrl + Homeキー
+; `Ctrl + Home`キーを送信します。
 ^!XButton1::Send "^{Home}"
-; Ctrl + Endキー
+; `Ctrl + End`キーを送信します。
 ^!XButton2::Send "^{End}"
 
-; Ctrl + PgUpキー
+; `Ctrl + PgUp`キーを送信します。
 ^#XButton1::Send "^{PgUp}"
-; Ctrl + PgDnキー
+; `Ctrl + PgDn`キーを送信します。
 ^#XButton2::Send "^{PgDn}"
 
-; Shift + Homeキー
+; `Shift + Home`キーを送信します。
 +!XButton1::Send "+{Home}"
-; Shift + Endキー
+; `Shift + End`キーを送信します。
 +!XButton2::Send "+{End}"
 
-; Ctrl + Shift + Homeキー
+; `Ctrl + Shift + Home`キーを送信します。
 +#XButton1::Send "+^{Home}"
-; Ctrl + Shift + Endキー
+; `Ctrl + Shift + End`キーを送信します。
 +#XButton2::Send "+^{End}"
