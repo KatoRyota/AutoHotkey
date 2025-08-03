@@ -11,6 +11,7 @@ SendMode "Input"
 SendLevel 100
 SetKeyDelay 10, 10
 SetMouseDelay 10
+
 SPI_GETMOUSESPEED := 0x0070
 SPI_SETMOUSESPEED := 0x0071
 SPI_GETWHEELSCROLLLINES := 0x0068
@@ -19,20 +20,26 @@ SPI_GETWHEELSCROLLCHARS := 0x006C
 SPI_SETWHEELSCROLLCHARS := 0x006D
 SPIF_UPDATEINIFILE := 0x01
 SPIF_SENDCHANGE := 0x02
-SLOW_MOUSE_SPEED := 1
+
 SlowMouseSpeedMode := false
 OriginalMouseSpeed := GetMouseSpeed()
+SLOW_MOUSE_SPEED := 1
+
+HighSpeedScrollMode := false
+VerticalOriginalSpeedScroll := GetWheelScrollLines()
+VERTICAL_HIGH_SPEED_SCROLL := 15
+HorizontalOriginalSpeedScroll := GetWheelScrollChars()
+HORIZONTAL_HIGH_SPEED_SCROLL := 25
+
 HorizontalScrollMode := false
-DoubleScrollSpeedMode := false
-OriginalWheelScrollLines := GetWheelScrollLines()
-OriginalWheelScrollChars := GetWheelScrollChars()
+
 OnExit ExitFunc
 
 ; スクリプトの終了処理を行います。
 ExitFunc(ExitReason, ExitCode) {
-    ChangeOriginalMouseSpeed()
-    ChangeOriginalWheelScrollLines()
-    ChangeOriginalWheelScrollChars()
+    ChangeOriginalMouseSpeedMode()
+    ChangeVerticalOriginalSpeedScrollMode()
+    ChangeHorizontalOriginalSpeedScrollMode()
 }
 
 ; マウススピードを取得します。
@@ -95,59 +102,59 @@ SetWheelScrollChars(WheelScrollChars) {
         "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
-; マウススピードを元に戻します。
-ChangeOriginalMouseSpeed() {
+; 低速マウススピードモードを元に戻します。
+ChangeOriginalMouseSpeedMode() {
     SetMouseSpeed(OriginalMouseSpeed)
 }
 
-; マウススピードを遅くします。
-ChangeSlowMouseSpeed() {
+; 低速マウススピードモードにします。
+ChangeSlowMouseSpeedMode() {
     SetMouseSpeed(SLOW_MOUSE_SPEED)
 }
 
-; マウス低速モードに切り替えます。トグル方式。
+; 低速マウススピードモードに切り替えます。トグル方式。
 ToggleSlowMouseSpeedMode() {
     global SlowMouseSpeedMode
     SlowMouseSpeedMode := !SlowMouseSpeedMode
 
     if (SlowMouseSpeedMode) {
-        ChangeSlowMouseSpeed()
+        ChangeSlowMouseSpeedMode()
     } else {
-        ChangeOriginalMouseSpeed()
+        ChangeOriginalMouseSpeedMode()
     }
 }
 
-; 垂直スクロールの行数を元に戻します。
-ChangeOriginalWheelScrollLines() {
-    SetWheelScrollLines(OriginalWheelScrollLines)
+; 高速垂直スクロールモードを元に戻します。
+ChangeVerticalOriginalSpeedScrollMode() {
+    SetWheelScrollLines(VerticalOriginalSpeedScroll)
 }
 
-; 垂直スクロールの行数を2倍にします。
-Change2xWheelScrollLines() {
-    SetWheelScrollLines(OriginalWheelScrollLines * 2)
+; 高速垂直スクロールモードにします。
+ChangeVerticalHighSpeedScrollMode() {
+    SetWheelScrollLines(VERTICAL_HIGH_SPEED_SCROLL)
 }
 
-; 水平スクロールの文字数を元に戻します。
-ChangeOriginalWheelScrollChars() {
-    SetWheelScrollChars(OriginalWheelScrollChars)
+; 高速水平スクロールモードを元に戻します。
+ChangeHorizontalOriginalSpeedScrollMode() {
+    SetWheelScrollChars(HorizontalOriginalSpeedScroll)
 }
 
-; 水平スクロールの文字数を2倍にします。
-Change2xWheelScrollChars() {
-    SetWheelScrollChars(OriginalWheelScrollChars * 2)
+; 高速水平スクロールモードにします。
+ChangeHorizontalHighSpeedScrollMode() {
+    SetWheelScrollChars(HORIZONTAL_HIGH_SPEED_SCROLL)
 }
 
-; スクロール2倍モードに切り替えます。トグル方式。
-ToggleDoubleScrollSpeedMode() {
-    global DoubleScrollSpeedMode
-    DoubleScrollSpeedMode := !DoubleScrollSpeedMode
+; 高速スクロールモードに切り替えます。トグル方式。
+ToggleHighSpeedScrollMode() {
+    global HighSpeedScrollMode
+    HighSpeedScrollMode := !HighSpeedScrollMode
 
-    if (DoubleScrollSpeedMode) {
-        Change2xWheelScrollLines()
-        Change2xWheelScrollChars()
+    if (HighSpeedScrollMode) {
+        ChangeVerticalHighSpeedScrollMode()
+        ChangeHorizontalHighSpeedScrollMode()
     } else {
-        ChangeOriginalWheelScrollLines()
-        ChangeOriginalWheelScrollChars()
+        ChangeVerticalOriginalSpeedScrollMode()
+        ChangeHorizontalOriginalSpeedScrollMode()
     }
 }
 
@@ -202,10 +209,10 @@ WheelDownOrRight() {
 ; スクロールの移動量を表示します。
 ^#w::MsgBox Format("現在の垂直スクロールの行数は: {1}`n現在の水平スクロールの文字数は: {2}", GetWheelScrollLines(), GetWheelScrollChars())
 
-; スクロール2倍モードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
-sc029::ToggleDoubleScrollSpeedMode()
+; 高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
+sc029::ToggleHighSpeedScrollMode()
 
-; マウス低速モードに切り替えます。トグル方式。 (sc03A = 英数キー)
+; 低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)
 sc03A::ToggleSlowMouseSpeedMode()
 
 ; カタカナ・ひらがなキーを無効化します。 (sc070 = カタカナ・ひらがなキー)
