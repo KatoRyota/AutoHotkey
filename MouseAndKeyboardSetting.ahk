@@ -11,8 +11,8 @@ SendMode "Input"
 SendLevel 100
 SetKeyDelay 10, 10
 SetMouseDelay 10
-SPI_GETMOUSESPEED := 0x70
-SPI_SETMOUSESPEED := 0x71
+SPI_GETMOUSESPEED := 0x0070
+SPI_SETMOUSESPEED := 0x0071
 SPI_GETWHEELSCROLLLINES := 0x0068
 SPI_SETWHEELSCROLLLINES := 0x0069
 SPI_GETWHEELSCROLLCHARS := 0x006C
@@ -35,7 +35,7 @@ ExitFunc(ExitReason, ExitCode) {
     ChangeOriginalWheelScrollChars()
 }
 
-; マウスポインターの速度を取得します。
+; マウススピードを取得します。
 GetMouseSpeed() {
     MouseSpeed := Buffer(4)
     DllCall("SystemParametersInfo",
@@ -46,13 +46,13 @@ GetMouseSpeed() {
     return NumGet(MouseSpeed, 0, "UInt")
 }
 
-; マウスポインターの速度を変更します。
+; マウススピードを変更します。
 SetMouseSpeed(MouseSpeed) {
     DllCall("SystemParametersInfo",
         "UInt", SPI_SETMOUSESPEED,
         "UInt", 0,
         "UInt", MouseSpeed,
-        "UInt", 0)
+        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
 ; 垂直スクロールの行数を取得します。
@@ -71,7 +71,7 @@ SetWheelScrollLines(WheelScrollLines) {
     DllCall("SystemParametersInfo",
         "UInt", SPI_SETWHEELSCROLLLINES,
         "UInt", WheelScrollLines,
-        "Ptr", 0,
+        "UInt", 0,
         "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
@@ -88,19 +88,19 @@ GetWheelScrollChars() {
 
 ; 水平スクロールの文字数を変更します。
 SetWheelScrollChars(WheelScrollChars) {
-    DllCall("SystemParametersInfoW",
+    DllCall("SystemParametersInfo",
         "UInt", SPI_SETWHEELSCROLLCHARS,
         "UInt", WheelScrollChars,
-        "Ptr", 0,
+        "UInt", 0,
         "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
-; マウスポインターの速度を元に戻します。
+; マウススピードを元に戻します。
 ChangeOriginalMouseSpeed() {
     SetMouseSpeed(OriginalMouseSpeed)
 }
 
-; マウスポインターの速度を遅くします。
+; マウススピードを遅くします。
 ChangeSlowMouseSpeed() {
     SetMouseSpeed(SLOW_MOUSE_SPEED)
 }
@@ -115,18 +115,6 @@ ToggleSlowMouseSpeedMode() {
     } else {
         ChangeOriginalMouseSpeed()
     }
-}
-
-; 垂直スクロールモードに切り替えます。
-ChangeVerticalScrollMode() {
-    global HorizontalScrollMode
-    HorizontalScrollMode := false
-}
-
-; 水平スクロールモードに切り替えます。
-ChangeHorizontalScrollMode() {
-    global HorizontalScrollMode
-    HorizontalScrollMode := true
 }
 
 ; 垂直スクロールの行数を元に戻します。
@@ -163,6 +151,18 @@ ToggleDoubleScrollSpeedMode() {
     }
 }
 
+; 垂直スクロールモードに切り替えます。
+ChangeVerticalScrollMode() {
+    global HorizontalScrollMode
+    HorizontalScrollMode := false
+}
+
+; 水平スクロールモードに切り替えます。
+ChangeHorizontalScrollMode() {
+    global HorizontalScrollMode
+    HorizontalScrollMode := true
+}
+
 ; 上スクロール or 左スクロール。
 WheelUpOrLeft() {
     if (HorizontalScrollMode) {
@@ -196,8 +196,8 @@ WheelDownOrRight() {
 ; キーヒストリーを表示します。
 ^#k::KeyHistory
 
-; マウスポインターの速度を表示します。
-^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
+; マウススピードを表示します。
+^#p::MsgBox Format("現在のマウススピードは: {1}", GetMouseSpeed())
 
 ; スクロールの移動量を表示します。
 ^#w::MsgBox Format("現在の垂直スクロールの行数は: {1}`n現在の水平スクロールの文字数は: {2}", GetWheelScrollLines(), GetWheelScrollChars())
