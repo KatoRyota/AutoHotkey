@@ -14,6 +14,7 @@ SetMouseDelay 10
 SPI_GETMOUSESPEED := 0x70
 SPI_SETMOUSESPEED := 0x71
 MOUSE_SPEED_SLOW := 1
+MouseSpeedToggle := false
 OriginalMouseSpeed := GetMouseSpeed()
 ScrollMode := "vertical"
 OnExit ExitFunc
@@ -43,6 +44,18 @@ ChangeOriginalMouseSpeed() {
 ; マウスポインターの速度を遅くします。
 ChangeSlowMouseSpeed() {
     SetMouseSpeed(MOUSE_SPEED_SLOW)
+}
+
+; マウスポインターの速度を変更します。トグル方式。
+ToggleMouseSpeed() {
+    global MouseSpeedToggle
+    MouseSpeedToggle := !MouseSpeedToggle
+
+    if (MouseSpeedToggle) {
+        ChangeSlowMouseSpeed()
+    } else {
+        ChangeOriginalMouseSpeed()
+    }
 }
 
 ; 垂直スクロールモードに切り替えます。
@@ -93,11 +106,11 @@ WheelDownOrRight() {
 ; マウスポインターの速度を表示します。
 ^#p::MsgBox("現在のマウスポインター速度設定は: " GetMouseSpeed())
 
-; マウスポインターの速度を元に戻します。 (sc029 = 半角／全角キー)
-sc029::ChangeOriginalMouseSpeed()
+; 半角／全角キーを無効化 (sc029 = 半角／全角キー)
+sc029::Return
 
-; マウスポインターの速度を遅くします。 (sc03A = 英数キー)
-sc03A::ChangeSlowMouseSpeed()
+; マウスポインターの速度を変更します。トグル方式。 (sc03A = 英数キー)
+sc03A::ToggleMouseSpeed()
 
 ; カタカナ・ひらがなキーを無効化します。 (sc070 = カタカナ・ひらがなキー)
 sc070::Return
