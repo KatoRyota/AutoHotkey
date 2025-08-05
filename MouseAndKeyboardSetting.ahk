@@ -155,7 +155,9 @@ ChangeHighSpeedHorizontalScrollMode() {
 ; 高速スクロールモードに切り替えます。トグル方式。
 ToggleHighSpeedScrollMode() {
     global HighSpeedScrollMode
+    global PageVerticalScrollMode
     HighSpeedScrollMode := !HighSpeedScrollMode
+    PageVerticalScrollMode := false
 
     if (HighSpeedScrollMode) {
         ChangeHighSpeedVerticalScrollMode()
@@ -168,7 +170,9 @@ ToggleHighSpeedScrollMode() {
 
 ; 1画面垂直スクロールモードに切り替えます。トグル方式。
 TogglePageVerticalScrollMode() {
+    global HighSpeedScrollMode
     global PageVerticalScrollMode
+    HighSpeedScrollMode := false
     PageVerticalScrollMode := !PageVerticalScrollMode
 
     if (PageVerticalScrollMode) {
