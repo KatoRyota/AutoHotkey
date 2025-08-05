@@ -1,7 +1,7 @@
 #Requires AutoHotkey v2.0
 #Warn
 #InputLevel 100
-;#UseHook
+#UseHook
 
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
