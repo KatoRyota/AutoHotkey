@@ -22,14 +22,17 @@ SPIF_UPDATEINIFILE := 0x0001
 SPIF_SENDCHANGE := 0x0002
 
 SlowMouseSpeedMode := false
-OriginalMouseSpeed := GetMouseSpeed()
+DefaultMouseSpeed := GetMouseSpeed()
 SLOW_MOUSE_SPEED := 1
 
 HighSpeedScrollMode := false
-VerticalOriginalSpeedScroll := GetWheelScrollLines()
-VERTICAL_HIGH_SPEED_SCROLL := 15
-HorizontalOriginalSpeedScroll := GetWheelScrollChars()
-HORIZONTAL_HIGH_SPEED_SCROLL := 25
+DefaultSpeedWheelScrollLines := GetWheelScrollLines()
+HIGH_SPEED_WHEEL_SCROLL_LINES := 9
+DefaultSpeedWheelScrollChars := GetWheelScrollChars()
+HIGH_SPEED_WHEEL_SCROLL_CHARS := 15
+
+PageVerticalScrollMode := false
+WHEEL_PAGESCROLL := 0xFFFFFFFF
 
 HorizontalScrollMode := false
 
@@ -37,9 +40,9 @@ OnExit ExitFunc
 
 ; スクリプトの終了処理を行います。
 ExitFunc(ExitReason, ExitCode) {
-    ChangeOriginalMouseSpeedMode()
-    ChangeVerticalOriginalSpeedScrollMode()
-    ChangeHorizontalOriginalSpeedScrollMode()
+    ChangeDefaultMouseSpeedMode()
+    ChangeDefaultSpeedVerticalScrollMode()
+    ChangeDefaultSpeedHorizontalScrollMode()
 }
 
 ; マウススピードを取得します。
@@ -102,9 +105,9 @@ SetWheelScrollChars(WheelScrollChars) {
         "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
-; 低速マウススピードモードを元に戻します。
-ChangeOriginalMouseSpeedMode() {
-    SetMouseSpeed(OriginalMouseSpeed)
+; デフォルト マウススピードモードにします。
+ChangeDefaultMouseSpeedMode() {
+    SetMouseSpeed(DefaultMouseSpeed)
 }
 
 ; 低速マウススピードモードにします。
@@ -120,28 +123,33 @@ ToggleSlowMouseSpeedMode() {
     if (SlowMouseSpeedMode) {
         ChangeSlowMouseSpeedMode()
     } else {
-        ChangeOriginalMouseSpeedMode()
+        ChangeDefaultMouseSpeedMode()
     }
 }
 
-; 高速垂直スクロールモードを元に戻します。
-ChangeVerticalOriginalSpeedScrollMode() {
-    SetWheelScrollLines(VerticalOriginalSpeedScroll)
+; デフォルト垂直スクロールモードにします。
+ChangeDefaultSpeedVerticalScrollMode() {
+    SetWheelScrollLines(DefaultSpeedWheelScrollLines)
 }
 
 ; 高速垂直スクロールモードにします。
-ChangeVerticalHighSpeedScrollMode() {
-    SetWheelScrollLines(VERTICAL_HIGH_SPEED_SCROLL)
+ChangeHighSpeedVerticalScrollMode() {
+    SetWheelScrollLines(HIGH_SPEED_WHEEL_SCROLL_LINES)
 }
 
-; 高速水平スクロールモードを元に戻します。
-ChangeHorizontalOriginalSpeedScrollMode() {
-    SetWheelScrollChars(HorizontalOriginalSpeedScroll)
+; 1画面垂直スクロールモードにします。
+ChangePageVerticalScrollMode() {
+    SetWheelScrollLines(WHEEL_PAGESCROLL)
+}
+
+; デフォルト水平スクロールモードにします。
+ChangeDefaultSpeedHorizontalScrollMode() {
+    SetWheelScrollChars(DefaultSpeedWheelScrollChars)
 }
 
 ; 高速水平スクロールモードにします。
-ChangeHorizontalHighSpeedScrollMode() {
-    SetWheelScrollChars(HORIZONTAL_HIGH_SPEED_SCROLL)
+ChangeHighSpeedHorizontalScrollMode() {
+    SetWheelScrollChars(HIGH_SPEED_WHEEL_SCROLL_CHARS)
 }
 
 ; 高速スクロールモードに切り替えます。トグル方式。
@@ -150,11 +158,25 @@ ToggleHighSpeedScrollMode() {
     HighSpeedScrollMode := !HighSpeedScrollMode
 
     if (HighSpeedScrollMode) {
-        ChangeVerticalHighSpeedScrollMode()
-        ChangeHorizontalHighSpeedScrollMode()
+        ChangeHighSpeedVerticalScrollMode()
+        ChangeHighSpeedHorizontalScrollMode()
     } else {
-        ChangeVerticalOriginalSpeedScrollMode()
-        ChangeHorizontalOriginalSpeedScrollMode()
+        ChangeDefaultSpeedVerticalScrollMode()
+        ChangeDefaultSpeedHorizontalScrollMode()
+    }
+}
+
+; 1画面垂直スクロールモードに切り替えます。トグル方式。
+TogglePageVerticalScrollMode() {
+    global PageVerticalScrollMode
+    PageVerticalScrollMode := !PageVerticalScrollMode
+
+    if (PageVerticalScrollMode) {
+        ChangePageVerticalScrollMode()
+        ChangeHighSpeedHorizontalScrollMode()
+    } else {
+        ChangeDefaultSpeedVerticalScrollMode()
+        ChangeDefaultSpeedHorizontalScrollMode()
     }
 }
 
@@ -188,15 +210,6 @@ WheelDownOrRight() {
     }
 }
 
-; 半角／全角キーを、Backspaceキーにリマップ。
-;;sc029::Backspace ;このリマップを行うと、キー配列がおかしくなる。原因不明。
-
-; AppsKeyキーを、右Ctrlキーにリマップ。
-;;AppsKey::RControl ;このリマップを行うと、キー配列がおかしくなる。原因不明。
-
-; カタカナ・ひらがなキーを、右Altキーにリマップ。
-;;sc070::RAlt ;このリマップを行うと、キー配列がおかしくなる。原因不明。
-
 ; ホットキーの一覧を表示します。
 ^#h::ListHotkeys
 
@@ -206,17 +219,17 @@ WheelDownOrRight() {
 ; マウススピードを表示します。
 ^#p::MsgBox Format("現在のマウススピードは: {1}", GetMouseSpeed())
 
-; スクロールの移動量を表示します。
+; スクロールの量を表示します。
 ^#w::MsgBox Format("現在の垂直スクロールの行数は: {1}`n現在の水平スクロールの文字数は: {2}", GetWheelScrollLines(), GetWheelScrollChars())
-
-; 高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
-sc029::ToggleHighSpeedScrollMode()
 
 ; 低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)
 sc03A::ToggleSlowMouseSpeedMode()
 
-; カタカナ・ひらがなキーを無効化します。 (sc070 = カタカナ・ひらがなキー)
-sc070::Return
+; 高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
+sc029::ToggleHighSpeedScrollMode()
+
+; 1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)
+sc070::TogglePageVerticalScrollMode()
 
 ; 上スクロール or 左スクロール。
 WheelUp::WheelUpOrLeft()
