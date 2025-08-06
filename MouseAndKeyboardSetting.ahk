@@ -43,7 +43,7 @@ ExitFunc(ExitReason, ExitCode) {
     ChangeDefaultSpeedHorizontalScrollMode()
 }
 
-; 現在の設定をメッセージ形式で返します。
+; 現在の設定をメッセージ形式で取得します。
 GetCurrentSettingsMsg() {
     return Format(
         "・現在のマウススピード: {1}`n" .
