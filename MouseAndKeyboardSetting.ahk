@@ -43,6 +43,18 @@ ExitFunc(ExitReason, ExitCode) {
     ChangeDefaultSpeedHorizontalScrollMode()
 }
 
+; 現在の設定をメッセージ形式で返します。
+GetCurrentSettingsMsg() {
+    return Format(
+        "・現在のマウススピード: {1}`n" .
+        "・現在の垂直スクロールの行数: {2}`n" .
+        "・現在の水平スクロールの文字数: {3}`n",
+        GetMouseSpeed(),
+        GetWheelScrollLines(),
+        GetWheelScrollChars()
+    )
+}
+
 ; マウススピードを取得します。
 GetMouseSpeed() {
     MouseSpeed := Buffer(4)
@@ -213,16 +225,13 @@ WheelDownOrRight() {
 }
 
 ; ホットキーの一覧を表示します。
-^#h::ListHotkeys
+^#l::ListHotkeys
 
 ; キーヒストリーを表示します。
 ^#k::KeyHistory
 
-; マウススピードを表示します。
-^#p::MsgBox Format("現在のマウススピードは: {1}", GetMouseSpeed())
-
-; スクロールの量を表示します。
-^#w::MsgBox Format("現在の垂直スクロールの行数は: {1}`n現在の水平スクロールの文字数は: {2}", GetWheelScrollLines(), GetWheelScrollChars())
+; 現在の設定を表示します。
+^#s::MsgBox GetCurrentSettingsMsg()
 
 ; 低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)
 sc03A::ToggleSlowMouseSpeedMode()
