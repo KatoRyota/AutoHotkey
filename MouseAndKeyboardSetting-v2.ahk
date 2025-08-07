@@ -54,13 +54,6 @@ ShowHotkeys() {
     MsgBox msg
 }
 
-; スクリプトの終了処理を行います。
-ExitFunc(ExitReason, ExitCode) {
-    ChangeDefaultMouseSpeedMode()
-    ChangeDefaultSpeedVerticalScrollMode()
-    ChangeDefaultSpeedHorizontalScrollMode()
-}
-
 ; 現在の設定を表示します。
 ShowSettings() {
     MsgBox Format(
@@ -242,6 +235,13 @@ WheelDownOrRight() {
     }
 }
 
+; スクリプトの終了処理を行います。
+ExitFunc(ExitReason, ExitCode) {
+    ChangeDefaultMouseSpeedMode()
+    ChangeDefaultSpeedVerticalScrollMode()
+    ChangeDefaultSpeedHorizontalScrollMode()
+}
+
 ; ホットキーの一覧を表示します。
 RegisterHotkey("^#h", (HotkeyName) => ShowHotkeys(), "ホットキーの一覧を表示します。")
 
@@ -303,7 +303,7 @@ RegisterHotkey("+!XButton1", (HotkeyName) => Send("+{Home}"), "`Shift + Home`キ
 ; `Shift + End`キーを送信します。
 RegisterHotkey("+!XButton2", (HotkeyName) => Send("+{End}"), "`Shift + End`キーを送信します。")
 
-; `Ctrl + Shift + Home`キーを送信します。
-RegisterHotkey("+#XButton1", (HotkeyName) => Send("+^{Home}"), "`Ctrl + Shift + Home`キーを送信します。")
-; `Ctrl + Shift + End`キーを送信します。
-RegisterHotkey("+#XButton2", (HotkeyName) => Send("+^{End}"), "`Ctrl + Shift + End`キーを送信します。")
+; `Shift + Ctrl + Home`キーを送信します。
+RegisterHotkey("+#XButton1", (HotkeyName) => Send("+^{Home}"), "`Shift + Ctrl + Home`キーを送信します。")
+; `Shift + Ctrl + End`キーを送信します。
+RegisterHotkey("+#XButton2", (HotkeyName) => Send("+^{End}"), "`Shift + Ctrl + End`キーを送信します。")
