@@ -38,32 +38,44 @@ Hotkeys := []
 
 OnExit ExitFunc
 
-; ホットキーを登録します。
-RegisterHotkey(key, func, desc := "") {
-    Hotkeys.Push({key: key, desc: desc})
-    Hotkey key, func
-}
-
 ; ホットキーの一覧を表示します。
 ShowHotkeys() {
-    msg := "登録済みホットキー一覧:`n"
-    for hk in Hotkeys {
-        descText := hk.desc != "" ? " - " . hk.desc : ""
-        msg .= hk.key . descText . "`n"
+    popup := Gui("", "ホットキー一覧")
+    popup.Opt("+AlwaysOnTop")
+    popup.SetFont("s12 q5", "MS Sans Serif")
+
+    lv := popup.Add("ListView", "NoSort Grid ReadOnly r20 w700", ["ホットキー", "説明"])
+
+    for item in Hotkeys {
+        lv.Add("", item.key, item.desc)
     }
-    MsgBox msg
+
+    lv.ModifyCol()
+
+    popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
+    popup.OnEvent("Close", (*) => popup.Destroy())
+    popup.OnEvent("Escape", (*) => popup.Destroy())
+    popup.Show()
 }
 
 ; 現在の設定を表示します。
 ShowSettings() {
-    MsgBox Format(
-        "・現在のマウススピード: {1}`n" .
-        "・現在の垂直スクロールの行数: {2}`n" .
-        "・現在の水平スクロールの文字数: {3}`n",
-        GetMouseSpeed(),
-        GetWheelScrollLines(),
-        GetWheelScrollChars()
-    )
+    popup := Gui("", "現在の設定")
+    popup.Opt("+AlwaysOnTop")
+    popup.SetFont("s12 q5", "MS Sans Serif")
+
+    lv := popup.Add("ListView", "NoSort Grid ReadOnly r20 w700", ["設定項目", "値"])
+
+    lv.Add("", "マウススピード", GetMouseSpeed())
+    lv.Add("", "垂直スクロールの行数", GetWheelScrollLines())
+    lv.Add("", "水平スクロールの文字数", GetWheelScrollChars())
+
+    lv.ModifyCol()
+
+    popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
+    popup.OnEvent("Close", (*) => popup.Destroy())
+    popup.OnEvent("Escape", (*) => popup.Destroy())
+    popup.Show()
 }
 
 ; マウススピードを取得します。
@@ -242,68 +254,74 @@ ExitFunc(ExitReason, ExitCode) {
     ChangeDefaultSpeedHorizontalScrollMode()
 }
 
+; ホットキーを登録します。
+RegisterHotkey(key, func, desc := "") {
+    Hotkeys.Push({key: key, desc: desc})
+    Hotkey key, func
+}
+
 ; ホットキーの一覧を表示します。
-RegisterHotkey("^#h", (HotkeyName) => ShowHotkeys(), "ホットキーの一覧を表示します。")
+RegisterHotkey("^#h", (*) => ShowHotkeys(), "ホットキーの一覧を表示します。")
 
 ; ホットキーの一覧を表示します。ListHotkeys関数。
-RegisterHotkey("^#l", (HotkeyName) => ListHotkeys(), "ホットキーの一覧を表示します。ListHotkeys関数。")
+RegisterHotkey("^#l", (*) => ListHotkeys(), "ホットキーの一覧を表示します。ListHotkeys関数。")
 
 ; キーヒストリーを表示します。
-RegisterHotkey("^#k", (HotkeyName) => KeyHistory(), "キーヒストリーを表示します。")
+RegisterHotkey("^#k", (*) => KeyHistory(), "キーヒストリーを表示します。")
 
 ; 現在の設定を表示します。
-RegisterHotkey("^#s", (HotkeyName) => ShowSettings(), "現在の設定を表示します。")
+RegisterHotkey("^#s", (*) => ShowSettings(), "現在の設定を表示します。")
 
 ; 低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)
-RegisterHotkey("sc03A", (HotkeyName) => ToggleSlowMouseSpeedMode(), "低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)")
+RegisterHotkey("sc03A", (*) => ToggleSlowMouseSpeedMode(), "低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)")
 
 ; 高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
-RegisterHotkey("sc029", (HotkeyName) => ToggleHighSpeedScrollMode(), "高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)")
+RegisterHotkey("sc029", (*) => ToggleHighSpeedScrollMode(), "高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)")
 
 ; 1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)
-RegisterHotkey("sc070", (HotkeyName) => TogglePageVerticalScrollMode(), "1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)")
+RegisterHotkey("sc070", (*) => TogglePageVerticalScrollMode(), "1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)")
 
 ; 上スクロール or 左スクロール。
-RegisterHotkey("WheelUp", (HotkeyName) => WheelUpOrLeft(), "上スクロール or 左スクロール。")
+RegisterHotkey("WheelUp", (*) => WheelUpOrLeft(), "上スクロール or 左スクロール。")
 ; 下スクロール or 右スクロール。
-RegisterHotkey("WheelDown", (HotkeyName) => WheelDownOrRight(), "下スクロール or 右スクロール。")
+RegisterHotkey("WheelDown", (*) => WheelDownOrRight(), "下スクロール or 右スクロール。")
 
 ; 水平スクロールモードに切り替えます。
-RegisterHotkey("XButton1", (HotkeyName) => ChangeHorizontalScrollMode(), "水平スクロールモードに切り替えます。")
+RegisterHotkey("XButton1", (*) => ChangeHorizontalScrollMode(), "水平スクロールモードに切り替えます。")
 ; 垂直スクロールモードに切り替えます。
-RegisterHotkey("XButton2", (HotkeyName) => ChangeVerticalScrollMode(), "垂直スクロールモードに切り替えます。")
+RegisterHotkey("XButton2", (*) => ChangeVerticalScrollMode(), "垂直スクロールモードに切り替えます。")
 
-; `Alt + Left`キーを送信します。
-RegisterHotkey("+^XButton1", (HotkeyName) => Send("!{Left}"), "`Alt + Left`キーを送信します。")
-; `Alt + Right`キーを送信します。
-RegisterHotkey("+^XButton2", (HotkeyName) => Send("!{Right}"), "`Alt + Right`キーを送信します。")
+; 『Alt + Left』キーを送信します。
+RegisterHotkey("+^XButton1", (*) => Send("!{Left}"), "『Alt + Left』キーを送信します。")
+; 『Alt + Right』キーを送信します。
+RegisterHotkey("+^XButton2", (*) => Send("!{Right}"), "『Alt + Right』キーを送信します。")
 
-; `Home`キーを送信します。
-RegisterHotkey("^XButton1", (HotkeyName) => Send("{Home}"), "`Home`キーを送信します。")
-; `End`キーを送信します。
-RegisterHotkey("^XButton2", (HotkeyName) => Send("{End}"), "`End`キーを送信します。")
+; 『Home』キーを送信します。
+RegisterHotkey("^XButton1", (*) => Send("{Home}"), "『Home』キーを送信します。")
+; 『End』キーを送信します。
+RegisterHotkey("^XButton2", (*) => Send("{End}"), "『End』キーを送信します。")
 
-; `PgUp`キーを送信します。
-RegisterHotkey("+XButton1", (HotkeyName) => Send("{PgUp}"), "`PgUp`キーを送信します。")
-; `PgDn`キーを送信します。
-RegisterHotkey("+XButton2", (HotkeyName) => Send("{PgDn}"), "`PgDn`キーを送信します。")
+; 『PgUp』キーを送信します。
+RegisterHotkey("+XButton1", (*) => Send("{PgUp}"), "『PgUp』キーを送信します。")
+; 『PgDn』キーを送信します。
+RegisterHotkey("+XButton2", (*) => Send("{PgDn}"), "『PgDn』キーを送信します。")
 
-; `Ctrl + Home`キーを送信します。
-RegisterHotkey("^!XButton1", (HotkeyName) => Send("^{Home}"), "`Ctrl + Home`キーを送信します。")
-; `Ctrl + End`キーを送信します。
-RegisterHotkey("^!XButton2", (HotkeyName) => Send("^{End}"), "`Ctrl + End`キーを送信します。")
+; 『Ctrl + Home』キーを送信します。
+RegisterHotkey("^!XButton1", (*) => Send("^{Home}"), "『Ctrl + Home』キーを送信します。")
+; 『Ctrl + End』キーを送信します。
+RegisterHotkey("^!XButton2", (*) => Send("^{End}"), "『Ctrl + End』キーを送信します。")
 
-; `Ctrl + PgUp`キーを送信します。
-RegisterHotkey("^#XButton1", (HotkeyName) => Send("^{PgUp}"), "`Ctrl + PgUp`キーを送信します。")
-; `Ctrl + PgDn`キーを送信します。
-RegisterHotkey("^#XButton2", (HotkeyName) => Send("^{PgDn}"), "`Ctrl + PgDn`キーを送信します。")
+; 『Ctrl + PgUp』キーを送信します。
+RegisterHotkey("^#XButton1", (*) => Send("^{PgUp}"), "『Ctrl + PgUp』キーを送信します。")
+; 『Ctrl + PgDn』キーを送信します。
+RegisterHotkey("^#XButton2", (*) => Send("^{PgDn}"), "『Ctrl + PgDn』キーを送信します。")
 
-; `Shift + Home`キーを送信します。
-RegisterHotkey("+!XButton1", (HotkeyName) => Send("+{Home}"), "`Shift + Home`キーを送信します。")
-; `Shift + End`キーを送信します。
-RegisterHotkey("+!XButton2", (HotkeyName) => Send("+{End}"), "`Shift + End`キーを送信します。")
+; 『Shift + Home』キーを送信します。
+RegisterHotkey("+!XButton1", (*) => Send("+{Home}"), "『Shift + Home』キーを送信します。")
+; 『Shift + End』キーを送信します。
+RegisterHotkey("+!XButton2", (*) => Send("+{End}"), "『Shift + End』キーを送信します。")
 
-; `Shift + Ctrl + Home`キーを送信します。
-RegisterHotkey("+#XButton1", (HotkeyName) => Send("+^{Home}"), "`Shift + Ctrl + Home`キーを送信します。")
-; `Shift + Ctrl + End`キーを送信します。
-RegisterHotkey("+#XButton2", (HotkeyName) => Send("+^{End}"), "`Shift + Ctrl + End`キーを送信します。")
+; 『Shift + Ctrl + Home』キーを送信します。
+RegisterHotkey("+#XButton1", (*) => Send("+^{Home}"), "『Shift + Ctrl + Home』キーを送信します。")
+; 『Shift + Ctrl + End』キーを送信します。
+RegisterHotkey("+#XButton2", (*) => Send("+^{End}"), "『Shift + Ctrl + End』キーを送信します。")
