@@ -19,22 +19,23 @@ SPI_SETWHEELSCROLLCHARS := 0x006D
 SPIF_UPDATEINIFILE := 0x0001
 SPIF_SENDCHANGE := 0x0002
 
-SlowMouseSpeedMode := false
-DefaultMouseSpeed := GetMouseSpeed()
+slowMouseSpeedMode := false
+defaultMouseSpeed := GetMouseSpeed()
 SLOW_MOUSE_SPEED := 1
 
-HighSpeedScrollMode := false
-DefaultSpeedWheelScrollLines := GetWheelScrollLines()
+verticalScrollMode := true
+horizontalScrollMode := false
+
+highSpeedScrollMode := false
+defaultSpeedWheelScrollLines := GetWheelScrollLines()
 HIGH_SPEED_WHEEL_SCROLL_LINES := 9
-DefaultSpeedWheelScrollChars := GetWheelScrollChars()
+defaultSpeedWheelScrollChars := GetWheelScrollChars()
 HIGH_SPEED_WHEEL_SCROLL_CHARS := 15
 
-PageVerticalScrollMode := false
+pageVerticalScrollMode := false
 WHEEL_PAGESCROLL := 0xFFFFFFFF
 
-HorizontalScrollMode := false
-
-Hotkeys := []
+hotkeys := []
 
 OnExit ExitFunc
 
@@ -44,18 +45,28 @@ ShowHotkeys() {
     popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "MS Sans Serif")
 
-    lv := popup.Add("ListView", "NoSort Grid ReadOnly r20 w700", ["ホットキー", "説明"])
+    listViewWidth := 700
+    listViewHeight := 500
 
-    for item in Hotkeys {
-        lv.Add("", item.key, item.desc)
+    listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
+    listView := popup.Add("ListView", listViewOptions, ["ホットキー", "説明"])
+
+    for (hKey in hotkeys) {
+        listView.Add("", hKey.key, hKey.desc)
     }
 
-    lv.ModifyCol()
+    listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
-    popup.Show()
+
+    WinGetPos(&winX, &winY, &winWidth, &winHeight, "A")
+    cx := winX + Floor((winWidth - listViewWidth * 1.55) / 2)
+    cy := winY + Floor((winHeight - listViewHeight * 1.8) / 2)
+    popupOptions := Format("x{1} y{2}", cx, cy)
+
+    popup.Show(popupOptions)
 }
 
 ; 現在の設定を表示します。
@@ -64,83 +75,99 @@ ShowSettings() {
     popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "MS Sans Serif")
 
-    lv := popup.Add("ListView", "NoSort Grid ReadOnly r20 w700", ["設定項目", "値"])
+    listViewWidth := 700
+    listViewHeight := 500
 
-    lv.Add("", "マウススピード", GetMouseSpeed())
-    lv.Add("", "垂直スクロールの行数", GetWheelScrollLines())
-    lv.Add("", "水平スクロールの文字数", GetWheelScrollChars())
+    listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
+    listView := popup.Add("ListView", listViewOptions, ["設定項目", "値"])
 
-    lv.ModifyCol()
+    listView.Add("", "マウススピード", GetMouseSpeed())
+    listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
+    listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
+    listView.Add("", "垂直スクロールモード", verticalScrollMode)
+    listView.Add("", "水平スクロールモード", horizontalScrollMode)
+    listView.Add("", "高速スクロールモード", highSpeedScrollMode)
+    listView.Add("", "1画面垂直スクロールモード", pageVerticalScrollMode)
+
+    listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
-    popup.Show()
+
+    WinGetPos(&winX, &winY, &winWidth, &winHeight, "A")
+    cx := winX + Floor((winWidth - listViewWidth * 1.55) / 2)
+    cy := winY + Floor((winHeight - listViewHeight * 1.8) / 2)
+    popupOptions := Format("x{1} y{2}", cx, cy)
+
+    popup.Show(popupOptions)
 }
 
-; マウススピードを取得します。
-GetMouseSpeed() {
-    MouseSpeed := Buffer(4)
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_GETMOUSESPEED,
-        "UInt", 0,
-        "Ptr", MouseSpeed,
-        "UInt", 0)
-    return NumGet(MouseSpeed, 0, "UInt")
+; 低速マウススピードモードに切り替えます。トグル方式。
+ToggleSlowMouseSpeedMode() {
+    global slowMouseSpeedMode
+    slowMouseSpeedMode := !slowMouseSpeedMode
+
+    if (slowMouseSpeedMode) {
+        ChangeSlowMouseSpeedMode()
+    } else {
+        ChangeDefaultMouseSpeedMode()
+    }
 }
 
-; マウススピードを変更します。
-SetMouseSpeed(MouseSpeed) {
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_SETMOUSESPEED,
-        "UInt", 0,
-        "UInt", MouseSpeed,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+; 上スクロール or 左スクロール。
+WheelUpOrLeft() {
+    if (horizontalScrollMode) {
+        Send("{WheelLeft}")
+    } else {
+        Send("{WheelUp}")
+    }
 }
 
-; 垂直スクロールの行数を取得します。
-GetWheelScrollLines() {
-    WheelScrollLines := Buffer(4)
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_GETWHEELSCROLLLINES,
-        "UInt", 0,
-        "Ptr", WheelScrollLines,
-        "UInt", 0)
-    return NumGet(WheelScrollLines, 0, "UInt")
+; 下スクロール or 右スクロール。
+WheelDownOrRight() {
+    if (horizontalScrollMode) {
+        Send("{WheelRight}")
+    } else {
+        Send("{WheelDown}")
+    }
 }
 
-; 垂直スクロールの行数を変更します。
-SetWheelScrollLines(WheelScrollLines) {
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_SETWHEELSCROLLLINES,
-        "UInt", WheelScrollLines,
-        "UInt", 0,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+; 高速スクロールモードに切り替えます。トグル方式。
+ToggleHighSpeedScrollMode() {
+    global highSpeedScrollMode
+    global pageVerticalScrollMode
+    highSpeedScrollMode := !highSpeedScrollMode
+    pageVerticalScrollMode := false
+
+    if (highSpeedScrollMode) {
+        ChangeHighSpeedVerticalScrollMode()
+        ChangeHighSpeedHorizontalScrollMode()
+    } else {
+        ChangeDefaultSpeedVerticalScrollMode()
+        ChangeDefaultSpeedHorizontalScrollMode()
+    }
 }
 
-; 水平スクロールの文字数を取得します。
-GetWheelScrollChars() {
-    WheelScrollChars := Buffer(4)
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_GETWHEELSCROLLCHARS,
-        "UInt", 0,
-        "Ptr", WheelScrollChars,
-        "UInt", 0)
-    return NumGet(WheelScrollChars, 0, "UInt")
-}
+; 1画面垂直スクロールモードに切り替えます。トグル方式。
+TogglePageVerticalScrollMode() {
+    global highSpeedScrollMode
+    global pageVerticalScrollMode
+    highSpeedScrollMode := false
+    pageVerticalScrollMode := !pageVerticalScrollMode
 
-; 水平スクロールの文字数を変更します。
-SetWheelScrollChars(WheelScrollChars) {
-    DllCall("SystemParametersInfo",
-        "UInt", SPI_SETWHEELSCROLLCHARS,
-        "UInt", WheelScrollChars,
-        "UInt", 0,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+    if (pageVerticalScrollMode) {
+        ChangePageVerticalScrollMode()
+        ChangeHighSpeedHorizontalScrollMode()
+    } else {
+        ChangeDefaultSpeedVerticalScrollMode()
+        ChangeDefaultSpeedHorizontalScrollMode()
+    }
 }
 
 ; デフォルト マウススピードモードにします。
 ChangeDefaultMouseSpeedMode() {
-    SetMouseSpeed(DefaultMouseSpeed)
+    SetMouseSpeed(defaultMouseSpeed)
 }
 
 ; 低速マウススピードモードにします。
@@ -148,21 +175,25 @@ ChangeSlowMouseSpeedMode() {
     SetMouseSpeed(SLOW_MOUSE_SPEED)
 }
 
-; 低速マウススピードモードに切り替えます。トグル方式。
-ToggleSlowMouseSpeedMode() {
-    global SlowMouseSpeedMode
-    SlowMouseSpeedMode := !SlowMouseSpeedMode
+; 垂直スクロールモードに切り替えます。
+ChangeVerticalScrollMode() {
+    global verticalScrollMode
+    global horizontalScrollMode
+    verticalScrollMode := true
+    horizontalScrollMode := false
+}
 
-    if (SlowMouseSpeedMode) {
-        ChangeSlowMouseSpeedMode()
-    } else {
-        ChangeDefaultMouseSpeedMode()
-    }
+; 水平スクロールモードに切り替えます。
+ChangeHorizontalScrollMode() {
+    global verticalScrollMode
+    global horizontalScrollMode
+    verticalScrollMode := false
+    horizontalScrollMode := true
 }
 
 ; デフォルト垂直スクロールモードにします。
 ChangeDefaultSpeedVerticalScrollMode() {
-    SetWheelScrollLines(DefaultSpeedWheelScrollLines)
+    SetWheelScrollLines(defaultSpeedWheelScrollLines)
 }
 
 ; 高速垂直スクロールモードにします。
@@ -177,7 +208,7 @@ ChangePageVerticalScrollMode() {
 
 ; デフォルト水平スクロールモードにします。
 ChangeDefaultSpeedHorizontalScrollMode() {
-    SetWheelScrollChars(DefaultSpeedWheelScrollChars)
+    SetWheelScrollChars(defaultSpeedWheelScrollChars)
 }
 
 ; 高速水平スクロールモードにします。
@@ -185,70 +216,74 @@ ChangeHighSpeedHorizontalScrollMode() {
     SetWheelScrollChars(HIGH_SPEED_WHEEL_SCROLL_CHARS)
 }
 
-; 高速スクロールモードに切り替えます。トグル方式。
-ToggleHighSpeedScrollMode() {
-    global HighSpeedScrollMode
-    global PageVerticalScrollMode
-    HighSpeedScrollMode := !HighSpeedScrollMode
-    PageVerticalScrollMode := false
+; マウススピードを取得します。
+GetMouseSpeed() {
+    mouseSpeed := Buffer(4)
 
-    if (HighSpeedScrollMode) {
-        ChangeHighSpeedVerticalScrollMode()
-        ChangeHighSpeedHorizontalScrollMode()
-    } else {
-        ChangeDefaultSpeedVerticalScrollMode()
-        ChangeDefaultSpeedHorizontalScrollMode()
-    }
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_GETMOUSESPEED,
+        "UInt", 0,
+        "Ptr", mouseSpeed,
+        "UInt", 0)
+
+    return NumGet(mouseSpeed, 0, "UInt")
 }
 
-; 1画面垂直スクロールモードに切り替えます。トグル方式。
-TogglePageVerticalScrollMode() {
-    global HighSpeedScrollMode
-    global PageVerticalScrollMode
-    HighSpeedScrollMode := false
-    PageVerticalScrollMode := !PageVerticalScrollMode
-
-    if (PageVerticalScrollMode) {
-        ChangePageVerticalScrollMode()
-        ChangeHighSpeedHorizontalScrollMode()
-    } else {
-        ChangeDefaultSpeedVerticalScrollMode()
-        ChangeDefaultSpeedHorizontalScrollMode()
-    }
+; マウススピードを変更します。
+SetMouseSpeed(mouseSpeed) {
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_SETMOUSESPEED,
+        "UInt", 0,
+        "UInt", mouseSpeed,
+        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
-; 垂直スクロールモードに切り替えます。
-ChangeVerticalScrollMode() {
-    global HorizontalScrollMode
-    HorizontalScrollMode := false
+; 垂直スクロールの行数を取得します。
+GetWheelScrollLines() {
+    wheelScrollLines := Buffer(4)
+
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_GETWHEELSCROLLLINES,
+        "UInt", 0,
+        "Ptr", wheelScrollLines,
+        "UInt", 0)
+
+    return NumGet(wheelScrollLines, 0, "UInt")
 }
 
-; 水平スクロールモードに切り替えます。
-ChangeHorizontalScrollMode() {
-    global HorizontalScrollMode
-    HorizontalScrollMode := true
+; 垂直スクロールの行数を変更します。
+SetWheelScrollLines(wheelScrollLines) {
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_SETWHEELSCROLLLINES,
+        "UInt", wheelScrollLines,
+        "UInt", 0,
+        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
-; 上スクロール or 左スクロール。
-WheelUpOrLeft() {
-    if (HorizontalScrollMode) {
-        Send "{WheelLeft}"
-    } else {
-        Send "{WheelUp}"
-    }
+; 水平スクロールの文字数を取得します。
+GetWheelScrollChars() {
+    wheelScrollChars := Buffer(4)
+
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_GETWHEELSCROLLCHARS,
+        "UInt", 0,
+        "Ptr", wheelScrollChars,
+        "UInt", 0)
+
+    return NumGet(wheelScrollChars, 0, "UInt")
 }
 
-; 下スクロール or 右スクロール。
-WheelDownOrRight() {
-    if (HorizontalScrollMode) {
-        Send "{WheelRight}"
-    } else {
-        Send "{WheelDown}"
-    }
+; 水平スクロールの文字数を変更します。
+SetWheelScrollChars(wheelScrollChars) {
+    DllCall("SystemParametersInfo",
+        "UInt", SPI_SETWHEELSCROLLCHARS,
+        "UInt", wheelScrollChars,
+        "UInt", 0,
+        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
 }
 
 ; スクリプトの終了処理を行います。
-ExitFunc(ExitReason, ExitCode) {
+ExitFunc(exitReason, exitCode) {
     ChangeDefaultMouseSpeedMode()
     ChangeDefaultSpeedVerticalScrollMode()
     ChangeDefaultSpeedHorizontalScrollMode()
@@ -256,8 +291,8 @@ ExitFunc(ExitReason, ExitCode) {
 
 ; ホットキーを登録します。
 RegisterHotkey(key, func, desc := "") {
-    Hotkeys.Push({key: key, desc: desc})
-    Hotkey key, func
+    hotkeys.Push({key: key, desc: desc})
+    Hotkey(key, func)
 }
 
 ; ホットキーの一覧を表示します。
