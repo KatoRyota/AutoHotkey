@@ -26,14 +26,14 @@ SLOW_MOUSE_SPEED := 1
 verticalScrollMode := true
 horizontalScrollMode := false
 
+pageVerticalScrollMode := false
+WHEEL_PAGESCROLL := 0xFFFFFFFF
+
 highSpeedScrollMode := false
 defaultSpeedWheelScrollLines := GetWheelScrollLines()
 HIGH_SPEED_WHEEL_SCROLL_LINES := 9
 defaultSpeedWheelScrollChars := GetWheelScrollChars()
 HIGH_SPEED_WHEEL_SCROLL_CHARS := 15
-
-pageVerticalScrollMode := false
-WHEEL_PAGESCROLL := 0xFFFFFFFF
 
 hotkeys := []
 
@@ -91,8 +91,8 @@ ShowSettings() {
     listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
     listView.Add("", "垂直スクロールモード", verticalScrollMode ? "オン" : "オフ")
     listView.Add("", "水平スクロールモード", horizontalScrollMode ? "オン" : "オフ")
-    listView.Add("", "高速スクロールモード", highSpeedScrollMode ? "オン" : "オフ")
     listView.Add("", "1画面垂直スクロールモード", pageVerticalScrollMode ? "オン" : "オフ")
+    listView.Add("", "高速スクロールモード", highSpeedScrollMode ? "オン" : "オフ")
     listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
@@ -142,15 +142,15 @@ WheelDownOrRight() {
     }
 }
 
-; 高速スクロールモードに切り替えます。トグル方式。
-ToggleHighSpeedScrollMode() {
-    global highSpeedScrollMode
+; 1画面垂直スクロールモードに切り替えます。トグル方式。
+TogglePageVerticalScrollMode() {
     global pageVerticalScrollMode
-    highSpeedScrollMode := !highSpeedScrollMode
-    pageVerticalScrollMode := false
+    global highSpeedScrollMode
+    pageVerticalScrollMode := !pageVerticalScrollMode
+    highSpeedScrollMode := false
 
-    if (highSpeedScrollMode) {
-        ChangeHighSpeedVerticalScrollMode()
+    if (pageVerticalScrollMode) {
+        ChangePageVerticalScrollMode()
         ChangeHighSpeedHorizontalScrollMode()
     } else {
         ChangeDefaultSpeedVerticalScrollMode()
@@ -158,15 +158,15 @@ ToggleHighSpeedScrollMode() {
     }
 }
 
-; 1画面垂直スクロールモードに切り替えます。トグル方式。
-TogglePageVerticalScrollMode() {
-    global highSpeedScrollMode
+; 高速スクロールモードに切り替えます。トグル方式。
+ToggleHighSpeedScrollMode() {
     global pageVerticalScrollMode
-    highSpeedScrollMode := false
-    pageVerticalScrollMode := !pageVerticalScrollMode
+    global highSpeedScrollMode
+    pageVerticalScrollMode := false
+    highSpeedScrollMode := !highSpeedScrollMode
 
-    if (pageVerticalScrollMode) {
-        ChangePageVerticalScrollMode()
+    if (highSpeedScrollMode) {
+        ChangeHighSpeedVerticalScrollMode()
         ChangeHighSpeedHorizontalScrollMode()
     } else {
         ChangeDefaultSpeedVerticalScrollMode()
@@ -205,14 +205,14 @@ ChangeDefaultSpeedVerticalScrollMode() {
     SetWheelScrollLines(defaultSpeedWheelScrollLines)
 }
 
-; 高速垂直スクロールモードにします。
-ChangeHighSpeedVerticalScrollMode() {
-    SetWheelScrollLines(HIGH_SPEED_WHEEL_SCROLL_LINES)
-}
-
 ; 1画面垂直スクロールモードにします。
 ChangePageVerticalScrollMode() {
     SetWheelScrollLines(WHEEL_PAGESCROLL)
+}
+
+; 高速垂直スクロールモードにします。
+ChangeHighSpeedVerticalScrollMode() {
+    SetWheelScrollLines(HIGH_SPEED_WHEEL_SCROLL_LINES)
 }
 
 ; デフォルト水平スクロールモードにします。
@@ -319,11 +319,11 @@ RegisterHotkey("^#s", (*) => ShowSettings(), "現在の設定を表示します�
 ; 低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)
 RegisterHotkey("sc03A", (*) => ToggleSlowMouseSpeedMode(), "低速マウススピードモードに切り替えます。トグル方式。 (sc03A = 英数キー)")
 
-; 高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)
-RegisterHotkey("sc029", (*) => ToggleHighSpeedScrollMode(), "高速スクロールモードに切り替えます。トグル方式。 (sc029 = 半角／全角キー)")
+; 1画面垂直スクロールモードに切り替えます。トグル方式。(sc029 = 半角／全角キー)
+RegisterHotkey("sc029", (*) => TogglePageVerticalScrollMode(), "1画面垂直スクロールモードに切り替えます。トグル方式。(sc029 = 半角／全角キー)")
 
-; 1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)
-RegisterHotkey("sc070", (*) => TogglePageVerticalScrollMode(), "1画面垂直スクロールモードに切り替えます。トグル方式。 (sc070 = カタカナ・ひらがなキー)")
+; 高速スクロールモードに切り替えます。トグル方式。(sc070 = カタカナ・ひらがなキー)
+RegisterHotkey("sc070", (*) => ToggleHighSpeedScrollMode(), "高速スクロールモードに切り替えます。トグル方式。(sc070 = カタカナ・ひらがなキー)")
 
 ; 上スクロール or 左スクロール。
 RegisterHotkey("WheelUp", (*) => WheelUpOrLeft(), "上スクロール or 左スクロール。")
