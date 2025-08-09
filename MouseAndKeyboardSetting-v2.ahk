@@ -42,11 +42,11 @@ OnExit ExitFunc
 ; ホットキーの一覧を表示します。
 ShowHotkeys() {
     popup := Gui("", "ホットキー一覧")
-    popup.Opt("+AlwaysOnTop")
-    popup.SetFont("s12 q5", "MS Sans Serif")
+    popup.Opt("+AlwaysOnTop -DPIScale")
+    popup.SetFont("s12 q5", "Meiryo UI")
 
-    listViewWidth := 700
-    listViewHeight := 500
+    listViewWidth := 1100
+    listViewHeight := 700
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
     listView := popup.Add("ListView", listViewOptions, ["ホットキー", "説明"])
@@ -61,10 +61,15 @@ ShowHotkeys() {
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
 
-    WinGetPos(&winX, &winY, &winWidth, &winHeight, "A")
-    cx := winX + Floor((winWidth - listViewWidth * 1.55) / 2)
-    cy := winY + Floor((winHeight - listViewHeight * 1.8) / 2)
-    popupOptions := Format("x{1} y{2}", cx, cy)
+    WinGetPos(&wx, &wy, &ww, &wh, "A")
+
+    popup.Show("AutoSize Hide")
+    popup.GetPos(, , &gw, &gh)
+
+    x := wx + Floor((ww - gw) / 2)
+    y := wy + Floor((wh - gh) / 2)
+
+    popupOptions := Format("x{1} y{2}", x, y)
 
     popup.Show(popupOptions)
 }
@@ -72,11 +77,11 @@ ShowHotkeys() {
 ; 現在の設定を表示します。
 ShowSettings() {
     popup := Gui("", "現在の設定")
-    popup.Opt("+AlwaysOnTop")
-    popup.SetFont("s12 q5", "MS Sans Serif")
+    popup.Opt("+AlwaysOnTop -DPIScale")
+    popup.SetFont("s12 q5", "Meiryo UI")
 
-    listViewWidth := 700
-    listViewHeight := 500
+    listViewWidth := 1100
+    listViewHeight := 700
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
     listView := popup.Add("ListView", listViewOptions, ["設定項目", "値"])
@@ -84,21 +89,25 @@ ShowSettings() {
     listView.Add("", "マウススピード", GetMouseSpeed())
     listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
     listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
-    listView.Add("", "垂直スクロールモード", verticalScrollMode)
-    listView.Add("", "水平スクロールモード", horizontalScrollMode)
-    listView.Add("", "高速スクロールモード", highSpeedScrollMode)
-    listView.Add("", "1画面垂直スクロールモード", pageVerticalScrollMode)
-
+    listView.Add("", "垂直スクロールモード", verticalScrollMode ? "オン" : "オフ")
+    listView.Add("", "水平スクロールモード", horizontalScrollMode ? "オン" : "オフ")
+    listView.Add("", "高速スクロールモード", highSpeedScrollMode ? "オン" : "オフ")
+    listView.Add("", "1画面垂直スクロールモード", pageVerticalScrollMode ? "オン" : "オフ")
     listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
 
-    WinGetPos(&winX, &winY, &winWidth, &winHeight, "A")
-    cx := winX + Floor((winWidth - listViewWidth * 1.55) / 2)
-    cy := winY + Floor((winHeight - listViewHeight * 1.8) / 2)
-    popupOptions := Format("x{1} y{2}", cx, cy)
+    WinGetPos(&wx, &wy, &ww, &wh, "A")
+
+    popup.Show("AutoSize Hide")
+    popup.GetPos(, , &gw, &gh)
+
+    x := wx + Floor((ww - gw) / 2)
+    y := wy + Floor((wh - gh) / 2)
+
+    popupOptions := Format("x{1} y{2}", x, y)
 
     popup.Show(popupOptions)
 }
