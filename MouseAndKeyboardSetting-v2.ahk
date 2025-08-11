@@ -11,22 +11,30 @@ SendMode "Input"
 SendLevel 100
 OnExit ExitFunc
 
-SPI_GETMOUSESPEED := 0x0070
-SPI_SETMOUSESPEED := 0x0071
-SPI_GETWHEELSCROLLLINES := 0x0068
-SPI_SETWHEELSCROLLLINES := 0x0069
-SPI_GETWHEELSCROLLCHARS := 0x006C
-SPI_SETWHEELSCROLLCHARS := 0x006D
-SPIF_UPDATEINIFILE := 0x0001
-SPIF_SENDCHANGE := 0x0002
+const := {
+    SPI_GETMOUSESPEED: 0x0070,
+    SPI_SETMOUSESPEED: 0x0071,
+    SPI_GETWHEELSCROLLLINES: 0x0068,
+    SPI_SETWHEELSCROLLLINES: 0x0069,
+    SPI_GETWHEELSCROLLCHARS: 0x006C,
+    SPI_SETWHEELSCROLLCHARS: 0x006D,
+    SPIF_UPDATEINIFILE: 0x0001,
+    SPIF_SENDCHANGE: 0x0002
+}
 
-environment := {
+env := {
     mouse: {
-        definition: {
+        const: {
             pointer: {
                 speed: {
-                    slow: {name: "slow", value: 1},
-                    default: {name: "default", value: GetMouseSpeed()}
+                    slow: {
+                        name: "slow",
+                        value: 1
+                    },
+                    default: {
+                        name: "default",
+                        value: GetMouseSpeed()
+                    }
                 }
             },
             scroll: {
@@ -69,14 +77,14 @@ environment := {
         }
     },
     popup: {
-        definition: {
+        const: {
             hotkeys: {
                 listView: {
                     width: 1100,
                     height: 700
                 }
             },
-            environment: {
+            env: {
                 listView: {
                     width: 1100,
                     height: 700
@@ -85,7 +93,7 @@ environment := {
         },
         state: {
             hotkeys: {},
-            environment: {}
+            env: {}
         }
     },
     hotkeys: []
@@ -93,10 +101,10 @@ environment := {
 
 ; ホットキー一覧を表示します。
 ShowHotkeys() {
-    hotkeys := environment.hotkeys
-    oldPopup := environment.popup.state.hotkeys
-    listViewWidth := environment.popup.definition.hotkeys.listView.width
-    listViewHeight := environment.popup.definition.hotkeys.listView.height
+    hotkeys := env.hotkeys
+    oldPopup := env.popup.state.hotkeys
+    listViewWidth := env.popup.const.hotkeys.listView.width
+    listViewHeight := env.popup.const.hotkeys.listView.height
 
     try {
         oldPopup.Destroy()
@@ -105,7 +113,7 @@ ShowHotkeys() {
     }
 
     popup := Gui("", "ホットキー一覧")
-    environment.popup.state.hotkeys := popup
+    env.popup.state.hotkeys := popup
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
 
@@ -137,11 +145,11 @@ ShowHotkeys() {
 
 ; 環境情報を表示します。
 ShowEnvironment() {
-    scrollDirectionMode := environment.mouse.state.scroll.direction
-    scrollSpeedMode := environment.mouse.state.scroll.speed
-    oldPopup := environment.popup.state.environment
-    listViewWidth := environment.popup.definition.environment.listView.width
-    listViewHeight := environment.popup.definition.environment.listView.height
+    scrollDirectionMode := env.mouse.state.scroll.direction
+    scrollSpeedMode := env.mouse.state.scroll.speed
+    oldPopup := env.popup.state.env
+    listViewWidth := env.popup.const.env.listView.width
+    listViewHeight := env.popup.const.env.listView.height
 
     try {
         oldPopup.Destroy()
@@ -150,7 +158,7 @@ ShowEnvironment() {
     }
 
     popup := Gui("", "環境情報")
-    environment.popup.state.environment := popup
+    env.popup.state.env := popup
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
 
@@ -190,31 +198,31 @@ ResetMouseSettings() {
 
 ; デフォルト マウススピードモードに切り替えます。
 ChangeDefaultMouseSpeedMode() {
-    mode := environment.mouse.definition.pointer.speed.default.name
-    speed := environment.mouse.definition.pointer.speed.default.value
+    mode := env.mouse.const.pointer.speed.default.name
+    speed := env.mouse.const.pointer.speed.default.value
 
-    environment.mouse.state.pointer.speed := mode
+    env.mouse.state.pointer.speed := mode
 
     SetMouseSpeed(speed)
 }
 
 ; スロウ マウススピードモードに切り替えます。
 ChangeSlowMouseSpeedMode() {
-    mode := environment.mouse.definition.pointer.speed.slow.name
-    speed := environment.mouse.definition.pointer.speed.slow.value
+    mode := env.mouse.const.pointer.speed.slow.name
+    speed := env.mouse.const.pointer.speed.slow.value
 
-    environment.mouse.state.pointer.speed := mode
+    env.mouse.state.pointer.speed := mode
 
     SetMouseSpeed(speed)
 }
 
 ; デフォルト スクロールスピードモードに切り替えます。
 ChangeDefaultScrollSpeedMode() {
-    mode := environment.mouse.definition.scroll.speed.default.name
-    verticalSpeed := environment.mouse.definition.scroll.speed.default.vertical
-    horizontalSpeed := environment.mouse.definition.scroll.speed.default.horizontal
+    mode := env.mouse.const.scroll.speed.default.name
+    verticalSpeed := env.mouse.const.scroll.speed.default.vertical
+    horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
 
-    environment.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := mode
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -222,11 +230,11 @@ ChangeDefaultScrollSpeedMode() {
 
 ; 1画面 スクロールスピードモードに切り替えます。
 ChangePageScrollSpeedMode() {
-    mode := environment.mouse.definition.scroll.speed.page.name
-    verticalSpeed := environment.mouse.definition.scroll.speed.page.vertical
-    horizontalSpeed := environment.mouse.definition.scroll.speed.page.horizontal
+    mode := env.mouse.const.scroll.speed.page.name
+    verticalSpeed := env.mouse.const.scroll.speed.page.vertical
+    horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
 
-    environment.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := mode
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -234,11 +242,11 @@ ChangePageScrollSpeedMode() {
 
 ; スロウ スクロールスピードモードに切り替えます。
 ChangeSlowScrollSpeedMode() {
-    mode := environment.mouse.definition.scroll.speed.slow.name
-    verticalSpeed := environment.mouse.definition.scroll.speed.slow.vertical
-    horizontalSpeed := environment.mouse.definition.scroll.speed.slow.horizontal
+    mode := env.mouse.const.scroll.speed.slow.name
+    verticalSpeed := env.mouse.const.scroll.speed.slow.vertical
+    horizontalSpeed := env.mouse.const.scroll.speed.slow.horizontal
 
-    environment.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := mode
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -246,11 +254,11 @@ ChangeSlowScrollSpeedMode() {
 
 ; ハイ スクロールスピードモードに切り替えます。
 ChangeHighScrollSpeedMode() {
-    mode := environment.mouse.definition.scroll.speed.high.name
-    verticalSpeed := environment.mouse.definition.scroll.speed.high.vertical
-    horizontalSpeed := environment.mouse.definition.scroll.speed.high.horizontal
+    mode := env.mouse.const.scroll.speed.high.name
+    verticalSpeed := env.mouse.const.scroll.speed.high.vertical
+    horizontalSpeed := env.mouse.const.scroll.speed.high.horizontal
 
-    environment.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := mode
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -258,20 +266,20 @@ ChangeHighScrollSpeedMode() {
 
 ; 垂直 スクロール方向モードに切り替えます。
 ChangeVerticalScrollDirectionMode() {
-    mode := environment.mouse.definition.scroll.direction.vertical
-    environment.mouse.state.scroll.direction := mode
+    mode := env.mouse.const.scroll.direction.vertical
+    env.mouse.state.scroll.direction := mode
 }
 
 ; 水平 スクロール方向モードに切り替えます。
 ChangeHorizontalScrollDirectionMode() {
-    mode := environment.mouse.definition.scroll.direction.horizontal
-    environment.mouse.state.scroll.direction := mode
+    mode := env.mouse.const.scroll.direction.horizontal
+    env.mouse.state.scroll.direction := mode
 }
 
 ; 上スクロール or 左スクロール。
 WheelUpOrLeft() {
-    mode := environment.mouse.state.scroll.direction
-    horizontalMode := environment.mouse.definition.scroll.direction.horizontal
+    mode := env.mouse.state.scroll.direction
+    horizontalMode := env.mouse.const.scroll.direction.horizontal
 
     if (mode = horizontalMode) {
         Send("{WheelLeft}")
@@ -282,8 +290,8 @@ WheelUpOrLeft() {
 
 ; 下スクロール or 右スクロール。
 WheelDownOrRight() {
-    mode := environment.mouse.state.scroll.direction
-    horizontalMode := environment.mouse.definition.scroll.direction.horizontal
+    mode := env.mouse.state.scroll.direction
+    horizontalMode := env.mouse.const.scroll.direction.horizontal
 
     if (mode = horizontalMode) {
         Send("{WheelRight}")
@@ -294,8 +302,8 @@ WheelDownOrRight() {
 
 ; スロウ マウススピードモードに切り替えます。トグル方式。
 ToggleSlowMouseSpeedMode() {
-    mode := environment.mouse.state.pointer.speed
-    slowMode := environment.mouse.definition.pointer.speed.slow.name
+    mode := env.mouse.state.pointer.speed
+    slowMode := env.mouse.const.pointer.speed.slow.name
 
     if (mode != slowMode) {
         ChangeSlowMouseSpeedMode()
@@ -306,8 +314,8 @@ ToggleSlowMouseSpeedMode() {
 
 ; 1画面 スクロールスピードモードに切り替えます。トグル方式。
 TogglePageScrollSpeedMode() {
-    mode := environment.mouse.state.scroll.speed
-    pageMode := environment.mouse.definition.scroll.speed.page.name
+    mode := env.mouse.state.scroll.speed
+    pageMode := env.mouse.const.scroll.speed.page.name
 
     if (mode != pageMode) {
         ChangePageScrollSpeedMode()
@@ -318,8 +326,8 @@ TogglePageScrollSpeedMode() {
 
 ; スロウ スクロールスピードモードに切り替えます。トグル方式。
 ToggleSlowScrollSpeedMode() {
-    mode := environment.mouse.state.scroll.speed
-    slowMode := environment.mouse.definition.scroll.speed.slow.name
+    mode := env.mouse.state.scroll.speed
+    slowMode := env.mouse.const.scroll.speed.slow.name
 
     if (mode != slowMode) {
         ChangeSlowScrollSpeedMode()
@@ -330,8 +338,8 @@ ToggleSlowScrollSpeedMode() {
 
 ; ハイ スクロールスピードモードに切り替えます。トグル方式。
 ToggleHighScrollSpeedMode() {
-    mode := environment.mouse.state.scroll.speed
-    highMode := environment.mouse.definition.scroll.speed.high.name
+    mode := env.mouse.state.scroll.speed
+    highMode := env.mouse.const.scroll.speed.high.name
 
     if (mode != highMode) {
         ChangeHighScrollSpeedMode()
@@ -342,10 +350,11 @@ ToggleHighScrollSpeedMode() {
 
 ; マウススピードを取得します。
 GetMouseSpeed() {
+    spiGetmousespeed := const.SPI_GETMOUSESPEED
     mouseSpeed := Buffer(4)
 
     DllCall("SystemParametersInfo",
-        "UInt", SPI_GETMOUSESPEED,
+        "UInt", spiGetmousespeed,
         "UInt", 0,
         "Ptr", mouseSpeed,
         "UInt", 0)
@@ -355,19 +364,24 @@ GetMouseSpeed() {
 
 ; マウススピードを変更します。
 SetMouseSpeed(mouseSpeed) {
+    spiSetmousespeed := const.SPI_SETMOUSESPEED
+    spifUpdateinifile := const.SPIF_UPDATEINIFILE
+    spifSendchange := const.SPIF_SENDCHANGE
+
     DllCall("SystemParametersInfo",
-        "UInt", SPI_SETMOUSESPEED,
+        "UInt", spiSetmousespeed,
         "UInt", 0,
         "UInt", mouseSpeed,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+        "UInt", spifUpdateinifile | spifSendchange)
 }
 
 ; 垂直スクロールの行数を取得します。
 GetWheelScrollLines() {
+    spiGetwheelscrolllines := const.SPI_GETWHEELSCROLLLINES
     wheelScrollLines := Buffer(4)
 
     DllCall("SystemParametersInfo",
-        "UInt", SPI_GETWHEELSCROLLLINES,
+        "UInt", spiGetwheelscrolllines,
         "UInt", 0,
         "Ptr", wheelScrollLines,
         "UInt", 0)
@@ -377,19 +391,24 @@ GetWheelScrollLines() {
 
 ; 垂直スクロールの行数を変更します。
 SetWheelScrollLines(wheelScrollLines) {
+    spiSetwheelscrolllines := const.SPI_SETWHEELSCROLLLINES
+    spifUpdateinifile := const.SPIF_UPDATEINIFILE
+    spifSendchange := const.SPIF_SENDCHANGE
+
     DllCall("SystemParametersInfo",
-        "UInt", SPI_SETWHEELSCROLLLINES,
+        "UInt", spiSetwheelscrolllines,
         "UInt", wheelScrollLines,
         "UInt", 0,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+        "UInt", spifUpdateinifile | spifSendchange)
 }
 
 ; 水平スクロールの文字数を取得します。
 GetWheelScrollChars() {
+    spiGetwheelscrollchars := const.SPI_GETWHEELSCROLLCHARS
     wheelScrollChars := Buffer(4)
 
     DllCall("SystemParametersInfo",
-        "UInt", SPI_GETWHEELSCROLLCHARS,
+        "UInt", spiGetwheelscrollchars,
         "UInt", 0,
         "Ptr", wheelScrollChars,
         "UInt", 0)
@@ -399,11 +418,15 @@ GetWheelScrollChars() {
 
 ; 水平スクロールの文字数を変更します。
 SetWheelScrollChars(wheelScrollChars) {
+    spiSetwheelscrollchars := const.SPI_SETWHEELSCROLLCHARS
+    spifUpdateinifile := const.SPIF_UPDATEINIFILE
+    spifSendchange := const.SPIF_SENDCHANGE
+
     DllCall("SystemParametersInfo",
-        "UInt", SPI_SETWHEELSCROLLCHARS,
+        "UInt", spiSetwheelscrollchars,
         "UInt", wheelScrollChars,
         "UInt", 0,
-        "UInt", SPIF_UPDATEINIFILE | SPIF_SENDCHANGE)
+        "UInt", spifUpdateinifile | spifSendchange)
 }
 
 ; スクリプトの終了処理を行います。
@@ -413,7 +436,7 @@ ExitFunc(exitReason, exitCode) {
 
 ; ホットキーを登録します。
 RegisterHotkey(key, func, desc := "") {
-    hotkeys := environment.hotkeys
+    hotkeys := env.hotkeys
     hotkeys.Push({key: key, desc: desc})
     Hotkey(key, func)
 }
