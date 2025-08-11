@@ -71,19 +71,47 @@ environment := {
             }
         }
     },
+    popup: {
+        definition: {
+            hotkeys: {
+                listView: {
+                    width: 1100,
+                    height: 700
+                }
+            },
+            environment: {
+                listView: {
+                    width: 1100,
+                    height: 700
+                }
+            }
+        },
+        state: {
+            hotkeys: {},
+            environment: {}
+        }
+    },
     hotkeys: []
 }
 
 ; ホットキーの一覧を表示します。
 ShowHotkeys() {
     hotkeys := environment.hotkeys
+    popup := environment.popup.state.hotkeys
+    listViewWidth := environment.popup.definition.hotkeys.listView.width
+    listViewHeight := environment.popup.definition.hotkeys.listView.height
 
-    popup := Gui("", "ホットキー一覧")
+    try {
+        popup.Destroy()
+    } catch as e {
+        ; 何もしない。ポップアップが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
+    }
+
+    environment.popup.state.hotkeys := Gui("", "ホットキー一覧")
+
+    popup := environment.popup.state.hotkeys
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
-
-    listViewWidth := 1100
-    listViewHeight := 700
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
     listView := popup.Add("ListView", listViewOptions, ["ホットキー", "説明"])
@@ -115,13 +143,21 @@ ShowHotkeys() {
 ShowSettings() {
     scrollDirectionMode := environment.mouse.state.scroll.direction.mode
     scrollSpeedMode := environment.mouse.state.scroll.speed.mode
+    popup := environment.popup.state.environment
+    listViewWidth := environment.popup.definition.environment.listView.width
+    listViewHeight := environment.popup.definition.environment.listView.height
 
-    popup := Gui("", "現在の設定")
+    try {
+        popup.Destroy()
+    } catch as e {
+        ; 何もしない。ポップアップが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
+    }
+
+    environment.popup.state.environment := Gui("", "現在の設定")
+
+    popup := environment.popup.state.environment
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
-
-    listViewWidth := 1100
-    listViewHeight := 700
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
     listView := popup.Add("ListView", listViewOptions, ["設定項目", "値"])
@@ -129,8 +165,8 @@ ShowSettings() {
     listView.Add("", "マウススピード", GetMouseSpeed())
     listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
     listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
-    listView.Add("", "スクロール方向のモード", scrollDirectionMode)
-    listView.Add("", "スクロールスピードのモード", scrollSpeedMode)
+    listView.Add("", "スクロール方向", scrollDirectionMode)
+    listView.Add("", "スクロールスピード", scrollSpeedMode)
     listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
@@ -400,10 +436,15 @@ RegisterHotkey("^#l", (*) => ListHotkeys(), "ホットキーの一覧を表示�
 RegisterHotkey("^#k", (*) => KeyHistory(), "キーヒストリーを表示します。KeyHistory関数。")
 
 ; デフォルト マウススピードモードに切り替えます。
-RegisterHotkey("F1 & q", (*) => ChangeDefaultMouseSpeedMode(), "デフォルト マウススピードモードに切り替えます。")
+RegisterHotkey("F1 & a", (*) => ChangeDefaultMouseSpeedMode(), "デフォルト マウススピードモードに切り替えます。")
 
 ; スロウ マウススピードモードに切り替えます。
-RegisterHotkey("F1 & w", (*) => ChangeSlowMouseSpeedMode(), "スロウ マウススピードモードに切り替えます。")
+RegisterHotkey("F1 & s", (*) => ChangeSlowMouseSpeedMode(), "スロウ マウススピードモードに切り替えます。")
+
+; 垂直 スクロール方向モードに切り替えます。
+RegisterHotkey("F1 & q", (*) => ChangeVerticalScrollDirectionMode(), "垂直 スクロール方向モードに切り替えます。")
+; 水平 スクロール方向モードに切り替えます。
+RegisterHotkey("F1 & w", (*) => ChangeHorizontalScrollDirectionMode(), "水平 スクロール方向モードに切り替えます。")
 
 ; デフォルト スクロールスピードモードに切り替えます。
 RegisterHotkey("F1 & 1", (*) => ChangeDefaultScrollSpeedMode(), "デフォルト スクロールスピードモードに切り替えます。")
