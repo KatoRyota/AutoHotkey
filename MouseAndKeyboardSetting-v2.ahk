@@ -180,8 +180,8 @@ ShowHotkeys() {
 
 ; 環境情報を表示します。
 ShowEnvironment() {
-    scrollDirectionMode := env.mouse.state.scroll.direction
-    scrollSpeedMode := env.mouse.state.scroll.speed
+    scrollDirection := env.mouse.state.scroll.direction
+    scrollSpeed := env.mouse.state.scroll.speed
     oldPopup := env.popup.state.env
     listViewWidth := env.popup.const.env.listView.width
     listViewHeight := env.popup.const.env.listView.height
@@ -203,8 +203,8 @@ ShowEnvironment() {
     listView.Add("", "マウススピード", GetMouseSpeed())
     listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
     listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
-    listView.Add("", "スクロール方向", scrollDirectionMode)
-    listView.Add("", "スクロールスピード", scrollSpeedMode)
+    listView.Add("", "スクロール方向", scrollDirection)
+    listView.Add("", "スクロールスピード", scrollSpeed)
     listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
@@ -233,31 +233,31 @@ ResetMouseSettings() {
 
 ; デフォルト マウススピードモードに切り替えます。
 ChangeDefaultMouseSpeedMode() {
-    mode := env.mouse.const.pointer.speed.default.name
-    speed := env.mouse.const.pointer.speed.default.value
+    speed := env.mouse.const.pointer.speed.default.name
+    speedValue := env.mouse.const.pointer.speed.default.value
 
-    env.mouse.state.pointer.speed := mode
+    env.mouse.state.pointer.speed := speed
 
-    SetMouseSpeed(speed)
+    SetMouseSpeed(speedValue)
 }
 
 ; スロウ マウススピードモードに切り替えます。
 ChangeSlowMouseSpeedMode() {
-    mode := env.mouse.const.pointer.speed.slow.name
-    speed := env.mouse.const.pointer.speed.slow.value
+    speed := env.mouse.const.pointer.speed.slow.name
+    speedValue := env.mouse.const.pointer.speed.slow.value
 
-    env.mouse.state.pointer.speed := mode
+    env.mouse.state.pointer.speed := speed
 
-    SetMouseSpeed(speed)
+    SetMouseSpeed(speedValue)
 }
 
 ; デフォルト スクロールスピードモードに切り替えます。
 ChangeDefaultScrollSpeedMode() {
-    mode := env.mouse.const.scroll.speed.default.name
+    speed := env.mouse.const.scroll.speed.default.name
     verticalSpeed := env.mouse.const.scroll.speed.default.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
 
-    env.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -265,11 +265,11 @@ ChangeDefaultScrollSpeedMode() {
 
 ; 1画面 スクロールスピードモードに切り替えます。
 ChangePageScrollSpeedMode() {
-    mode := env.mouse.const.scroll.speed.page.name
+    speed := env.mouse.const.scroll.speed.page.name
     verticalSpeed := env.mouse.const.scroll.speed.page.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
 
-    env.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -277,11 +277,11 @@ ChangePageScrollSpeedMode() {
 
 ; スロウ スクロールスピードモードに切り替えます。
 ChangeSlowScrollSpeedMode() {
-    mode := env.mouse.const.scroll.speed.slow.name
+    speed := env.mouse.const.scroll.speed.slow.name
     verticalSpeed := env.mouse.const.scroll.speed.slow.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.slow.horizontal
 
-    env.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -289,11 +289,11 @@ ChangeSlowScrollSpeedMode() {
 
 ; ハイ スクロールスピードモードに切り替えます。
 ChangeHighScrollSpeedMode() {
-    mode := env.mouse.const.scroll.speed.high.name
+    speed := env.mouse.const.scroll.speed.high.name
     verticalSpeed := env.mouse.const.scroll.speed.high.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.high.horizontal
 
-    env.mouse.state.scroll.speed := mode
+    env.mouse.state.scroll.speed := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -301,22 +301,22 @@ ChangeHighScrollSpeedMode() {
 
 ; 垂直 スクロール方向モードに切り替えます。
 ChangeVerticalScrollDirectionMode() {
-    mode := env.mouse.const.scroll.direction.vertical
-    env.mouse.state.scroll.direction := mode
+    direction := env.mouse.const.scroll.direction.vertical
+    env.mouse.state.scroll.direction := direction
 }
 
 ; 水平 スクロール方向モードに切り替えます。
 ChangeHorizontalScrollDirectionMode() {
-    mode := env.mouse.const.scroll.direction.horizontal
-    env.mouse.state.scroll.direction := mode
+    direction := env.mouse.const.scroll.direction.horizontal
+    env.mouse.state.scroll.direction := direction
 }
 
 ; 上スクロール or 左スクロール。
 WheelUpOrLeft() {
-    mode := env.mouse.state.scroll.direction
-    horizontalMode := env.mouse.const.scroll.direction.horizontal
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
 
-    if (mode = horizontalMode) {
+    if (direction = horizontalDirection) {
         Send("{WheelLeft}")
     } else {
         Send("{WheelUp}")
@@ -325,10 +325,10 @@ WheelUpOrLeft() {
 
 ; 下スクロール or 右スクロール。
 WheelDownOrRight() {
-    mode := env.mouse.state.scroll.direction
-    horizontalMode := env.mouse.const.scroll.direction.horizontal
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
 
-    if (mode = horizontalMode) {
+    if (direction = horizontalDirection) {
         Send("{WheelRight}")
     } else {
         Send("{WheelDown}")
@@ -337,10 +337,10 @@ WheelDownOrRight() {
 
 ; スロウ マウススピードモードに切り替えます。トグル方式。
 ToggleSlowMouseSpeedMode() {
-    mode := env.mouse.state.pointer.speed
-    slowMode := env.mouse.const.pointer.speed.slow.name
+    speed := env.mouse.state.pointer.speed
+    slowSpeed := env.mouse.const.pointer.speed.slow.name
 
-    if (mode != slowMode) {
+    if (speed != slowSpeed) {
         ChangeSlowMouseSpeedMode()
     } else {
         ChangeDefaultMouseSpeedMode()
@@ -349,10 +349,10 @@ ToggleSlowMouseSpeedMode() {
 
 ; 1画面 スクロールスピードモードに切り替えます。トグル方式。
 TogglePageScrollSpeedMode() {
-    mode := env.mouse.state.scroll.speed
-    pageMode := env.mouse.const.scroll.speed.page.name
+    speed := env.mouse.state.scroll.speed
+    pageSpeed := env.mouse.const.scroll.speed.page.name
 
-    if (mode != pageMode) {
+    if (speed != pageSpeed) {
         ChangePageScrollSpeedMode()
     } else {
         ChangeDefaultScrollSpeedMode()
@@ -361,10 +361,10 @@ TogglePageScrollSpeedMode() {
 
 ; スロウ スクロールスピードモードに切り替えます。トグル方式。
 ToggleSlowScrollSpeedMode() {
-    mode := env.mouse.state.scroll.speed
-    slowMode := env.mouse.const.scroll.speed.slow.name
+    speed := env.mouse.state.scroll.speed
+    slowSpeed := env.mouse.const.scroll.speed.slow.name
 
-    if (mode != slowMode) {
+    if (speed != slowSpeed) {
         ChangeSlowScrollSpeedMode()
     } else {
         ChangeDefaultScrollSpeedMode()
@@ -373,10 +373,10 @@ ToggleSlowScrollSpeedMode() {
 
 ; ハイ スクロールスピードモードに切り替えます。トグル方式。
 ToggleHighScrollSpeedMode() {
-    mode := env.mouse.state.scroll.speed
-    highMode := env.mouse.const.scroll.speed.high.name
+    speed := env.mouse.state.scroll.speed
+    highSpeed := env.mouse.const.scroll.speed.high.name
 
-    if (mode != highMode) {
+    if (speed != highSpeed) {
         ChangeHighScrollSpeedMode()
     } else {
         ChangeDefaultScrollSpeedMode()
