@@ -94,22 +94,21 @@ environment := {
     hotkeys: []
 }
 
-; ホットキーの一覧を表示します。
+; ホットキー一覧を表示します。
 ShowHotkeys() {
     hotkeys := environment.hotkeys
-    popup := environment.popup.state.hotkeys
+    oldPopup := environment.popup.state.hotkeys
     listViewWidth := environment.popup.definition.hotkeys.listView.width
     listViewHeight := environment.popup.definition.hotkeys.listView.height
 
     try {
-        popup.Destroy()
+        oldPopup.Destroy()
     } catch as e {
         ; 何もしない。ポップアップが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
     }
 
-    environment.popup.state.hotkeys := Gui("", "ホットキー一覧")
-
-    popup := environment.popup.state.hotkeys
+    popup := Gui("", "ホットキー一覧")
+    environment.popup.state.hotkeys := popup
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
 
@@ -139,23 +138,22 @@ ShowHotkeys() {
     popup.Show(popupOptions)
 }
 
-; 現在の設定を表示します。
-ShowSettings() {
+; 環境情報を表示します。
+ShowEnvironment() {
     scrollDirectionMode := environment.mouse.state.scroll.direction.mode
     scrollSpeedMode := environment.mouse.state.scroll.speed.mode
-    popup := environment.popup.state.environment
+    oldPopup := environment.popup.state.environment
     listViewWidth := environment.popup.definition.environment.listView.width
     listViewHeight := environment.popup.definition.environment.listView.height
 
     try {
-        popup.Destroy()
+        oldPopup.Destroy()
     } catch as e {
         ; 何もしない。ポップアップが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
     }
 
-    environment.popup.state.environment := Gui("", "現在の設定")
-
-    popup := environment.popup.state.environment
+    popup := Gui("", "環境情報")
+    environment.popup.state.environment := popup
     popup.Opt("+AlwaysOnTop -DPIScale")
     popup.SetFont("s12 q5", "Meiryo UI")
 
@@ -423,14 +421,14 @@ RegisterHotkey(key, func, desc := "") {
     Hotkey(key, func)
 }
 
-; ホットキーの一覧を表示します。
-RegisterHotkey("^#h", (*) => ShowHotkeys(), "ホットキーの一覧を表示します。")
+; ホットキー一覧を表示します。
+RegisterHotkey("^#h", (*) => ShowHotkeys(), "ホットキー一覧を表示します。")
 
-; 現在の設定を表示します。
-RegisterHotkey("^#s", (*) => ShowSettings(), "現在の設定を表示します。")
+; 環境情報を表示します。
+RegisterHotkey("^#s", (*) => ShowEnvironment(), "環境情報を表示します。")
 
-; ホットキーの一覧を表示します。ListHotkeys関数。
-RegisterHotkey("^#l", (*) => ListHotkeys(), "ホットキーの一覧を表示します。ListHotkeys関数。")
+; ホットキー一覧を表示します。ListHotkeys関数。
+RegisterHotkey("^#l", (*) => ListHotkeys(), "ホットキー一覧を表示します。ListHotkeys関数。")
 
 ; キーヒストリーを表示します。KeyHistory関数。
 RegisterHotkey("^#k", (*) => KeyHistory(), "キーヒストリーを表示します。KeyHistory関数。")
