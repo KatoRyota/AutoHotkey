@@ -99,9 +99,44 @@ env := {
     hotkeys: []
 }
 
+hotkeys := [
+    {key: "^#h", func: (*) => ShowHotkeys(), desc: "ホットキー一覧を表示します。"},
+    {key: "^#s", func: (*) => ShowEnvironment(), desc: "環境情報を表示します。"},
+    {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。ListHotkeys関数。"},
+    {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。KeyHistory関数。"},
+    {key: "F1 & a", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
+    {key: "F1 & s", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
+    {key: "F1 & q", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
+    {key: "F1 & w", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
+    {key: "F1 & 1", func: (*) => ChangeDefaultScrollSpeedMode(), desc: "デフォルト スクロールスピードモードに切り替えます。"},
+    {key: "F1 & 2", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
+    {key: "F1 & 3", func: (*) => ChangeSlowScrollSpeedMode(), desc: "スロウ スクロールスピードモードに切り替えます。"},
+    {key: "F1 & 4", func: (*) => ChangeHighScrollSpeedMode(), desc: "ハイ スクロールスピードモードに切り替えます。"},
+    {key: "sc03A", func: (*) => ToggleSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。トグル方式。(sc03A = 英数キー)"},
+    {key: "sc029", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc029 = 半角／全角キー)"},
+    {key: "sc070", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)"},
+    {key: "WheelUp", func: (*) => WheelUpOrLeft(), desc: "上スクロール or 左スクロール。"},
+    {key: "WheelDown", func: (*) => WheelDownOrRight(), desc: "下スクロール or 右スクロール。"},
+    {key: "XButton1", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
+    {key: "XButton2", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
+    {key: "+^XButton1", func: (*) => Send("!{Left}"), desc: "『Alt + Left』キーを送信します。"},
+    {key: "+^XButton2", func: (*) => Send("!{Right}"), desc: "『Alt + Right』キーを送信します。"},
+    {key: "^XButton1", func: (*) => Send("{Home}"), desc: "『Home』キーを送信します。"},
+    {key: "^XButton2", func: (*) => Send("{End}"), desc: "『End』キーを送信します。"},
+    {key: "+XButton1", func: (*) => Send("{PgUp}"), desc: "『PgUp』キーを送信します。"},
+    {key: "+XButton2", func: (*) => Send("{PgDn}"), desc: "『PgDn』キーを送信します。"},
+    {key: "^!XButton1", func: (*) => Send("^{Home}"), desc: "『Ctrl + Home』キーを送信します。"},
+    {key: "^!XButton2", func: (*) => Send("^{End}"), desc: "『Ctrl + End』キーを送信します。"},
+    {key: "^#XButton1", func: (*) => Send("^{PgUp}"), desc: "『Ctrl + PgUp』キーを送信します。"},
+    {key: "^#XButton2", func: (*) => Send("^{PgDn}"), desc: "『Ctrl + PgDn』キーを送信します。"},
+    {key: "+!XButton1", func: (*) => Send("+{Home}"), desc: "『Shift + Home』キーを送信します。"},
+    {key: "+!XButton2", func: (*) => Send("+{End}"), desc: "『Shift + End』キーを送信します。"},
+    {key: "+#XButton1", func: (*) => Send("+^{Home}"), desc: "『Shift + Ctrl + Home』キーを送信します。"},
+    {key: "+#XButton2", func: (*) => Send("+^{End}"), desc: "『Shift + Ctrl + End』キーを送信します。"}
+]
+
 ; ホットキー一覧を表示します。
 ShowHotkeys() {
-    hotkeys := env.hotkeys
     oldPopup := env.popup.state.hotkeys
     listViewWidth := env.popup.const.hotkeys.listView.width
     listViewHeight := env.popup.const.hotkeys.listView.height
@@ -120,8 +155,8 @@ ShowHotkeys() {
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
     listView := popup.Add("ListView", listViewOptions, ["ホットキー", "説明"])
 
-    for (hKey in hotkeys) {
-        listView.Add("", hKey.key, hKey.desc)
+    for (i in hotkeys) {
+        listView.Add("", i.key, i.desc)
     }
 
     listView.ModifyCol()
@@ -435,97 +470,10 @@ ExitFunc(exitReason, exitCode) {
 }
 
 ; ホットキーを登録します。
-RegisterHotkey(key, func, desc := "") {
-    hotkeys := env.hotkeys
-    hotkeys.Push({key: key, desc: desc})
-    Hotkey(key, func)
+RegisterHotkeys() {
+    for (i in hotkeys) {
+        Hotkey(i.key, i.func)
+    }
 }
 
-; ホットキー一覧を表示します。
-RegisterHotkey("^#h", (*) => ShowHotkeys(), "ホットキー一覧を表示します。")
-
-; 環境情報を表示します。
-RegisterHotkey("^#s", (*) => ShowEnvironment(), "環境情報を表示します。")
-
-; ホットキー一覧を表示します。ListHotkeys関数。
-RegisterHotkey("^#l", (*) => ListHotkeys(), "ホットキー一覧を表示します。ListHotkeys関数。")
-
-; キーヒストリーを表示します。KeyHistory関数。
-RegisterHotkey("^#k", (*) => KeyHistory(), "キーヒストリーを表示します。KeyHistory関数。")
-
-; デフォルト マウススピードモードに切り替えます。
-RegisterHotkey("F1 & a", (*) => ChangeDefaultMouseSpeedMode(), "デフォルト マウススピードモードに切り替えます。")
-
-; スロウ マウススピードモードに切り替えます。
-RegisterHotkey("F1 & s", (*) => ChangeSlowMouseSpeedMode(), "スロウ マウススピードモードに切り替えます。")
-
-; 垂直 スクロール方向モードに切り替えます。
-RegisterHotkey("F1 & q", (*) => ChangeVerticalScrollDirectionMode(), "垂直 スクロール方向モードに切り替えます。")
-; 水平 スクロール方向モードに切り替えます。
-RegisterHotkey("F1 & w", (*) => ChangeHorizontalScrollDirectionMode(), "水平 スクロール方向モードに切り替えます。")
-
-; デフォルト スクロールスピードモードに切り替えます。
-RegisterHotkey("F1 & 1", (*) => ChangeDefaultScrollSpeedMode(), "デフォルト スクロールスピードモードに切り替えます。")
-
-; 1画面 スクロールスピードモードに切り替えます。
-RegisterHotkey("F1 & 2", (*) => ChangePageScrollSpeedMode(), "1画面 スクロールスピードモードに切り替えます。")
-
-; スロウ スクロールスピードモードに切り替えます。
-RegisterHotkey("F1 & 3", (*) => ChangeSlowScrollSpeedMode(), "スロウ スクロールスピードモードに切り替えます。")
-
-; ハイ スクロールスピードモードに切り替えます。
-RegisterHotkey("F1 & 4", (*) => ChangeHighScrollSpeedMode(), "ハイ スクロールスピードモードに切り替えます。")
-
-; スロウ マウススピードモードに切り替えます。トグル方式。(sc03A = 英数キー)
-RegisterHotkey("sc03A", (*) => ToggleSlowMouseSpeedMode(), "スロウ マウススピードモードに切り替えます。トグル方式。(sc03A = 英数キー)")
-
-; マウスの設定をリセットします。(sc029 = 半角／全角キー)
-RegisterHotkey("sc029", (*) => ResetMouseSettings(), "マウスの設定をリセットします。(sc029 = 半角／全角キー)")
-
-; マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)
-RegisterHotkey("sc070", (*) => ResetMouseSettings(), "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)")
-
-; 上スクロール or 左スクロール。
-RegisterHotkey("WheelUp", (*) => WheelUpOrLeft(), "上スクロール or 左スクロール。")
-; 下スクロール or 右スクロール。
-RegisterHotkey("WheelDown", (*) => WheelDownOrRight(), "下スクロール or 右スクロール。")
-
-; 垂直 スクロール方向モードに切り替えます。
-RegisterHotkey("XButton1", (*) => ChangeVerticalScrollDirectionMode(), "垂直 スクロール方向モードに切り替えます。")
-; 水平 スクロール方向モードに切り替えます。
-RegisterHotkey("XButton2", (*) => ChangeHorizontalScrollDirectionMode(), "水平 スクロール方向モードに切り替えます。")
-
-; 『Alt + Left』キーを送信します。
-RegisterHotkey("+^XButton1", (*) => Send("!{Left}"), "『Alt + Left』キーを送信します。")
-; 『Alt + Right』キーを送信します。
-RegisterHotkey("+^XButton2", (*) => Send("!{Right}"), "『Alt + Right』キーを送信します。")
-
-; 『Home』キーを送信します。
-RegisterHotkey("^XButton1", (*) => Send("{Home}"), "『Home』キーを送信します。")
-; 『End』キーを送信します。
-RegisterHotkey("^XButton2", (*) => Send("{End}"), "『End』キーを送信します。")
-
-; 『PgUp』キーを送信します。
-RegisterHotkey("+XButton1", (*) => Send("{PgUp}"), "『PgUp』キーを送信します。")
-; 『PgDn』キーを送信します。
-RegisterHotkey("+XButton2", (*) => Send("{PgDn}"), "『PgDn』キーを送信します。")
-
-; 『Ctrl + Home』キーを送信します。
-RegisterHotkey("^!XButton1", (*) => Send("^{Home}"), "『Ctrl + Home』キーを送信します。")
-; 『Ctrl + End』キーを送信します。
-RegisterHotkey("^!XButton2", (*) => Send("^{End}"), "『Ctrl + End』キーを送信します。")
-
-; 『Ctrl + PgUp』キーを送信します。
-RegisterHotkey("^#XButton1", (*) => Send("^{PgUp}"), "『Ctrl + PgUp』キーを送信します。")
-; 『Ctrl + PgDn』キーを送信します。
-RegisterHotkey("^#XButton2", (*) => Send("^{PgDn}"), "『Ctrl + PgDn』キーを送信します。")
-
-; 『Shift + Home』キーを送信します。
-RegisterHotkey("+!XButton1", (*) => Send("+{Home}"), "『Shift + Home』キーを送信します。")
-; 『Shift + End』キーを送信します。
-RegisterHotkey("+!XButton2", (*) => Send("+{End}"), "『Shift + End』キーを送信します。")
-
-; 『Shift + Ctrl + Home』キーを送信します。
-RegisterHotkey("+#XButton1", (*) => Send("+^{Home}"), "『Shift + Ctrl + Home』キーを送信します。")
-; 『Shift + Ctrl + End』キーを送信します。
-RegisterHotkey("+#XButton2", (*) => Send("+^{End}"), "『Shift + Ctrl + End』キーを送信します。")
+RegisterHotkeys()
