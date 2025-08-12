@@ -6,10 +6,10 @@
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
-ProcessSetPriority "High"
-SendMode "Input"
-SendLevel 100
-OnExit ExitFunc
+ProcessSetPriority("High")
+SendMode("Input")
+SendLevel(100)
+OnExit(ExitFunc)
 
 const := {
     SPI_GETMOUSESPEED: 0x0070,
@@ -104,14 +104,17 @@ hotkeys := [
     {key: "^#s", func: (*) => ShowEnvironment(), desc: "環境情報を表示します。"},
     {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。ListHotkeys関数。"},
     {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。KeyHistory関数。"},
-    {key: "F1 & a", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
-    {key: "F1 & s", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
-    {key: "F1 & q", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
-    {key: "F1 & w", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
+    {key: "F1 & F2", func: (*) => ToggleHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。トグル方式。"},
+    {key: "F1 & F3", func: (*) => TogglePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。トグル方式。"},
+    {key: "F1 & F4", func: (*) => ToggleSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。トグル方式。"},
     {key: "F1 & 1", func: (*) => ChangeDefaultScrollSpeedMode(), desc: "デフォルト スクロールスピードモードに切り替えます。"},
     {key: "F1 & 2", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
     {key: "F1 & 3", func: (*) => ChangeSlowScrollSpeedMode(), desc: "スロウ スクロールスピードモードに切り替えます。"},
     {key: "F1 & 4", func: (*) => ChangeHighScrollSpeedMode(), desc: "ハイ スクロールスピードモードに切り替えます。"},
+    {key: "F1 & q", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
+    {key: "F1 & w", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
+    {key: "F1 & a", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
+    {key: "F1 & s", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
     {key: "sc03A", func: (*) => ToggleSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。トグル方式。(sc03A = 英数キー)"},
     {key: "sc029", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc029 = 半角／全角キー)"},
     {key: "sc070", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)"},
@@ -251,6 +254,42 @@ ChangeSlowMouseSpeedMode() {
     SetMouseSpeed(speedValue)
 }
 
+; 垂直 スクロール方向モードに切り替えます。
+ChangeVerticalScrollDirectionMode() {
+    direction := env.mouse.const.scroll.direction.vertical
+    env.mouse.state.scroll.direction := direction
+}
+
+; 水平 スクロール方向モードに切り替えます。
+ChangeHorizontalScrollDirectionMode() {
+    direction := env.mouse.const.scroll.direction.horizontal
+    env.mouse.state.scroll.direction := direction
+}
+
+; 上スクロール or 左スクロール。
+WheelUpOrLeft() {
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+
+    if (direction = horizontalDirection) {
+        Send("{WheelLeft}")
+    } else {
+        Send("{WheelUp}")
+    }
+}
+
+; 下スクロール or 右スクロール。
+WheelDownOrRight() {
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+
+    if (direction = horizontalDirection) {
+        Send("{WheelRight}")
+    } else {
+        Send("{WheelDown}")
+    }
+}
+
 ; デフォルト スクロールスピードモードに切り替えます。
 ChangeDefaultScrollSpeedMode() {
     speed := env.mouse.const.scroll.speed.default.name
@@ -299,42 +338,6 @@ ChangeHighScrollSpeedMode() {
     SetWheelScrollChars(horizontalSpeed)
 }
 
-; 垂直 スクロール方向モードに切り替えます。
-ChangeVerticalScrollDirectionMode() {
-    direction := env.mouse.const.scroll.direction.vertical
-    env.mouse.state.scroll.direction := direction
-}
-
-; 水平 スクロール方向モードに切り替えます。
-ChangeHorizontalScrollDirectionMode() {
-    direction := env.mouse.const.scroll.direction.horizontal
-    env.mouse.state.scroll.direction := direction
-}
-
-; 上スクロール or 左スクロール。
-WheelUpOrLeft() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelLeft}")
-    } else {
-        Send("{WheelUp}")
-    }
-}
-
-; 下スクロール or 右スクロール。
-WheelDownOrRight() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelRight}")
-    } else {
-        Send("{WheelDown}")
-    }
-}
-
 ; スロウ マウススピードモードに切り替えます。トグル方式。
 ToggleSlowMouseSpeedMode() {
     speed := env.mouse.state.pointer.speed
@@ -344,6 +347,18 @@ ToggleSlowMouseSpeedMode() {
         ChangeSlowMouseSpeedMode()
     } else {
         ChangeDefaultMouseSpeedMode()
+    }
+}
+
+; 水平 スクロール方向モードに切り替えます。トグル方式。
+ToggleHorizontalScrollDirectionMode() {
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+
+    if (direction != horizontalDirection) {
+        ChangeHorizontalScrollDirectionMode()
+    } else {
+        ChangeVerticalScrollDirectionMode()
     }
 }
 
