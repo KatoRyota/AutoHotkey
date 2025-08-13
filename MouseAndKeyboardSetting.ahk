@@ -118,11 +118,11 @@ hotkeys := [
     {key: "sc070", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)"},
     {key: "WheelUp", func: (*) => WheelUpOrLeft(), desc: "上スクロール or 左スクロール。"},
     {key: "WheelDown", func: (*) => WheelDownOrRight(), desc: "下スクロール or 右スクロール。"},
-    {key: "XButton1", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
+    {key: "XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "XButton2", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
-    {key: "^XButton1", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
+    {key: "^XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "^XButton2", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
-    {key: "+XButton1", func: (*) => ChangeDefaultScrollSpeedMode(), desc: "デフォルト スクロールスピードモードに切り替えます。"},
+    {key: "+XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "+XButton2", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
     {key: "^+XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "^+XButton2", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
@@ -270,30 +270,6 @@ ChangeVerticalScrollDirectionMode() {
 ChangeHorizontalScrollDirectionMode() {
     direction := env.mouse.const.scroll.direction.horizontal
     env.mouse.state.scroll.direction := direction
-}
-
-; 上スクロール or 左スクロール。
-WheelUpOrLeft() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelLeft}")
-    } else {
-        Send("{WheelUp}")
-    }
-}
-
-; 下スクロール or 右スクロール。
-WheelDownOrRight() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelRight}")
-    } else {
-        Send("{WheelDown}")
-    }
 }
 
 ; デフォルト スクロールスピードモードに切り替えます。
@@ -488,6 +464,30 @@ SetWheelScrollChars(wheelScrollChars) {
 ; スクリプトの終了処理を行います。
 ExitFunc(exitReason, exitCode) {
     ResetMouseSettings()
+}
+
+; 上スクロール or 左スクロール。
+WheelUpOrLeft() {
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+
+    if (direction = horizontalDirection) {
+        Send("{WheelLeft}")
+    } else {
+        Send("{WheelUp}")
+    }
+}
+
+; 下スクロール or 右スクロール。
+WheelDownOrRight() {
+    direction := env.mouse.state.scroll.direction
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+
+    if (direction = horizontalDirection) {
+        Send("{WheelRight}")
+    } else {
+        Send("{WheelDown}")
+    }
 }
 
 ; ホットキーを登録します。
