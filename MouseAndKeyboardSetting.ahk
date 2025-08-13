@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#SingleInstance Force
 #Warn
 #InputLevel 100
 #UseHook
