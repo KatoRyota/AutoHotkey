@@ -8,6 +8,8 @@
 ; https://github.com/KatoRyota/AutoHotkey
 
 ProcessSetPriority("High")
+InstallKeybdHook()
+InstallMouseHook()
 SendMode("Input")
 SendLevel(100)
 OnExit(ExitFunc)
@@ -96,24 +98,23 @@ env := {
             hotkeys: {},
             env: {}
         }
-    },
-    hotkeys: []
+    }
 }
 
 hotkeys := [
     {key: "^#h", func: (*) => ShowHotkeys(), desc: "ホットキー一覧を表示します。"},
     {key: "^#s", func: (*) => ShowEnvironment(), desc: "環境情報を表示します。"},
-    {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。ListHotkeys関数。"},
-    {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。KeyHistory関数。"},
+    {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。ListHotkeysライブラリ関数。"},
+    {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。KeyHistoryライブラリ関数。"},
     {key: "F1 & z", func: (*) => ChangeVerticalScrollDirectionMode(), desc: "垂直 スクロール方向モードに切り替えます。"},
     {key: "F1 & x", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
-    {key: "F1 & a", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
-    {key: "F1 & s", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
-    {key: "F1 & d", func: (*) => Send("^{F4}"), desc: "『Ctrl + F4』キーを送信します。"},
-    {key: "F1 & q", func: (*) => ChangeDefaultScrollSpeedMode(), desc: "デフォルト スクロールスピードモードに切り替えます。"},
-    {key: "F1 & w", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
-    {key: "F1 & e", func: (*) => ChangeSlowScrollSpeedMode(), desc: "スロウ スクロールスピードモードに切り替えます。"},
-    {key: "F1 & r", func: (*) => ChangeHighScrollSpeedMode(), desc: "ハイ スクロールスピードモードに切り替えます。"},
+    {key: "F1 & c", func: (*) => ChangeDefaultMouseSpeedMode(), desc: "デフォルト マウススピードモードに切り替えます。"},
+    {key: "F1 & v", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
+    {key: "F1 & a", func: (*) => ChangeDefaultScrollSpeedMode(), desc: "デフォルト スクロールスピードモードに切り替えます。"},
+    {key: "F1 & s", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
+    {key: "F1 & d", func: (*) => ChangeSlowScrollSpeedMode(), desc: "スロウ スクロールスピードモードに切り替えます。"},
+    {key: "F1 & f", func: (*) => ChangeHighScrollSpeedMode(), desc: "ハイ スクロールスピードモードに切り替えます。"},
+    {key: "F1 & q", func: (*) => Send("^{F4}"), desc: "『Ctrl + F4』キーを送信します。"},
     {key: "sc029", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc029 = 半角／全角キー)"},
     {key: "sc03A", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc03A = 英数キー)"},
     {key: "sc070", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)"},
