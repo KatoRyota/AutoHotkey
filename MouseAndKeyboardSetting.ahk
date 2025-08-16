@@ -132,8 +132,8 @@ hotkeys := [
     {key: "sc029", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc029 = 半角／全角キー)"},
     {key: "sc03A", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc03A = 英数キー)"},
     {key: "sc070", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。(sc070 = カタカナ・ひらがなキー)"},
-    {key: "WheelUp", func: (*) => WheelUpOrLeft(), desc: "上スクロール or 左スクロール。"},
-    {key: "WheelDown", func: (*) => WheelDownOrRight(), desc: "下スクロール or 右スクロール。"},
+    {key: "WheelUp", func: (*) => WheelUpOrLeft(), desc: "『WheelUp』／『WheelLeft』キーを送信します。"},
+    {key: "WheelDown", func: (*) => WheelDownOrRight(), desc: "『WheelDown』／『WheelRight』キーを送信します。"},
     {key: "XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "XButton2", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
     {key: "^XButton1", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
@@ -482,7 +482,7 @@ ExitFunc(exitReason, exitCode) {
     ResetMouseSettings()
 }
 
-; 上スクロール or 左スクロール。
+; 『WheelUp』／『WheelLeft』キーを送信します。
 WheelUpOrLeft() {
     direction := env.mouse.state.scroll.direction
     horizontalDirection := env.mouse.const.scroll.direction.horizontal
@@ -494,7 +494,7 @@ WheelUpOrLeft() {
     }
 }
 
-; 下スクロール or 右スクロール。
+; 『WheelDown』／『WheelRight』キーを送信します。
 WheelDownOrRight() {
     direction := env.mouse.state.scroll.direction
     horizontalDirection := env.mouse.const.scroll.direction.horizontal
