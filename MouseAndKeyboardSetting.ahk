@@ -7,7 +7,7 @@
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
 
-ProcessSetPriority("High")
+ProcessSetPriority("AboveNormal")
 InstallKeybdHook()
 InstallMouseHook()
 SendMode("Input")
