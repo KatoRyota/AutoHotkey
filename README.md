@@ -54,10 +54,9 @@
 
 ## 📦 インストール方法
 
-1. [AutoHotkey v2](https://www.autohotkey.com/) をインストール
-2. 本リポジトリをクローンまたは ZIP ダウンロード
-3. `MouseAndKeyboardSetting.ahk`（または `.txt` を `.ahk` にリネーム）を実行
-4. タスクトレイに AutoHotkey アイコンが表示されれば準備完了
+1. 本リポジトリをクローンまたは ZIP ダウンロード
+2. `MouseAndKeyboardSetting.exe`を実行
+3. タスクトレイに AutoHotkey アイコンが表示されれば準備完了
 
 ---
 
