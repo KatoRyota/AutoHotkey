@@ -98,6 +98,12 @@ env := {
             hotkeys: {},
             env: {}
         }
+    },
+    translation: {
+        const: {
+            appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+            url: "https://www.bing.com/translator?from=&to=ja&text={1}"
+        }
     }
 }
 
@@ -107,6 +113,7 @@ hotkeys := [
     {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。ListHotkeysライブラリ関数。"},
     {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。KeyHistoryライブラリ関数。"},
     {key: "F1 & z", func: (*) => Send("^{F4}"), desc: "『Ctrl + F4』キーを送信します。"},
+    {key: "F1 & x", func: (*) => Translate(), desc: "クリップボードの内容を翻訳します。"},
     {key: "F1 & a", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "F1 & s", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
     {key: "F1 & d", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
@@ -485,6 +492,43 @@ SetWheelScrollChars(wheelScrollChars) {
         "UInt", wheelScrollChars,
         "UInt", 0,
         "UInt", spifUpdateinifile | spifSendchange)
+}
+
+; クリップボードの内容を翻訳します。
+Translate() {
+    appPath := env.translation.const.appPath
+    url := env.translation.const.url
+
+    if (!ClipWait(2)) {
+        MsgBox("クリップボードにテキストがありません。")
+        return
+    }
+
+    text := UrlEncode(A_Clipboard)
+    formattedUrl := Format(url, text)
+    launchedApp := Format("`"{1}`" --app=`"{2}`" --new-window --window-size=1100,700", appPath, formattedUrl)
+    Run(launchedApp)
+}
+
+; URLエンコードします。
+UrlEncode(str) {
+    byteLen := StrPut(str, "UTF-8") - 1
+    buf := Buffer(byteLen)
+    StrPut(str, buf, "UTF-8")
+
+    out := ""
+    Loop byteLen {
+        ch := NumGet(buf, A_Index - 1, "UChar")
+        if ( (ch >= 0x30 && ch <= 0x39)    ; 0-9
+          || (ch >= 0x41 && ch <= 0x5A)    ; A-Z
+          || (ch >= 0x61 && ch <= 0x7A)    ; a-z
+          || ch = 45 || ch = 46 || ch = 95 || ch = 126 ) { ; - . _ ~
+            out .= Chr(ch)
+        } else {
+            out .= "%" . Format("{:02X}", ch)
+        }
+    }
+    return out
 }
 
 ; スクリプトの終了処理を行います。
