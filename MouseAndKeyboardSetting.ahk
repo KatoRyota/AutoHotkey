@@ -101,8 +101,10 @@ env := {
     },
     translation: {
         const: {
-            appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-            url: "https://www.bing.com/translator?from=&to=ja&text={1}"
+            microsoftEdge: {
+                appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+                url: "https://www.bing.com/translator?from=&to=ja&text={1}"
+            }
         }
     }
 }
@@ -496,8 +498,8 @@ SetWheelScrollChars(wheelScrollChars) {
 
 ; クリップボードの内容を翻訳します。
 Translate() {
-    appPath := env.translation.const.appPath
-    url := env.translation.const.url
+    appPath := env.translation.const.microsoftEdge.appPath
+    url := env.translation.const.microsoftEdge.url
 
     if (!ClipWait(2)) {
         MsgBox("クリップボードにテキストがありません。")
@@ -506,7 +508,7 @@ Translate() {
 
     text := UrlEncode(A_Clipboard)
     formattedUrl := Format(url, text)
-    launchedApp := Format("`"{1}`" --app=`"{2}`" --new-window --window-size=1100,700", appPath, formattedUrl)
+    launchedApp := Format("`"{1}`" --app=`"{2}`" --window-size=1100,700", appPath, formattedUrl)
     Run(launchedApp)
 }
 
