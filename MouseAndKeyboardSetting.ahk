@@ -12,6 +12,7 @@ InstallKeybdHook()
 InstallMouseHook()
 SendMode("Input")
 SendLevel(100)
+DetectHiddenWindows(true)
 OnExit(ExitFunc)
 
 const := {
@@ -101,9 +102,10 @@ env := {
     },
     translation: {
         const: {
-            microsoftEdge: {
+            bing: {
                 appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-                url: "https://www.bing.com/translator?from=&to=ja&text={1}"
+                url: "https://www.bing.com/translator?from=&to=ja&text={1}",
+                title: "Microsoft Translator - 日本語 へ翻訳"
             }
         }
     }
@@ -498,18 +500,41 @@ SetWheelScrollChars(wheelScrollChars) {
 
 ; クリップボードの内容を翻訳します。
 Translate() {
-    appPath := env.translation.const.microsoftEdge.appPath
-    url := env.translation.const.microsoftEdge.url
+    appPath := env.translation.const.bing.appPath
+    url := env.translation.const.bing.url
+    title := env.translation.const.bing.title
 
     if (!ClipWait(2)) {
-        MsgBox("クリップボードにテキストがありません。")
+        MsgBox("クリップボードが空の為、翻訳できません。")
         return
     }
 
     text := UrlEncode(A_Clipboard)
     formattedUrl := Format(url, text)
-    launchedApp := Format("`"{1}`" --app=`"{2}`" --window-size=1100,700", appPath, formattedUrl)
-    Run(launchedApp)
+    launchedApp := Format("`"{1}`" --app=`"{2}`"", appPath, formattedUrl)
+
+    WinGetPos(&activeX, &activeY, &activeW, &activeH, "A")
+
+    try {
+        WinClose(title)
+    } catch as e {
+        ; 何もしない。ウィンドウが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
+    }
+
+    try {
+        Run(launchedApp,, "Hide", &outputVarPID)
+    } catch as e {
+        ; 何もしない。アプリの起動に失敗した場合、即座に処理終了。
+        return
+    }
+
+    WinWait(title)
+    WinGetPos(,, &newW, &newH, title)
+
+    x := activeX + Floor((activeW - newW) / 2)
+    y := activeY + Floor((activeH - newH) / 2)
+
+    WinMove(x, y, newW, newH, title)
 }
 
 ; URLエンコードします。
