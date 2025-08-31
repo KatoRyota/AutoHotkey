@@ -105,11 +105,24 @@ env := {
             bing: {
                 appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
                 url: "https://www.bing.com/translator?from=&to=ja&text={1}",
-                title: "Microsoft Translator - 日本語 へ翻訳"
+                title: "Microsoft Translator"
+            },
+            google: {
+                appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
+                url: "https://translate.google.com/?sl=auto&tl=ja&text={1}&op=translate",
+                title: "Google 翻訳"
             }
         }
     }
 }
+
+bingAppPath := env.translation.const.bing.appPath
+bingUrl := env.translation.const.bing.url
+bingTitle := env.translation.const.bing.title
+
+googleAppPath := env.translation.const.google.appPath
+googleUrl := env.translation.const.google.url
+googleTitle := env.translation.const.google.title
 
 hotkeys := [
     {key: "^#h", func: (*) => ShowHotkeys(), desc: "ホットキー一覧を表示します。"},
@@ -117,7 +130,8 @@ hotkeys := [
     {key: "^#l", func: (*) => ListHotkeys(), desc: "ホットキー一覧を表示します。組み込みListHotkeys関数。"},
     {key: "^#k", func: (*) => KeyHistory(), desc: "キーヒストリーを表示します。組み込みKeyHistory関数。"},
     {key: "F1 & z", func: (*) => Send("^{F4}"), desc: "『Ctrl + F4』キーを送信します。"},
-    {key: "F1 & x", func: (*) => Translate(), desc: "クリップボードの内容を翻訳します。"},
+    {key: "F1 & x", func: (*) => Translate(bingAppPath, bingUrl, bingTitle), desc: "クリップボードの内容を翻訳します。"},
+    {key: "F1 & c", func: (*) => Translate(googleAppPath, googleUrl, googleTitle), desc: "クリップボードの内容を翻訳します。"},
     {key: "F1 & a", func: (*) => ResetMouseSettings(), desc: "マウスの設定をリセットします。"},
     {key: "F1 & s", func: (*) => ChangeHorizontalScrollDirectionMode(), desc: "水平 スクロール方向モードに切り替えます。"},
     {key: "F1 & d", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
@@ -499,10 +513,7 @@ SetWheelScrollChars(wheelScrollChars) {
 }
 
 ; クリップボードの内容を翻訳します。
-Translate() {
-    appPath := env.translation.const.bing.appPath
-    url := env.translation.const.bing.url
-    title := env.translation.const.bing.title
+Translate(appPath, url, title) {
 
     if (!ClipWait(2)) {
         MsgBox("クリップボードが空の為、翻訳できません。")
