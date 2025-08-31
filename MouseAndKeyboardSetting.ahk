@@ -522,7 +522,7 @@ Translate(appPath, url, title) {
 
     text := UrlEncode(A_Clipboard)
     formattedUrl := Format(url, text)
-    launchedApp := Format("`"{1}`" --app=`"{2}`" --guest --disable-extensions --disable-plugins --disable-dev-tools", appPath, formattedUrl)
+    launchedApp := Format("`"{1}`" --app=`"{2}`" --disable-extensions --disable-plugins --disable-dev-tools", appPath, formattedUrl)
 
     WinGetPos(&activeX, &activeY, &activeW, &activeH, "A")
 
