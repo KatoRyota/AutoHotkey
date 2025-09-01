@@ -12,7 +12,6 @@ InstallKeybdHook()
 InstallMouseHook()
 SendMode("Input")
 SendLevel(100)
-DetectHiddenWindows(true)
 OnExit(ExitFunc)
 
 const := {
