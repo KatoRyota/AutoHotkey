@@ -1,98 +1,72 @@
 # MouseAndKeyboardSetting.ahk
 
-AutoHotkey v2 で動作する、マウス・キーボード設定の切り替えやホットキー送信、Bing翻訳呼び出しなどをまとめた多機能スクリプトです。  
-マウス速度・スクロール方向・スクロール速度の変更や、各種キー送信、環境情報表示などをホットキーで素早く実行できます。
+AutoHotkey v2 用のマウス・キーボード設定スクリプトです。  
+マウス速度やスクロール方向・速度の切り替え、クリップボード翻訳、拡張キー送信など、多彩なホットキーを提供します。
 
----
+## 特徴
 
-## 📦 主な機能
+- **マウス設定の即時切り替え**
+  - ポインタ速度（デフォルト／スロウ）
+  - スクロール方向（垂直／水平）
+  - スクロール速度（デフォルト／スロウ／高速／1ページ）
+- **翻訳機能**
+  - クリップボードの内容を Bing 翻訳または Google 翻訳で表示
+- **ホットキー一覧・環境情報のGUI表示**
+- **拡張ファンクションキー（F13〜F24）や修飾キー組み合わせの送信**
+- **マウスボタンやホイール操作のカスタマイズ**
 
-- **マウス設定の切り替え**
-  - デフォルト／スロウ速度の切り替え
-  - 垂直／水平スクロール方向の切り替え
-  - デフォルト／スロウ／高速／1画面スクロール速度の切り替え
-  - 設定リセット機能
+## 必要環境
 
-- **ホットキー送信**
-  - F1〜F24、Shift/Ctrl/Alt/Win 修飾付きキー送信
-  - Ctrl+F4、Home/End、PgUp/PgDn などの送信
+- Windows 10 / 11
+- [AutoHotkey v2](https://www.autohotkey.com/) がインストールされていること
 
-- **Bing翻訳呼び出し**
-  - クリップボードの内容を URL エンコードして Microsoft Edge アプリモードで Bing 翻訳を開く
-  - 翻訳ウィンドウをアクティブウィンドウ中央に配置
+## インストール
 
-- **情報表示**
-  - 登録済みホットキー一覧表示
-  - 現在のマウス設定・スクロール設定などの環境情報表示
+1. AutoHotkey v2 をインストールします。
+2. 本リポジトリをクローンまたは ZIP ダウンロードします。
+3. `MouseAndKeyboardSetting.ahk` をダブルクリックして実行します。
 
----
+```bash
+git clone https://github.com/KatoRyota/AutoHotkey.git
+cd AutoHotkey
+```
 
-## 🖥 動作環境
+## 主なホットキー
 
-- **OS**: Windows 10 / 11
-- **必須**: [AutoHotkey v2](https://www.autohotkey.com/)
-- **推奨**: Microsoft Edge（Bing翻訳機能利用時）
-
----
-
-## 🚀 使い方
-
-1. [AutoHotkey v2](https://www.autohotkey.com/) をインストール
-2. 本スクリプト `MouseAndKeyboardSetting.ahk` をダウンロード
-3. ダブルクリックで実行（タスクトレイに常駐）
-4. 以下のホットキーで機能を呼び出し
-
----
-
-## ⌨ 主なホットキー一覧
-
-| ホットキー | 機能 |
+| ホットキー | 説明 |
 |-----------|------|
-| `^#h` | ホットキー一覧を表示 |
-| `^#s` | 環境情報を表示 |
-| `F1 & x` | クリップボードを翻訳（Bing翻訳） |
-| `F1 & a` | マウス設定をリセット |
-| `F1 & s` | 水平スクロール方向に切り替え |
-| `F1 & d` | スロウマウス速度に切り替え |
-| `F1 & f` | 1画面スクロール速度に切り替え |
+| `Ctrl + Win + H` | ホットキー一覧を表示 |
+| `Ctrl + Win + S` | 環境情報を表示 |
+| `F1 & Z` | Ctrl + F4 を送信 |
+| `F1 & X` | Bing 翻訳でクリップボードを翻訳 |
+| `F1 & C` | Google 翻訳でクリップボードを翻訳 |
+| `F1 & A` | マウス設定をリセット |
+| `F1 & S` | 水平スクロール方向モードに切替 |
+| `F1 & D` | スロウマウススピードモードに切替 |
+| `F1 & F` | 1ページスクロールスピードモードに切替 |
 | `XButton1` | マウス設定をリセット |
-| `XButton2` | 水平スクロール方向に切り替え |
-| `^XButton2` | スロウマウス速度に切り替え |
-| `+XButton2` | 1画面スクロール速度に切り替え |
-| `WheelUp` / `WheelDown` | 垂直／水平スクロール送信（方向設定に依存） |
+| `XButton2` | 水平スクロール方向モードに切替 |
+| `Ctrl + XButton2` | スロウマウススピードモードに切替 |
+| `Shift + XButton2` | 1ページスクロールスピードモードに切替 |
+| `WheelUp` / `WheelDown` | スクロール方向に応じて上下または左右スクロール |
 
-※ その他、F13〜F24や修飾キー付きの送信ホットキー多数あり。詳細は `^#h` で確認可能。
+※ その他、F2キーとの組み合わせで F13〜F24 や Shift + F13〜F24 を送信可能です。
+
+## 関数一覧
+
+- `ShowHotkeys()` — ホットキー一覧GUIを表示
+- `ShowEnvironment()` — 現在のマウス・スクロール設定を表示
+- `ResetMouseSettings()` — マウス設定をデフォルトに戻す
+- `ChangeSlowMouseSpeedMode()` / `ChangePageScrollSpeedMode()` など — 各種モード切替
+- `Translate(appPath, url, title)` — クリップボード翻訳
+- `WheelUpOrLeft()` / `WheelDownOrRight()` — スクロール方向に応じたホイール動作
+
+## ライセンス
+
+このスクリプトは [MIT License](LICENSE) のもとで公開されています。
 
 ---
 
-## 📂 ファイル構成
-
+### 作者
+- GitHub: [KatoRyota](https://github.com/KatoRyota)
 ```
-MouseAndKeyboardSetting.ahk   # メインスクリプト
-```
-
----
-
-## ⚙ 主な内部関数
-
-- `ResetMouseSettings()` — マウス速度・スクロール方向・速度をデフォルトに戻す
-- `ChangeSlowMouseSpeedMode()` — スロウマウス速度に変更
-- `ChangePageScrollSpeedMode()` — 1画面スクロール速度に変更
-- `Translate()` — クリップボードを Bing翻訳で開く
-- `UrlEncode(str)` — UTF-8 URLエンコード
-- `ShowHotkeys()` — ホットキー一覧GUI表示
-- `ShowEnvironment()` — 環境情報GUI表示
-
----
-
-## 📜 ライセンス
-
-MIT License  
-Copyright (c) 2025 Ryota Kato
-
----
-
-## 🔗 リンク
-
-- GitHub: [https://github.com/KatoRyota/AutoHotkey](https://github.com/KatoRyota/AutoHotkey)
-- AutoHotkey公式: [https://www.autohotkey.com/](https://www.autohotkey.com/)
