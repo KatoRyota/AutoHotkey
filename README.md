@@ -1,71 +1,54 @@
-# MouseAndKeyboardSetting.ahk
+# MouseAndKeyboardSetting
 
-AutoHotkey v2 用のマウス・キーボード設定スクリプトです。  
-マウス速度やスクロール方向・速度の切り替え、クリップボード翻訳、拡張キー送信などをホットキーで素早く実行できます。
+Windows 向けの AutoHotkey v2 スクリプトです。マウス速度・スクロール方向・スクロール速度の切替、クリップボード翻訳、拡張キー送信などをホットキーで操作できます。
 
-## 特徴
+- スクリプト本体: [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk)
 
-- **マウス設定の即時切り替え**
-  - ポインタ速度（デフォルト／スロウ）
-  - スクロール方向（垂直／水平）
-  - スクロール速度（デフォルト／スロウ／高速／1ページ）
-- **翻訳機能**
-  - クリップボードのテキストを Bing / Google / DeepL で翻訳
-  - Microsoft Edge のアプリモードで起動
-- **ホットキー一覧表示**
-  - GUI で現在のホットキーと説明を一覧表示
-- **環境情報表示**
-  - 現在のマウス速度やスクロール設定を GUI 表示
-- **拡張キー送信**
-  - F13〜F24 や Shift/Alt/Ctrl/Win 修飾付きキー送信
-- **マウスボタン拡張**
-  - XButton1 / XButton2 に多機能割り当て
+## 主な機能
+
+- マウス設定の即時切替（ポインタ速度・スクロール方向・スクロール速度）
+- クリップボード翻訳（Bing / Google / DeepL）
+- ホットキー一覧・環境情報の GUI 表示
+- F13〜F24 などの拡張キー送信や XButton の多機能割当
 
 ## 必要環境
 
 - Windows 10 / 11
-- [AutoHotkey v2](https://www.autohotkey.com/)  
-- Microsoft Edge（翻訳機能利用時）
+- [AutoHotkey v2](https://www.autohotkey.com/)
+- Microsoft Edge（翻訳機能をアプリモードで起動する場合）
 
 ## インストール
 
 1. AutoHotkey v2 をインストール
 2. 本リポジトリをクローンまたは ZIP ダウンロード
-3. `MouseAndKeyboardSetting.ahk` をダブルクリックで実行
+3. [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk) をダブルクリックして実行
 
-## 主なホットキー
+## 使い方（主要ホットキー）
 
-| ホットキー | 説明 |
-|-----------|------|
-| `Ctrl + Win + H` | ホットキー一覧を表示 |
-| `Ctrl + Win + S` | 環境情報を表示 |
-| `F1 & X` | Bing 翻訳でクリップボードを翻訳 |
-| `F1 & C` | Google 翻訳でクリップボードを翻訳 |
-| `F1 & V` | DeepL 翻訳でクリップボードを翻訳 |
-| `F1 & A` | マウス設定をリセット |
-| `F1 & S` | 水平スクロール方向モードに切替 |
-| `F1 & D` | スロウマウススピードモードに切替 |
-| `F1 & F` | 1ページスクロールスピードモードに切替 |
-| `XButton1` | マウス設定をリセット |
-| `XButton2` | 水平スクロール方向モードに切替 |
-| `Ctrl + XButton2` | スロウマウススピードモードに切替 |
-| `Shift + XButton2` | 1ページスクロールスピードモードに切替 |
+- Ctrl + Win + H: ホットキー一覧表示（[`ShowHotkeys()`](MouseAndKeyboardSetting.ahk)）
+- Ctrl + Win + S: 環境情報表示（[`ShowEnvironment()`](MouseAndKeyboardSetting.ahk)）
+- Space + s / d / f: クリップボード翻訳（[`Translate()`](MouseAndKeyboardSetting.ahk)）
+- XButton1 / XButton2: マウス設定リセット／水平スクロール切替
+- WheelUp / WheelDown: 現在のスクロール方向に合わせて左右/上下を送信（[`WheelUpOrLeft()`](MouseAndKeyboardSetting.ahk), [`WheelDownOrRight()`](MouseAndKeyboardSetting.ahk)）
 
-※ その他、F13〜F24 や修飾キー付きの送信ホットキー多数あり。詳細は `Ctrl + Win + H` で確認可能。
+詳細なホットキー一覧はスクリプト実行後に Ctrl + Win + H を押して確認してください。
 
-## 関数概要
+## 主要関数（実装場所: [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk)）
 
-- `ShowHotkeys()` — ホットキー一覧を GUI 表示
-- `ShowEnvironment()` — マウス速度・スクロール設定を GUI 表示
-- `ResetMouseSettings()` — マウス設定をデフォルトに戻す
-- `Change*Mode()` — 各種モード切替（速度・方向）
-- `Translate(appPath, url, title)` — クリップボード翻訳
-- `UrlEncode(str)` — URL エンコード処理
+- [`ShowHotkeys()`](MouseAndKeyboardSetting.ahk) — ホットキー一覧を GUI 表示
+- [`ShowEnvironment()`](MouseAndKeyboardSetting.ahk) — マウス・スクロール設定を GUI 表示
+- [`ResetMouseSettings()`](MouseAndKeyboardSetting.ahk) — マウス設定をデフォルトに戻す
+- マウス速度・スクロール切替: [`ChangeDefaultMouseSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangeSlowMouseSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangeDefaultScrollSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangePageScrollSpeedMode()`](MouseAndKeyboardSetting.ahk) など
+- [`Translate(appPath, url, title)`](MouseAndKeyboardSetting.ahk) — クリップボード翻訳（内部で [`UrlEncode()`](MouseAndKeyboardSetting.ahk) を利用）
+- [`RegisterHotkeys()`](MouseAndKeyboardSetting.ahk) — ホットキー登録
+
+## カスタマイズ
+
+- 翻訳先ブラウザや URL はスクリプト上部の `env.translation.const` を編集して変更できます。
+- スクロール速度やポインタ速度の値は `env.mouse.const` 内で定義済みなので必要に応じて調整してください。
 
 ## ライセンス
 
 MIT License
-
----
 
 © 2025 Ryota Kato
