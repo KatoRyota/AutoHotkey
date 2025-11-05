@@ -396,18 +396,6 @@ ToggleHorizontalScrollDirectionMode() {
     }
 }
 
-; 1画面 スクロールスピードモードに切り替えます。トグル方式。
-TogglePageScrollSpeedMode() {
-    speed := env.mouse.state.scroll.speed
-    pageSpeed := env.mouse.const.scroll.speed.page.name
-
-    if (speed != pageSpeed) {
-        ChangePageScrollSpeedMode()
-    } else {
-        ChangeDefaultScrollSpeedMode()
-    }
-}
-
 ; マウススピードを取得します。
 GetMouseSpeed() {
     spiGetmousespeed := const.SPI_GETMOUSESPEED
