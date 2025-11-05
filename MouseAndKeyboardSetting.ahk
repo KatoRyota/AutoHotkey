@@ -304,20 +304,30 @@ ResetMouseSettings() {
 
 ; デフォルト マウススピードモードに切り替えます。
 ChangeDefaultMouseSpeedMode() {
-    speed := env.mouse.const.pointer.speed.default.name
-    speedValue := env.mouse.const.pointer.speed.default.value
+    currentSpeed := env.mouse.state.pointer.speed
+    defaultName := env.mouse.const.pointer.speed.default.name
 
-    env.mouse.state.pointer.speed := speed
+    if (currentSpeed = defaultName) {
+        return
+    }
+
+    speedValue := env.mouse.const.pointer.speed.default.value
+    env.mouse.state.pointer.speed := defaultName
 
     SetMouseSpeed(speedValue)
 }
 
 ; スロウ マウススピードモードに切り替えます。
 ChangeSlowMouseSpeedMode() {
-    speed := env.mouse.const.pointer.speed.slow.name
-    speedValue := env.mouse.const.pointer.speed.slow.value
+    currentSpeed := env.mouse.state.pointer.speed
+    slowName := env.mouse.const.pointer.speed.slow.name
 
-    env.mouse.state.pointer.speed := speed
+    if (currentSpeed = slowName) {
+        return
+    }
+
+    speedValue := env.mouse.const.pointer.speed.slow.value
+    env.mouse.state.pointer.speed := slowName
 
     SetMouseSpeed(speedValue)
 }
