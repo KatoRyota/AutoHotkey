@@ -56,11 +56,6 @@ env := {
                         vertical: Ceil(GetWheelScrollLines() / 3),
                         horizontal: Ceil(GetWheelScrollChars() / 3)
                     },
-                    high: {
-                        name: "high",
-                        vertical: GetWheelScrollLines() * 3,
-                        horizontal: GetWheelScrollChars() * 3
-                    },
                     default: {
                         name: "default",
                         vertical: GetWheelScrollLines(),
@@ -394,18 +389,6 @@ ChangeSlowScrollSpeedMode() {
     SetWheelScrollChars(horizontalSpeed)
 }
 
-; ハイ スクロールスピードモードに切り替えます。
-ChangeHighScrollSpeedMode() {
-    speed := env.mouse.const.scroll.speed.high.name
-    verticalSpeed := env.mouse.const.scroll.speed.high.vertical
-    horizontalSpeed := env.mouse.const.scroll.speed.high.horizontal
-
-    env.mouse.state.scroll.speed := speed
-
-    SetWheelScrollLines(verticalSpeed)
-    SetWheelScrollChars(horizontalSpeed)
-}
-
 ; スロウ マウススピードモードに切り替えます。トグル方式。
 ToggleSlowMouseSpeedMode() {
     speed := env.mouse.state.pointer.speed
@@ -449,18 +432,6 @@ ToggleSlowScrollSpeedMode() {
 
     if (speed != slowSpeed) {
         ChangeSlowScrollSpeedMode()
-    } else {
-        ChangeDefaultScrollSpeedMode()
-    }
-}
-
-; ハイ スクロールスピードモードに切り替えます。トグル方式。
-ToggleHighScrollSpeedMode() {
-    speed := env.mouse.state.scroll.speed
-    highSpeed := env.mouse.const.scroll.speed.high.name
-
-    if (speed != highSpeed) {
-        ChangeHighScrollSpeedMode()
     } else {
         ChangeDefaultScrollSpeedMode()
     }
