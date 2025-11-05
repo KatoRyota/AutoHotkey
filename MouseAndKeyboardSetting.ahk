@@ -384,18 +384,6 @@ ToggleSlowMouseSpeedMode() {
     }
 }
 
-; 水平 スクロール方向モードに切り替えます。トグル方式。
-ToggleHorizontalScrollDirectionMode() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction != horizontalDirection) {
-        ChangeHorizontalScrollDirectionMode()
-    } else {
-        ChangeVerticalScrollDirectionMode()
-    }
-}
-
 ; マウススピードを取得します。
 GetMouseSpeed() {
     spiGetmousespeed := const.SPI_GETMOUSESPEED
