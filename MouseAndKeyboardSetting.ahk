@@ -372,18 +372,6 @@ ChangePageScrollSpeedMode() {
     SetWheelScrollChars(horizontalSpeed)
 }
 
-; スロウ マウススピードモードに切り替えます。トグル方式。
-ToggleSlowMouseSpeedMode() {
-    speed := env.mouse.state.pointer.speed
-    slowSpeed := env.mouse.const.pointer.speed.slow.name
-
-    if (speed != slowSpeed) {
-        ChangeSlowMouseSpeedMode()
-    } else {
-        ChangeDefaultMouseSpeedMode()
-    }
-}
-
 ; マウススピードを取得します。
 GetMouseSpeed() {
     spiGetmousespeed := const.SPI_GETMOUSESPEED
