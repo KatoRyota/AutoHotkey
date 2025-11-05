@@ -346,7 +346,14 @@ ChangeHorizontalScrollDirectionMode() {
 
 ; デフォルト スクロールスピードモードに切り替えます。
 ChangeDefaultScrollSpeedMode() {
-    speed := env.mouse.const.scroll.speed.default.name
+    currentSpeed := env.mouse.state.scroll.speed
+    defaultName := env.mouse.const.scroll.speed.default.name
+
+    if (currentSpeed = defaultName) {
+        return
+    }
+
+    speed := defaultName
     verticalSpeed := env.mouse.const.scroll.speed.default.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
 
@@ -358,7 +365,14 @@ ChangeDefaultScrollSpeedMode() {
 
 ; 1画面 スクロールスピードモードに切り替えます。
 ChangePageScrollSpeedMode() {
-    speed := env.mouse.const.scroll.speed.page.name
+    currentSpeed := env.mouse.state.scroll.speed
+    pageName := env.mouse.const.scroll.speed.page.name
+
+    if (currentSpeed = pageName) {
+        return
+    }
+
+    speed := pageName
     verticalSpeed := env.mouse.const.scroll.speed.page.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
 
