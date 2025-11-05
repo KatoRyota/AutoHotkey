@@ -110,18 +110,6 @@ env := {
     }
 }
 
-bingAppPath := env.translation.const.bing.appPath
-bingUrl := env.translation.const.bing.url
-bingTitle := env.translation.const.bing.title
-
-googleAppPath := env.translation.const.google.appPath
-googleUrl := env.translation.const.google.url
-googleTitle := env.translation.const.google.title
-
-deeplAppPath := env.translation.const.deepl.appPath
-deeplUrl := env.translation.const.deepl.url
-deeplTitle := env.translation.const.deepl.title
-
 hotkeys := [
     {key: "^#h", func: (*) => ShowHotkeys(), desc: "ホットキー一覧を表示します。"},
     {key: "^#s", func: (*) => ShowEnvironment(), desc: "環境情報を表示します。"},
@@ -132,9 +120,21 @@ hotkeys := [
     {key: "Space & e", func: (*) => ChangeSlowMouseSpeedMode(), desc: "スロウ マウススピードモードに切り替えます。"},
     {key: "Space & r", func: (*) => ChangePageScrollSpeedMode(), desc: "1画面 スクロールスピードモードに切り替えます。"},
     {key: "Space & a", func: (*) => Send("^{F4}"), desc: "<<Ctrl+F4>>キーを送信します。"},
-    {key: "Space & s", func: (*) => Translate(bingAppPath, bingUrl, bingTitle), desc: "クリップボードの内容を翻訳します。"},
-    {key: "Space & d", func: (*) => Translate(googleAppPath, googleUrl, googleTitle), desc: "クリップボードの内容を翻訳します。"},
-    {key: "Space & f", func: (*) => Translate(deeplAppPath, deeplUrl, deeplTitle), desc: "クリップボードの内容を翻訳します。"},
+    {
+        key: "Space & s",
+        func: (*) => Translate(env.translation.const.bing.appPath, env.translation.const.bing.url, env.translation.const.bing.title),
+        desc: "クリップボードの内容を翻訳します。Microsoft Translator"
+    },
+    {
+        key: "Space & d",
+        func: (*) => Translate(env.translation.const.google.appPath, env.translation.const.google.url, env.translation.const.google.title),
+        desc: "クリップボードの内容を翻訳します。Google 翻訳"
+    },
+    {
+        key: "Space & f",
+        func: (*) => Translate(env.translation.const.deepl.appPath, env.translation.const.deepl.url, env.translation.const.deepl.title),
+        desc: "クリップボードの内容を翻訳します。DeepL翻訳"
+    },
     {key: "!Space", func: (*) => Send("{Space}"), desc: "<<Space>>キーを送信します。"},
     {key: "^Space", func: (*) => Send("^{Space}"), desc: "<<Ctrl+Space>>キーを送信します。"},
     {key: "+Space", func: (*) => Send("+{Space}"), desc: "<<Shift+Space>>キーを送信します。"},
