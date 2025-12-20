@@ -132,6 +132,16 @@ hotkeys := [
         desc: "キーヒストリーを表示します。組み込みKeyHistory関数。"
     },
     {
+        key: "Space & v",
+        func: (*) => TurnOffIME(),
+        desc: "IMEをオフにします。"
+    },
+    {
+        key: "Space & b",
+        func: (*) => TurnOnIME(),
+        desc: "IMEをオフにします。"
+    },
+    {
         key: "Space & q",
         func: (*) => ResetMouseSettings(),
         desc: "マウスの設定をリセットします。"
@@ -725,6 +735,126 @@ ShowEnvironment() {
     popupOptions := Format("x{1} y{2}", x, y)
 
     popup.Show(popupOptions)
+}
+
+; IMEをオフにします。
+TurnOffIME() {
+    hwnd :=WinExist("A")
+    if (!hwnd) {
+        return
+    }
+
+    WM_IME_CONTROL := 0x0283
+    IMC_SETOPENSTATUS := 0x0006
+
+    needFallback := true
+    himc := DllCall(
+        "imm32\ImmGetContext",
+        "Ptr", hwnd,
+        "Ptr"
+    )
+    if (himc) {
+        open := DllCall(
+            "imm32\ImmGetOpenStatus",
+            "Ptr", himc,
+            "Int"
+        )
+        ok := 1
+        if (open) {
+            ok := DllCall(
+                "imm32\ImmSetOpenStatus",
+                "Ptr", himc,
+                "Int", 0,
+                "Int"
+            )
+        }
+        DllCall(
+            "imm32\ImmReleaseContext",
+            "Ptr", hwnd,
+            "Ptr", himc
+        )
+        if (!open || ok) {
+            needFallback := false
+        }
+    }
+
+    if (needFallback) {
+        hIME := DllCall(
+            "imm32\ImmGetDefaultIMEWnd",
+            "Ptr", hwnd,
+            "Ptr"
+        )
+        if (hIME) {
+            DllCall(
+                "user32\SendMessageW",
+                "Ptr", hIME,
+                "UInt", WM_IME_CONTROL,
+                "UPtr", IMC_SETOPENSTATUS,
+                "Int", 0,
+                "Int"
+            )
+        }
+    }
+}
+
+; IMEをオンにします。
+TurnOnIME() {
+    hwnd :=WinExist("A")
+    if (!hwnd) {
+        return
+    }
+
+    WM_IME_CONTROL := 0x0283
+    IMC_SETOPENSTATUS := 0x0006
+
+    needFallback := true
+    himc := DllCall(
+        "imm32\ImmGetContext",
+        "Ptr", hwnd,
+        "Ptr"
+    )
+    if (himc) {
+        open := DllCall(
+            "imm32\ImmGetOpenStatus",
+            "Ptr", himc,
+            "Int"
+        )
+        ok := 1
+        if (!open) {
+            ok := DllCall(
+                "imm32\ImmSetOpenStatus",
+                "Ptr", himc,
+                "Int", 1,
+                "Int"
+            )
+        }
+        DllCall(
+            "imm32\ImmReleaseContext",
+            "Ptr", hwnd,
+            "Ptr", himc
+        )
+        if (open || ok) {
+            needFallback := false
+        }
+    }
+
+    if (needFallback) {
+        hIME := DllCall(
+            "imm32\ImmGetDefaultIMEWnd",
+            "Ptr", hwnd,
+            "Ptr"
+        )
+        if (hIME) {
+            DllCall(
+                "user32\SendMessageW",
+                "Ptr", hIME,
+                "UInt", WM_IME_CONTROL,
+                "UPtr", IMC_SETOPENSTATUS,
+                "Int", 1,
+                "Int"
+            )
+        }
+    }
 }
 
 ; マウスの設定をリセットします。
