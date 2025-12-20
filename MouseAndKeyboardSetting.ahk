@@ -739,122 +739,77 @@ ShowEnvironment() {
 
 ; IMEをオフにします。
 TurnOffIME() {
-    hwnd := WinExist("A")
-    if (!hwnd) {
-        return
-    }
-
-    WM_IME_CONTROL := 0x0283
-    IMC_SETOPENSTATUS := 0x0006
-
-    needFallback := true
-    himc := DllCall(
-        "imm32\ImmGetContext",
-        "Ptr", hwnd,
-        "Ptr"
-    )
-    if (himc) {
-        open := DllCall(
-            "imm32\ImmGetOpenStatus",
-            "Ptr", himc,
-            "Int"
-        )
-        ok := 1
-        if (open) {
-            ok := DllCall(
-                "imm32\ImmSetOpenStatus",
-                "Ptr", himc,
-                "Int", 0,
-                "Int"
-            )
-        }
-        DllCall(
-            "imm32\ImmReleaseContext",
-            "Ptr", hwnd,
-            "Ptr", himc
-        )
-        if (!open || ok) {
-            needFallback := false
-        }
-    }
-
-    if (needFallback) {
-        hIME := DllCall(
-            "imm32\ImmGetDefaultIMEWnd",
-            "Ptr", hwnd,
-            "Ptr"
-        )
-        if (hIME) {
-            DllCall(
-                "user32\SendMessageW",
-                "Ptr", hIME,
-                "UInt", WM_IME_CONTROL,
-                "UPtr", IMC_SETOPENSTATUS,
-                "Int", 0,
-                "Int"
-            )
-        }
-    }
+    SetImeOpen(false)
 }
 
 ; IMEをオンにします。
 TurnOnIME() {
-    hwnd := WinExist("A")
-    if (!hwnd) {
-        return
-    }
+    SetImeOpen(true)
+}
 
+; IMEのオン／オフを切り替えます。
+SetImeOpen(on) {
+    hwnd := GetFocusOrActiveHwnd()
+    if (!hwnd) {
+        return false
+    }
     WM_IME_CONTROL := 0x0283
     IMC_SETOPENSTATUS := 0x0006
 
     needFallback := true
-    himc := DllCall(
-        "imm32\ImmGetContext",
-        "Ptr", hwnd,
-        "Ptr"
-    )
+    himc := DllCall("imm32\ImmGetContext", "Ptr", hwnd, "Ptr")
     if (himc) {
-        open := DllCall(
-            "imm32\ImmGetOpenStatus",
-            "Ptr", himc,
-            "Int"
-        )
+        open := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
         ok := 1
-        if (!open) {
-            ok := DllCall(
-                "imm32\ImmSetOpenStatus",
-                "Ptr", himc,
-                "Int", 1,
-                "Int"
-            )
+        if ((on && !open) || (!on && open) {
+            ok := DllCall("imm32\ImmSetOpenStatus", "Ptr", himc, "Int", on ? 1 : 0, "Int")
         }
-        DllCall(
-            "imm32\ImmReleaseContext",
-            "Ptr", hwnd,
-            "Ptr", himc
-        )
-        if (open || ok) {
+        DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
+        if ((on && open) || (!on && !open) || ok) {
             needFallback := false
         }
     }
-
     if (needFallback) {
-        hIME := DllCall(
-            "imm32\ImmGetDefaultIMEWnd",
-            "Ptr", hwnd,
-            "Ptr"
-        )
+        hIME := DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", hwnd, "Ptr")
         if (hIME) {
-            DllCall(
-                "user32\SendMessageW",
-                "Ptr", hIME,
-                "UInt", WM_IME_CONTROL,
-                "UPtr", IMC_SETOPENSTATUS,
-                "Int", 1,
-                "Int"
-            )
+            r := DllCall("user32\SendMessageTimeoutW"
+                , "Ptr", hIME
+                , "UInt", WM_IME_CONTROL
+                , "UPtr", IMC_SETOPENSTATUS
+                , "UPtr", on ? 1 : 0
+                , "UInt", 0x0002
+                , "UInt", 100
+                , "UPtr", 0)
+            if (!r) {
+                return false
+            }
+        } else {
+            return false
         }
     }
+    return true
+}
+
+; フォーカス中のHWNDを取得（なければアクティブ→最終的にAウィンドウ）
+GetFocusOrActiveHwnd() {
+    PtrSize := A_PtrSize
+    size := 4 + 4 + (PtrSize * 6) + 16
+    buf := Buffer(size, 0)
+    NumPut("UInt", size, buf, 0)
+
+    ok := DllCall("user32\GetGUIThreadInfo", "UInt", 0, "Ptr", buf, "Int")
+
+    if (ok) {
+        hwndActive := NumGet(buf, 8, "Ptr")
+        hwndFocus := NumGet(buf, 8 + PtrSize, "Ptr")
+        if (hwndFocus) {
+            return hwndFocus
+        }
+        if (hwndActive) {
+            return hwndActive
+        }
+    }
+    return WinExist("A")
 }
 
 ; マウスの設定をリセットします。
