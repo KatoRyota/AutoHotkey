@@ -139,7 +139,7 @@ hotkeys := [
     {
         key: "Space & b",
         func: (*) => TurnOnIME(),
-        desc: "IMEをオフにします。"
+        desc: "IMEをオンにします。"
     },
     {
         key: "Space & q",
@@ -739,7 +739,7 @@ ShowEnvironment() {
 
 ; IMEをオフにします。
 TurnOffIME() {
-    hwnd :=WinExist("A")
+    hwnd := WinExist("A")
     if (!hwnd) {
         return
     }
@@ -799,7 +799,7 @@ TurnOffIME() {
 
 ; IMEをオンにします。
 TurnOnIME() {
-    hwnd :=WinExist("A")
+    hwnd := WinExist("A")
     if (!hwnd) {
         return
     }
