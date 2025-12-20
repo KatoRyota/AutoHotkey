@@ -761,7 +761,7 @@ SetImeOpen(on) {
     if (himc) {
         open := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
         ok := 1
-        if ((on && !open) || (!on && open) {
+        if ((on && !open) || (!on && open)) {
             ok := DllCall("imm32\ImmSetOpenStatus", "Ptr", himc, "Int", on ? 1 : 0, "Int")
         }
         DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
@@ -779,7 +779,7 @@ SetImeOpen(on) {
                 , "UPtr", on ? 1 : 0
                 , "UInt", 0x0002
                 , "UInt", 100
-                , "UPtr", 0)
+                , "UPtr*", 0)
             if (!r) {
                 return false
             }
