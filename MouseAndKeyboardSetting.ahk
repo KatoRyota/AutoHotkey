@@ -132,12 +132,12 @@ hotkeys := [
         desc: "キーヒストリーを表示します。組み込みKeyHistory関数。"
     },
     {
-        key: "Space & v",
+        key: "Space & f",
         func: (*) => TurnOffIME(),
         desc: "IMEをオフにします。"
     },
     {
-        key: "Space & b",
+        key: "Space & j",
         func: (*) => TurnOnIME(),
         desc: "IMEをオンにします。"
     },
@@ -167,17 +167,17 @@ hotkeys := [
         desc: "<<Ctrl+F4>>キーを送信します。"
     },
     {
-        key: "Space & s",
+        key: "Space & z",
         func: (*) => Translate(env.translation.const.bing.appPath, env.translation.const.bing.url, env.translation.const.bing.title),
         desc: "クリップボードの内容を翻訳します。Microsoft Translator"
     },
     {
-        key: "Space & d",
+        key: "Space & x",
         func: (*) => Translate(env.translation.const.google.appPath, env.translation.const.google.url, env.translation.const.google.title),
         desc: "クリップボードの内容を翻訳します。Google 翻訳"
     },
     {
-        key: "Space & f",
+        key: "Space & c",
         func: (*) => Translate(env.translation.const.deepl.appPath, env.translation.const.deepl.url, env.translation.const.deepl.title),
         desc: "クリップボードの内容を翻訳します。DeepL翻訳"
     },
