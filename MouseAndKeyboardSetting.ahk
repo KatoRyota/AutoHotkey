@@ -822,7 +822,7 @@ ImeSetOpenViaImeWnd(hwnd, desired, timeoutMs := 300) {
             , "UPtr", IMC_SETOPENSTATUS
             , "UPtr", desired
             , "Int")
-        sleep(25)
+        Sleep(25)
     }
 
     ; 検証
@@ -840,7 +840,7 @@ ImeToggleViaVkIfNeeded(hwnd, desired) {
         return true
     }
     Send("{vk19}")  ; VK_KANJI
-    sleep(25)
+    Sleep(25)
     return (ImeGetOpen(hwnd) = desired)
 }
 
