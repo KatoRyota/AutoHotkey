@@ -747,51 +747,124 @@ TurnOnIME() {
     SetImeOpen(true)
 }
 
-; IMEのオン／オフを切り替えます。
-SetImeOpen(on) {
-    hwnd := GetFocusOrActiveHwnd()
-    if (!hwnd) {
+; IME 開閉状態を取得
+ImeGetOpen(hwnd) {
+    himc := DllCall("imm32\ImmGetContext", "Ptr", hwnd, "Ptr")
+    if (!himc) {
+        return -1
+    }
+    open := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
+    DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
+    return open
+}
+
+; IMM 直接切替（検証まで）
+ImeSetOpenViaImm(hwnd, desired) {
+    himc := DllCall("imm32\ImmGetContext", "Ptr", hwnd, "Ptr")
+    if (!himc) {
         return false
     }
+    current := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
+    success := false
+    if (current != desired) {
+        ok := DllCall("imm32\ImmSetOpenStatus", "Ptr", himc, "Int", desired, "Int")
+        if (ok) {
+            ; 同じコンテキストで再検証
+            success := (DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int") = desired)
+        }
+    } else {
+        success := true
+    }
+    DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
+    return success
+}
 
+; デフォルト IME ウィンドウ取得（ルート祖先フォールバック込み）
+GetDefaultImeWndFor(hwnd) {
+    hIME := DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", hwnd, "Ptr")
+    if (hIME) {
+        return hIME
+    }
+    GA_ROOT := 2
+    root := DllCall("user32\GetAncestor", "Ptr", hwnd, "UInt", GA_ROOT, "Ptr")
+    if (!root) {
+        return 0
+    }
+    return DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", root, "Ptr")
+}
+
+; WM_IME_CONTROL 経由で開閉（ブロッキング→ポストの順で試行）
+ImeSetOpenViaImeWnd(hwnd, desired, timeoutMs := 300) {
     WM_IME_CONTROL := 0x0283
     IMC_SETOPENSTATUS := 0x0006
     SMTO_BLOCK := 0x0001
     SMTO_ABORTIFHUNG := 0x0002
 
-    needFallback := true
-    himc := DllCall("imm32\ImmGetContext", "Ptr", hwnd, "Ptr")
-    if (himc) {
-        isOpen := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
-        ok := 1
-        if ((on && !isOpen) || (!on && isOpen)) {
-            ok := DllCall("imm32\ImmSetOpenStatus", "Ptr", himc, "Int", on ? 1 : 0, "Int")
-        }
-        DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
-        if ((on && isOpen) || (!on && !isOpen) || ok) {
-            needFallback := false
-        }
+    hIME := GetDefaultImeWndFor(hwnd)
+    if (!hIME) {
+        return false
     }
-    if (needFallback) {
-        hIME := DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", hwnd, "Ptr")
-        if (!hIME) {
-            return false
-        }
-        r := DllCall("user32\SendMessageTimeoutW"
+
+    r := DllCall("user32\SendMessageTimeoutW"
+        , "Ptr", hIME
+        , "UInt", WM_IME_CONTROL
+        , "UPtr", IMC_SETOPENSTATUS
+        , "UPtr", desired
+        , "UInt", SMTO_BLOCK | SMTO_ABORTIFHUNG
+        , "UInt", timeoutMs
+        , "Ptr", 0
+        , "UInt")
+
+    if (!r) {
+        DllCall("user32\PostMessageW"
             , "Ptr", hIME
             , "UInt", WM_IME_CONTROL
             , "UPtr", IMC_SETOPENSTATUS
-            , "UPtr", on ? 1 : 0
-            , "UInt", SMTO_BLOCK | SMTO_ABORTIFHUNG
-            , "UInt", 100
-            , "UPtr*", 0
-            , "UInt")
-
-        if (!r) {
-            return false
-        }
+            , "UPtr", desired
+            , "Int")
+        sleep(25)
     }
-    return true
+
+    ; 検証
+    open := ImeGetOpen(hwnd)
+    return (open != -1) && (open = desired)
+}
+
+; 最終手段：VK_KANJI でトグル（検証可能な時のみ）
+ImeToggleViaVkIfNeeded(hwnd, desired) {
+    current := ImeGetOpen(hwnd)
+    if (current = -1) {
+        return false
+    }
+    if (current = desired) {
+        return true
+    }
+    Send("{vk19}")  ; VK_KANJI
+    sleep(25)
+    return (ImeGetOpen(hwnd) = desired)
+}
+
+; IMEのオン／オフを切り替えます。
+SetImeOpen(on, timeoutMs := 300) {
+    hwnd := GetFocusOrActiveHwnd()
+    if (!hwnd) {
+        return false
+    }
+    desired := on ? 1 : 0
+
+    if (ImeSetOpenViaImm(hwnd, desired)) {
+        return true
+    }
+
+    ; 一過性対策で 1 回リトライ
+    if (ImeSetOpenViaImeWnd(hwnd, desired, timeoutMs)) {
+        return true
+    }
+    if (ImeSetOpenViaImeWnd(hwnd, desired, timeoutMs)) {
+        return true
+    }
+    ; 最終手段（検証可能時のみトグル送信）
+    return ImeToggleViaVkIfNeeded(hwnd, desired)
 }
 
 ; フォーカス中のHWNDを取得（なければアクティブ→最終的にAウィンドウ）
@@ -801,23 +874,56 @@ GetFocusOrActiveHwnd() {
         return 0
     }
 
+    static GI_SIZE := 4 + 4 + (A_PtrSize * 6) + 16
+    static OFF_ACTIVE := 8
+    static OFF_FOCUS := 8 + A_PtrSize
+    static OFF_CARET := 8 + (A_PtrSize * 5)
+
+    buf := Buffer(GI_SIZE, 0)
+    NumPut("UInt", GI_SIZE, buf)
+
     threadId := DllCall("user32\GetWindowThreadProcessId", "Ptr", hwndActive, "UInt*", 0, "UInt")
-
-    size := 4 + 4 + (A_PtrSize * 6) + 16
-    buf := Buffer(size, 0)
-    NumPut("UInt", size, buf)
-
     ok := DllCall("user32\GetGUIThreadInfo", "UInt", threadId, "Ptr", buf, "Int")
+    
+    candidates := []
     if (ok) {
-        hwndFocus := NumGet(buf, 8 + A_PtrSize, "Ptr")
-        if (hwndFocus) {
-            return hwndFocus
+        hwndFocus := NumGet(buf, OFF_FOCUS, "Ptr")
+        hwndCaret := NumGet(buf, OFF_CARET, "Ptr")
+        hwndActiveGI := NumGet(buf, OFF_ACTIVE, "Ptr")
+
+        if (hwndFocus && DllCall("user32\IsWindow", "Ptr", hwndFocus, "Int")) {
+            candidates.Push(hwndFocus)
         }
-        hwndFocusParent := NumGet(buf, 8, "Ptr")
-        if (hwndFocusParent) {
-            return hwndFocusParent
+        if (hwndCaret && DllCall("user32\IsWindow", "Ptr", hwndCaret, "Int")) {
+            candidates.Push(hwndCaret)
+        }
+        if (hwndActiveGI && DllCall("user32\IsWindow", "Ptr", hwndActiveGI, "Int")) {
+            candidates.Push(hwndActiveGI)
         }
     }
+    ; 最後に必ずアクティブ窓を候補へ
+    candidates.Push(hwndActive)
+
+    GA_ROOT := 2
+
+    ; 1) 候補自身に HIMC があるならそれを返す
+    ; 2) なければルート祖先に HIMC があるか確認して返す
+    for (candidate in candidates) {
+        himc := DllCall("imm32\ImmGetContext", "Ptr", candidate, "Ptr")
+        if (himc) {
+            DllCall("imm32\ImmReleaseContext", "Ptr", candidate, "Ptr", himc)
+            return candidate
+        }
+        root := DllCall("user32\GetAncestor", "Ptr", candidate, "UInt", GA_ROOT, "Ptr")
+        if (root) {
+            himc2 := DllCall("imm32\ImmGetContext", "Ptr", root, "Ptr")
+            if (himc2) {
+                DllCall("imm32\ImmReleaseContext", "Ptr", root, "Ptr", himc2)
+                return root
+            }
+        }
+    }
+    ; どれも取れない場合は最後にアクティブを返す
     return hwndActive
 }
 
