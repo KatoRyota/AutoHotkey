@@ -753,37 +753,41 @@ SetImeOpen(on) {
     if (!hwnd) {
         return false
     }
+
     WM_IME_CONTROL := 0x0283
     IMC_SETOPENSTATUS := 0x0006
+    SMTO_BLOCK := 0x0001
+    SMTO_ABORTIFHUNG := 0x0002
 
     needFallback := true
     himc := DllCall("imm32\ImmGetContext", "Ptr", hwnd, "Ptr")
     if (himc) {
-        open := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
+        isOpen := DllCall("imm32\ImmGetOpenStatus", "Ptr", himc, "Int")
         ok := 1
-        if ((on && !open) || (!on && open)) {
+        if ((on && !isOpen) || (!on && isOpen)) {
             ok := DllCall("imm32\ImmSetOpenStatus", "Ptr", himc, "Int", on ? 1 : 0, "Int")
         }
         DllCall("imm32\ImmReleaseContext", "Ptr", hwnd, "Ptr", himc)
-        if ((on && open) || (!on && !open) || ok) {
+        if ((on && isOpen) || (!on && !isOpen) || ok) {
             needFallback := false
         }
     }
     if (needFallback) {
         hIME := DllCall("imm32\ImmGetDefaultIMEWnd", "Ptr", hwnd, "Ptr")
-        if (hIME) {
-            r := DllCall("user32\SendMessageTimeoutW"
-                , "Ptr", hIME
-                , "UInt", WM_IME_CONTROL
-                , "UPtr", IMC_SETOPENSTATUS
-                , "UPtr", on ? 1 : 0
-                , "UInt", 0x0002
-                , "UInt", 100
-                , "UPtr*", 0)
-            if (!r) {
-                return false
-            }
-        } else {
+        if (!hIME) {
+            return false
+        }
+        r := DllCall("user32\SendMessageTimeoutW"
+            , "Ptr", hIME
+            , "UInt", WM_IME_CONTROL
+            , "UPtr", IMC_SETOPENSTATUS
+            , "UPtr", on ? 1 : 0
+            , "UInt", SMTO_BLOCK | SMTO_ABORTIFHUNG
+            , "UInt", 100
+            , "UPtr*", 0
+            , "UInt")
+
+        if (!r) {
             return false
         }
     }
@@ -792,24 +796,29 @@ SetImeOpen(on) {
 
 ; フォーカス中のHWNDを取得（なければアクティブ→最終的にAウィンドウ）
 GetFocusOrActiveHwnd() {
-    PtrSize := A_PtrSize
-    size := 4 + 4 + (PtrSize * 6) + 16
+    hwndActive := WinExist("A")
+    if (!hwndActive) {
+        return 0
+    }
+
+    threadId := DllCall("user32\GetWindowThreadProcessId", "Ptr", hwndActive, "UInt*", 0, "UInt")
+
+    size := 4 + 4 + (A_PtrSize * 6) + 16
     buf := Buffer(size, 0)
-    NumPut("UInt", size, buf, 0)
+    NumPut("UInt", size, buf)
 
-    ok := DllCall("user32\GetGUIThreadInfo", "UInt", 0, "Ptr", buf, "Int")
-
+    ok := DllCall("user32\GetGUIThreadInfo", "UInt", threadId, "Ptr", buf, "Int")
     if (ok) {
-        hwndActive := NumGet(buf, 8, "Ptr")
-        hwndFocus := NumGet(buf, 8 + PtrSize, "Ptr")
+        hwndFocus := NumGet(buf, 8 + A_PtrSize, "Ptr")
         if (hwndFocus) {
             return hwndFocus
         }
-        if (hwndActive) {
-            return hwndActive
+        hwndFocusParent := NumGet(buf, 8, "Ptr")
+        if (hwndFocusParent) {
+            return hwndFocusParent
         }
     }
-    return WinExist("A")
+    return hwndActive
 }
 
 ; マウスの設定をリセットします。
