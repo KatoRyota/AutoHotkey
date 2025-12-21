@@ -867,7 +867,8 @@ SetImeOpen(on, timeoutMs := 300) {
     return ImeToggleViaVkIfNeeded(hwnd, desired)
 }
 
-; フォーカス中のHWNDを取得（なければアクティブ→最終的にAウィンドウ）
+; フォーカス／キャレット／アクティブの候補から、
+; IME コンテキストが取得できる窓（なければそのルート祖先）を返す。
 GetFocusOrActiveHwnd() {
     hwndActive := WinExist("A")
     if (!hwndActive) {
