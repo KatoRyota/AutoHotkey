@@ -169,17 +169,20 @@ hotkeys := [
     },
     {
         key: "Space & z",
-        func: (*) => Translate(env.translation.const.bing.appPath, env.translation.const.bing.url, env.translation.const.bing.title),
+        func: (*) => Translate(env.translation.const.bing.appPath, env.translation.const.bing.url, env.translation.const
+            .bing.title),
         desc: "クリップボードの内容を翻訳します。Microsoft Translator"
     },
     {
         key: "Space & x",
-        func: (*) => Translate(env.translation.const.google.appPath, env.translation.const.google.url, env.translation.const.google.title),
+        func: (*) => Translate(env.translation.const.google.appPath, env.translation.const.google.url, env.translation.const
+            .google.title),
         desc: "クリップボードの内容を翻訳します。Google 翻訳"
     },
     {
         key: "Space & c",
-        func: (*) => Translate(env.translation.const.deepl.appPath, env.translation.const.deepl.url, env.translation.const.deepl.title),
+        func: (*) => Translate(env.translation.const.deepl.appPath, env.translation.const.deepl.url, env.translation.const
+            .deepl.title),
         desc: "クリップボードの内容を翻訳します。DeepL翻訳"
     },
     {
@@ -667,7 +670,10 @@ ShowHotkeys() {
     popup.SetFont("s12 q5", "Meiryo UI")
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
-    listView := popup.Add("ListView", listViewOptions, ["ホットキー", "説明"])
+    listView := popup.Add("ListView", listViewOptions, [
+        "ホットキー",
+        "説明"
+    ])
 
     for (i in hotkeys) {
         listView.Add("", i.key, i.desc)
@@ -712,7 +718,10 @@ ShowEnvironment() {
     popup.SetFont("s12 q5", "Meiryo UI")
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
-    listView := popup.Add("ListView", listViewOptions, ["設定項目", "値"])
+    listView := popup.Add("ListView", listViewOptions, [
+        "設定項目",
+        "値"
+    ])
 
     listView.Add("", "マウススピード", GetMouseSpeed())
     listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
@@ -916,7 +925,8 @@ Translate(appPath, url, title) {
 
     text := UrlEncode(A_Clipboard)
     formattedUrl := Format(url, text)
-    launchedApp := Format("`"{1}`" --app=`"{2}`" --disable-extensions --disable-plugins --disable-dev-tools", appPath, formattedUrl)
+    launchedApp := Format("`"{1}`" --app=`"{2}`" --disable-extensions --disable-plugins --disable-dev-tools", appPath,
+        formattedUrl)
 
     WinGetPos(&activeX, &activeY, &activeW, &activeH, "A")
 
@@ -927,14 +937,14 @@ Translate(appPath, url, title) {
     }
 
     try {
-        Run(launchedApp,, "Hide", &outputVarPID)
+        Run(launchedApp, , "Hide", &outputVarPID)
     } catch as e {
         ; 何もしない。アプリの起動に失敗した場合、即座に処理終了。
         return
     }
 
     WinWait(title)
-    WinGetPos(,, &newW, &newH, title)
+    WinGetPos(, , &newW, &newH, title)
 
     x := activeX + Floor((activeW - newW) / 2)
     y := activeY + Floor((activeH - newH) / 2)
@@ -949,12 +959,12 @@ UrlEncode(str) {
     StrPut(str, buf, "UTF-8")
 
     out := ""
-    Loop byteLen {
+    loop byteLen {
         ch := NumGet(buf, A_Index - 1, "UChar")
-        if ( (ch >= 0x30 && ch <= 0x39)    ; 0-9
-          || (ch >= 0x41 && ch <= 0x5A)    ; A-Z
-          || (ch >= 0x61 && ch <= 0x7A)    ; a-z
-          || ch = 45 || ch = 46 || ch = 95 || ch = 126 ) { ; - . _ ~
+        if ((ch >= 0x30 && ch <= 0x39)    ; 0-9
+        || (ch >= 0x41 && ch <= 0x5A)    ; A-Z
+        || (ch >= 0x61 && ch <= 0x7A)    ; a-z
+        || ch = 45 || ch = 46 || ch = 95 || ch = 126) { ; - . _ ~
             out .= Chr(ch)
         } else {
             out .= "%" . Format("{:02X}", ch)
