@@ -134,13 +134,18 @@ hotkeys := [
     },
     {
         key: "Space & f",
-        func: (*) => IME_SET(0),
-        desc: "IMEをオフにします。"
+        func: (*) => ImeOnHanEisu(),
+        desc: "IMEをオンにします（半英数）"
     },
     {
         key: "Space & j",
-        func: (*) => IME_SET(1),
-        desc: "IMEをオンにします。"
+        func: (*) => ImeOnHiragana(),
+        desc: "IMEをオンにします（ひらがな）"
+    },
+    {
+        key: "Space & k",
+        func: (*) => ImeOnZenEisu(),
+        desc: "IMEをオンにします（全英数）"
     },
     {
         key: "Space & q",
@@ -745,6 +750,21 @@ ShowEnvironment() {
     popupOptions := Format("x{1} y{2}", x, y)
 
     popup.Show(popupOptions)
+}
+
+ImeOnHiragana() {
+    IME_SET(1)
+    IME_SetConvMode(9)
+}
+
+ImeOnZenEisu() {
+    IME_SET(1)
+    IME_SetConvMode(8)
+}
+
+ImeOnHanEisu() {
+    IME_SET(1)
+    IME_SetConvMode(16)
 }
 
 ; マウスの設定をリセットします。
