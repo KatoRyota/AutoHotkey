@@ -5,6 +5,7 @@
 #UseHook
 #Include IMEv2.ahk
 #Include Translation.ahk
+#Include Mouse.ahk
 
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
 ; https://github.com/KatoRyota/AutoHotkey
@@ -15,17 +16,6 @@ InstallMouseHook()
 SendMode("Input")
 SendLevel(100)
 OnExit(ExitFunc)
-
-const := {
-    SPI_GETMOUSESPEED: 0x0070,
-    SPI_SETMOUSESPEED: 0x0071,
-    SPI_GETWHEELSCROLLLINES: 0x0068,
-    SPI_SETWHEELSCROLLLINES: 0x0069,
-    SPI_GETWHEELSCROLLCHARS: 0x006C,
-    SPI_SETWHEELSCROLLCHARS: 0x006D,
-    SPIF_UPDATEINIFILE: 0x0001,
-    SPIF_SENDCHANGE: 0x0002
-}
 
 env := {
     mouse: {
@@ -853,87 +843,6 @@ ChangePageScrollSpeedMode() {
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
-}
-
-; マウススピードを取得します。
-GetMouseSpeed() {
-    spiGetmousespeed := const.SPI_GETMOUSESPEED
-    mouseSpeed := Buffer(4)
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiGetmousespeed,
-        "UInt", 0,
-        "Ptr", mouseSpeed,
-        "UInt", 0)
-
-    return NumGet(mouseSpeed, 0, "UInt")
-}
-
-; マウススピードを変更します。
-SetMouseSpeed(mouseSpeed) {
-    spiSetmousespeed := const.SPI_SETMOUSESPEED
-    spifUpdateinifile := const.SPIF_UPDATEINIFILE
-    spifSendchange := const.SPIF_SENDCHANGE
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiSetmousespeed,
-        "UInt", 0,
-        "UInt", mouseSpeed,
-        "UInt", spifUpdateinifile | spifSendchange)
-}
-
-; 垂直スクロールの行数を取得します。
-GetWheelScrollLines() {
-    spiGetwheelscrolllines := const.SPI_GETWHEELSCROLLLINES
-    wheelScrollLines := Buffer(4)
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiGetwheelscrolllines,
-        "UInt", 0,
-        "Ptr", wheelScrollLines,
-        "UInt", 0)
-
-    return NumGet(wheelScrollLines, 0, "UInt")
-}
-
-; 垂直スクロールの行数を変更します。
-SetWheelScrollLines(wheelScrollLines) {
-    spiSetwheelscrolllines := const.SPI_SETWHEELSCROLLLINES
-    spifUpdateinifile := const.SPIF_UPDATEINIFILE
-    spifSendchange := const.SPIF_SENDCHANGE
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiSetwheelscrolllines,
-        "UInt", wheelScrollLines,
-        "UInt", 0,
-        "UInt", spifUpdateinifile | spifSendchange)
-}
-
-; 水平スクロールの文字数を取得します。
-GetWheelScrollChars() {
-    spiGetwheelscrollchars := const.SPI_GETWHEELSCROLLCHARS
-    wheelScrollChars := Buffer(4)
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiGetwheelscrollchars,
-        "UInt", 0,
-        "Ptr", wheelScrollChars,
-        "UInt", 0)
-
-    return NumGet(wheelScrollChars, 0, "UInt")
-}
-
-; 水平スクロールの文字数を変更します。
-SetWheelScrollChars(wheelScrollChars) {
-    spiSetwheelscrollchars := const.SPI_SETWHEELSCROLLCHARS
-    spifUpdateinifile := const.SPIF_UPDATEINIFILE
-    spifSendchange := const.SPIF_SENDCHANGE
-
-    DllCall("SystemParametersInfo",
-        "UInt", spiSetwheelscrollchars,
-        "UInt", wheelScrollChars,
-        "UInt", 0,
-        "UInt", spifUpdateinifile | spifSendchange)
 }
 
 ; スクリプトの終了処理を行います。
