@@ -140,22 +140,22 @@ hotkeys := [
     },
     {
         key: "Space & q",
-        func: (*) => ResetMouseSettings(),
+        func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
     },
     {
         key: "Space & w",
-        func: (*) => ChangeHorizontalScrollDirectionMode(),
+        func: (*) => ChangeHorizontalScrollDirectionMode(env),
         desc: "水平 スクロール方向モードに切り替えます。"
     },
     {
         key: "Space & e",
-        func: (*) => ChangeSlowMouseSpeedMode(),
+        func: (*) => ChangeSlowMouseSpeedMode(env),
         desc: "スロウ マウススピードモードに切り替えます。"
     },
     {
         key: "Space & r",
-        func: (*) => ChangePageScrollSpeedMode(),
+        func: (*) => ChangePageScrollSpeedMode(env),
         desc: "1画面 スクロールスピードモードに切り替えます。"
     },
     {
@@ -518,47 +518,47 @@ hotkeys := [
     },
     {
         key: "WheelUp",
-        func: (*) => WheelUpOrLeft(),
+        func: (*) => WheelUpOrLeft(env),
         desc: "<<WheelUp>>／<<WheelLeft>>キーを送信します。"
     },
     {
         key: "WheelDown",
-        func: (*) => WheelDownOrRight(),
+        func: (*) => WheelDownOrRight(env),
         desc: "<<WheelDown>>／<<WheelRight>>キーを送信します。"
     },
     {
         key: "XButton1",
-        func: (*) => ResetMouseSettings(),
+        func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
     },
     {
         key: "XButton2",
-        func: (*) => ChangeHorizontalScrollDirectionMode(),
+        func: (*) => ChangeHorizontalScrollDirectionMode(env),
         desc: "水平 スクロール方向モードに切り替えます。"
     },
     {
         key: "^XButton1",
-        func: (*) => ResetMouseSettings(),
+        func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
     },
     {
         key: "^XButton2",
-        func: (*) => ChangeSlowMouseSpeedMode(),
+        func: (*) => ChangeSlowMouseSpeedMode(env),
         desc: "スロウ マウススピードモードに切り替えます。"
     },
     {
         key: "+XButton1",
-        func: (*) => ResetMouseSettings(),
+        func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
     },
     {
         key: "+XButton2",
-        func: (*) => ChangePageScrollSpeedMode(),
+        func: (*) => ChangePageScrollSpeedMode(env),
         desc: "1画面 スクロールスピードモードに切り替えます。"
     },
     {
         key: "^+XButton1",
-        func: (*) => ResetMouseSettings(),
+        func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
     },
     {
@@ -758,120 +758,9 @@ ImeOnHanEisu() {
     IME_SetConvMode(16)
 }
 
-; マウスの設定をリセットします。
-ResetMouseSettings() {
-    ChangeDefaultMouseSpeedMode()
-    ChangeVerticalScrollDirectionMode()
-    ChangeDefaultScrollSpeedMode()
-}
-
-; デフォルト マウススピードモードに切り替えます。
-ChangeDefaultMouseSpeedMode() {
-    currentSpeed := env.mouse.state.pointer.speed
-    defaultName := env.mouse.const.pointer.speed.default.name
-
-    if (currentSpeed = defaultName) {
-        return
-    }
-
-    speedValue := env.mouse.const.pointer.speed.default.value
-    env.mouse.state.pointer.speed := defaultName
-
-    SetMouseSpeed(speedValue)
-}
-
-; スロウ マウススピードモードに切り替えます。
-ChangeSlowMouseSpeedMode() {
-    currentSpeed := env.mouse.state.pointer.speed
-    slowName := env.mouse.const.pointer.speed.slow.name
-
-    if (currentSpeed = slowName) {
-        return
-    }
-
-    speedValue := env.mouse.const.pointer.speed.slow.value
-    env.mouse.state.pointer.speed := slowName
-
-    SetMouseSpeed(speedValue)
-}
-
-; 垂直 スクロール方向モードに切り替えます。
-ChangeVerticalScrollDirectionMode() {
-    direction := env.mouse.const.scroll.direction.vertical
-    env.mouse.state.scroll.direction := direction
-}
-
-; 水平 スクロール方向モードに切り替えます。
-ChangeHorizontalScrollDirectionMode() {
-    direction := env.mouse.const.scroll.direction.horizontal
-    env.mouse.state.scroll.direction := direction
-}
-
-; デフォルト スクロールスピードモードに切り替えます。
-ChangeDefaultScrollSpeedMode() {
-    currentSpeed := env.mouse.state.scroll.speed
-    defaultName := env.mouse.const.scroll.speed.default.name
-
-    if (currentSpeed = defaultName) {
-        return
-    }
-
-    speed := defaultName
-    verticalSpeed := env.mouse.const.scroll.speed.default.vertical
-    horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
-
-    env.mouse.state.scroll.speed := speed
-
-    SetWheelScrollLines(verticalSpeed)
-    SetWheelScrollChars(horizontalSpeed)
-}
-
-; 1画面 スクロールスピードモードに切り替えます。
-ChangePageScrollSpeedMode() {
-    currentSpeed := env.mouse.state.scroll.speed
-    pageName := env.mouse.const.scroll.speed.page.name
-
-    if (currentSpeed = pageName) {
-        return
-    }
-
-    speed := pageName
-    verticalSpeed := env.mouse.const.scroll.speed.page.vertical
-    horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
-
-    env.mouse.state.scroll.speed := speed
-
-    SetWheelScrollLines(verticalSpeed)
-    SetWheelScrollChars(horizontalSpeed)
-}
-
 ; スクリプトの終了処理を行います。
 ExitFunc(exitReason, exitCode) {
-    ResetMouseSettings()
-}
-
-; 『WheelUp』／『WheelLeft』キーを送信します。
-WheelUpOrLeft() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelLeft}")
-    } else {
-        Send("{WheelUp}")
-    }
-}
-
-; 『WheelDown』／『WheelRight』キーを送信します。
-WheelDownOrRight() {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
-
-    if (direction = horizontalDirection) {
-        Send("{WheelRight}")
-    } else {
-        Send("{WheelDown}")
-    }
+    ResetMouseSettings(env)
 }
 
 ; ホットキーを登録します。
