@@ -3,7 +3,7 @@
 #Warn
 #InputLevel 100
 #UseHook
-#Include IMEv2.ahk
+#Include IME.ahk
 #Include Translation.ahk
 #Include Mouse.ahk
 
@@ -741,21 +741,6 @@ ShowEnvironment() {
     popupOptions := Format("x{1} y{2}", x, y)
 
     popup.Show(popupOptions)
-}
-
-ImeOnHiragana() {
-    IME_SET(1)
-    IME_SetConvMode(9)
-}
-
-ImeOnZenEisu() {
-    IME_SET(1)
-    IME_SetConvMode(8)
-}
-
-ImeOnHanEisu() {
-    IME_SET(1)
-    IME_SetConvMode(16)
 }
 
 ; スクリプトの終了処理を行います。
