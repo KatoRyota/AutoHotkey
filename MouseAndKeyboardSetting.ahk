@@ -5,7 +5,8 @@
 #Include Environment.ahk
 #Include IME.ahk
 #Include Mouse.ahk
-#Include Translation.ahk
+; #Include Translation.ahk
+#Include Translation-v2.ahk
 #Include Information.ahk
 
 ; ソースコードは、以下のGitHubリポジトリで管理してます。
