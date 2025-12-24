@@ -5,7 +5,7 @@
 #Include Environment.ahk
 #Include IME.ahk
 #Include Mouse.ahk
-; #Include Translation.ahk
+#Include Translation.ahk
 #Include Translation-v2.ahk
 #Include Information.ahk
 
@@ -81,21 +81,18 @@ hotkeys := [
     },
     {
         key: "Space & z",
-        func: (*) => Translate(env.translation.const.bing.appPath, env.translation.const.bing.url, env.translation.const
-            .bing.title),
-        desc: "クリップボードの内容を翻訳します。Microsoft Translator"
+        func: (*) => OpenOrActivateMicrosoftTranslator(),
+        desc: "Microsoft Translatorを起動 or アクティブ化します。"
     },
     {
         key: "Space & x",
-        func: (*) => Translate(env.translation.const.google.appPath, env.translation.const.google.url, env.translation.const
-            .google.title),
-        desc: "クリップボードの内容を翻訳します。Google 翻訳"
+        func: (*) => OpenOrActivateGoogleTranslate(),
+        desc: "Google 翻訳アプリを起動 or アクティブ化"
     },
     {
         key: "Space & c",
-        func: (*) => Translate(env.translation.const.deepl.appPath, env.translation.const.deepl.url, env.translation.const
-            .deepl.title),
-        desc: "クリップボードの内容を翻訳します。DeepL翻訳"
+        func: (*) => OpenOrActivateDeepLTranslate(),
+        desc: "DeepL翻訳を起動 or アクティブ化します。"
     },
     {
         key: "!Space",
