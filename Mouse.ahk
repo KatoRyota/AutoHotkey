@@ -31,6 +31,18 @@ WheelDownOrRight(env) {
     }
 }
 
+; 垂直 スクロール方向モードに切り替えます。
+ChangeVerticalScrollDirectionMode(env) {
+    direction := env.mouse.const.scroll.direction.vertical
+    env.mouse.state.scroll.direction := direction
+}
+
+; 水平 スクロール方向モードに切り替えます。
+ChangeHorizontalScrollDirectionMode(env) {
+    direction := env.mouse.const.scroll.direction.horizontal
+    env.mouse.state.scroll.direction := direction
+}
+
 ; デフォルト マウススピードモードに切り替えます。
 ChangeDefaultMouseSpeedMode(env) {
     currentSpeed := env.mouse.state.pointer.speed
@@ -59,18 +71,6 @@ ChangeSlowMouseSpeedMode(env) {
     env.mouse.state.pointer.speed := slowName
 
     SetMouseSpeed(speedValue)
-}
-
-; 垂直 スクロール方向モードに切り替えます。
-ChangeVerticalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.vertical
-    env.mouse.state.scroll.direction := direction
-}
-
-; 水平 スクロール方向モードに切り替えます。
-ChangeHorizontalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.horizontal
-    env.mouse.state.scroll.direction := direction
 }
 
 ; デフォルト スクロールスピードモードに切り替えます。
