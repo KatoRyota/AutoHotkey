@@ -23,11 +23,6 @@ OnExit(ExitFunc)
 
 hotkeys := [
     {
-        key: "^#h",
-        func: (*) => ShowHotkeys(env),
-        desc: "スクリプト内で登録された、ホットキーの一覧を表示します。"
-    },
-    {
         key: "^#s",
         func: (*) => ShowEnvironment(env),
         desc: "環境情報を表示します。"
@@ -581,6 +576,7 @@ RegisterHotkeys() {
     for (i in hotkeys) {
         Hotkey(i.key, i.func)
     }
+    Hotkey("^#h", (*) => ShowHotkeys(env, hotkeys))
 }
 
 RegisterHotkeys()

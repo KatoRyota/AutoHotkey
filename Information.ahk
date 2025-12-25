@@ -8,8 +8,9 @@
  * スクリプト内で登録された、ホットキーの一覧を表示します。
  * 
  * @param env 環境情報オブジェクト
+ * @param hotkeys スクリプト内で登録された、ホットキーのリスト
  */
-ShowHotkeys(env) {
+ShowHotkeys(env, hotkeys) {
     oldPopup := env.popup.state.hotkeys
     listViewWidth := env.popup.const.hotkeys.listView.width
     listViewHeight := env.popup.const.hotkeys.listView.height
