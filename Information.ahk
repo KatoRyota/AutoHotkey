@@ -1,4 +1,5 @@
 #Requires AutoHotkey v2.0
+#Include Mouse.ahk
 /**
  * 環境情報 表示関連の関数群
  */
