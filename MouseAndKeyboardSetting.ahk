@@ -8,9 +8,12 @@
 #Include Translation.ahk
 #Include Translation-v2.ahk
 #Include Information.ahk
-
-; ソースコードは、以下のGitHubリポジトリで管理してます。
-; https://github.com/KatoRyota/AutoHotkey
+/**
+ * マウスとキーボードの設定を行うスクリプト
+ * 
+ * ソースコードは、以下のGitHubリポジトリで管理してます。
+ * https://github.com/KatoRyota/AutoHotkey
+ */
 
 ProcessSetPriority("AboveNormal")
 InstallKeybdHook()
@@ -22,7 +25,7 @@ hotkeys := [
     {
         key: "^#h",
         func: (*) => ShowHotkeys(env),
-        desc: "ホットキー一覧を表示します。"
+        desc: "スクリプト内で登録された、ホットキーの一覧を表示します。"
     },
     {
         key: "^#s",
@@ -82,17 +85,17 @@ hotkeys := [
     {
         key: "Space & z",
         func: (*) => OpenOrActivateMicrosoftTranslator(),
-        desc: "Microsoft Translatorを起動 or アクティブ化します。"
+        desc: "Microsoft Translatorを起動又は、アクティブ化します。"
     },
     {
         key: "Space & x",
         func: (*) => OpenOrActivateGoogleTranslate(),
-        desc: "Google 翻訳を起動 or アクティブ化します。"
+        desc: "Google 翻訳を起動又は、アクティブ化します。"
     },
     {
         key: "Space & c",
         func: (*) => OpenOrActivateDeepLTranslate(),
-        desc: "DeepL翻訳を起動 or アクティブ化します。"
+        desc: "DeepL翻訳を起動又は、アクティブ化します。"
     },
     {
         key: "!Space",
@@ -432,12 +435,12 @@ hotkeys := [
     {
         key: "WheelUp",
         func: (*) => WheelUpOrLeft(env),
-        desc: "<<WheelUp>>／<<WheelLeft>>キーを送信します。"
+        desc: "{WheelUp}／{WheelLeft} を送信します。"
     },
     {
         key: "WheelDown",
         func: (*) => WheelDownOrRight(env),
-        desc: "<<WheelDown>>／<<WheelRight>>キーを送信します。"
+        desc: "{WheelDown}／{WheelRight} を送信します。"
     },
     {
         key: "XButton1",
@@ -561,12 +564,19 @@ hotkeys := [
     }
 ]
 
-; スクリプトの終了処理を行います。
+/**
+ * スクリプトの終了処理を行います。
+ * 
+ * @param exitReason 終了理由
+ * @param exitCode 終了コード
+ */
 ExitFunc(exitReason, exitCode) {
     ResetMouseSettings(env)
 }
 
-; ホットキーを登録します。
+/**
+ * ホットキーを登録します。
+ */
 RegisterHotkeys() {
     for (i in hotkeys) {
         Hotkey(i.key, i.func)

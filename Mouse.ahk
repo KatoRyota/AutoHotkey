@@ -1,13 +1,24 @@
 #Requires AutoHotkey v2.0
+/**
+ * マウス操作関連の関数群
+ */
 
-; マウスの設定をリセットします。
+/**
+ * マウスの設定をリセットします。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ResetMouseSettings(env) {
     ChangeDefaultMouseSpeedMode(env)
     ChangeVerticalScrollDirectionMode(env)
     ChangeDefaultScrollSpeedMode(env)
 }
 
-; 『WheelUp』／『WheelLeft』キーを送信します。
+/**
+ * {WheelUp}／{WheelLeft} を送信します。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 WheelUpOrLeft(env) {
     direction := env.mouse.state.scroll.direction
     horizontalDirection := env.mouse.const.scroll.direction.horizontal
@@ -19,7 +30,11 @@ WheelUpOrLeft(env) {
     }
 }
 
-; 『WheelDown』／『WheelRight』キーを送信します。
+/**
+ * {WheelDown}／{WheelRight} を送信します。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 WheelDownOrRight(env) {
     direction := env.mouse.state.scroll.direction
     horizontalDirection := env.mouse.const.scroll.direction.horizontal
@@ -31,19 +46,31 @@ WheelDownOrRight(env) {
     }
 }
 
-; 垂直 スクロール方向モードに切り替えます。
+/**
+ * 垂直 スクロール方向モードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangeVerticalScrollDirectionMode(env) {
     direction := env.mouse.const.scroll.direction.vertical
     env.mouse.state.scroll.direction := direction
 }
 
-; 水平 スクロール方向モードに切り替えます。
+/**
+ * 水平 スクロール方向モードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangeHorizontalScrollDirectionMode(env) {
     direction := env.mouse.const.scroll.direction.horizontal
     env.mouse.state.scroll.direction := direction
 }
 
-; デフォルト マウススピードモードに切り替えます。
+/**
+ * デフォルト マウススピードモードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangeDefaultMouseSpeedMode(env) {
     currentSpeed := env.mouse.state.pointer.speed
     defaultName := env.mouse.const.pointer.speed.default.name
@@ -58,7 +85,11 @@ ChangeDefaultMouseSpeedMode(env) {
     SetMouseSpeed(speedValue)
 }
 
-; スロウ マウススピードモードに切り替えます。
+/**
+ * スロウ マウススピードモードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangeSlowMouseSpeedMode(env) {
     currentSpeed := env.mouse.state.pointer.speed
     slowName := env.mouse.const.pointer.speed.slow.name
@@ -73,7 +104,11 @@ ChangeSlowMouseSpeedMode(env) {
     SetMouseSpeed(speedValue)
 }
 
-; デフォルト スクロールスピードモードに切り替えます。
+/**
+ * デフォルト スクロールスピードモードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangeDefaultScrollSpeedMode(env) {
     currentSpeed := env.mouse.state.scroll.speed
     defaultName := env.mouse.const.scroll.speed.default.name
@@ -92,7 +127,11 @@ ChangeDefaultScrollSpeedMode(env) {
     SetWheelScrollChars(horizontalSpeed)
 }
 
-; 1画面 スクロールスピードモードに切り替えます。
+/**
+ * 1画面 スクロールスピードモードに切り替えます。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ChangePageScrollSpeedMode(env) {
     currentSpeed := env.mouse.state.scroll.speed
     pageName := env.mouse.const.scroll.speed.page.name
@@ -111,7 +150,11 @@ ChangePageScrollSpeedMode(env) {
     SetWheelScrollChars(horizontalSpeed)
 }
 
-; マウススピードを取得します。
+/**
+ * マウススピードを取得します。
+ * 
+ * @returns {Number} マウススピード (1〜20)
+ */
 GetMouseSpeed() {
     spiGetmousespeed := 0x0070
     mouseSpeed := Buffer(4)
@@ -125,7 +168,11 @@ GetMouseSpeed() {
     return NumGet(mouseSpeed, 0, "UInt")
 }
 
-; マウススピードを変更します。
+/**
+ * マウススピードを変更します。
+ * 
+ * @param mouseSpeed マウススピード (1〜20)
+ */
 SetMouseSpeed(mouseSpeed) {
     spiSetmousespeed := 0x0071
     spifUpdateinifile := 0x0001
@@ -138,7 +185,11 @@ SetMouseSpeed(mouseSpeed) {
         "UInt", spifUpdateinifile | spifSendchange)
 }
 
-; 垂直スクロールの行数を取得します。
+/**
+ * 垂直スクロールの行数を取得します。
+ * 
+ * @returns {Number} 垂直スクロールの行数
+ */
 GetWheelScrollLines() {
     spiGetwheelscrolllines := 0x0068
     wheelScrollLines := Buffer(4)
@@ -152,7 +203,11 @@ GetWheelScrollLines() {
     return NumGet(wheelScrollLines, 0, "UInt")
 }
 
-; 垂直スクロールの行数を変更します。
+/**
+ * 垂直スクロールの行数を変更します。
+ * 
+ * @param wheelScrollLines 垂直スクロールの行数
+ */
 SetWheelScrollLines(wheelScrollLines) {
     spiSetwheelscrolllines := 0x0069
     spifUpdateinifile := 0x0001
@@ -165,7 +220,11 @@ SetWheelScrollLines(wheelScrollLines) {
         "UInt", spifUpdateinifile | spifSendchange)
 }
 
-; 水平スクロールの文字数を取得します。
+/**
+ * 水平スクロールの文字数を取得します。
+ * 
+ * @returns {Number} 水平スクロールの文字数
+ */
 GetWheelScrollChars() {
     spiGetwheelscrollchars := 0x006C
     wheelScrollChars := Buffer(4)
@@ -179,7 +238,11 @@ GetWheelScrollChars() {
     return NumGet(wheelScrollChars, 0, "UInt")
 }
 
-; 水平スクロールの文字数を変更します。
+/**
+ * 水平スクロールの文字数を変更します。
+ * 
+ * @param wheelScrollChars 水平スクロールの文字数
+ */
 SetWheelScrollChars(wheelScrollChars) {
     spiSetwheelscrollchars := 0x006D
     spifUpdateinifile := 0x0001

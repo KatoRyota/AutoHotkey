@@ -1,6 +1,15 @@
 #Requires AutoHotkey v2.0
+/**
+ * @deprecated 翻訳関連の関数群
+ */
 
-; クリップボードの内容を翻訳します。
+/**
+ * クリップボードの内容を翻訳し、翻訳結果を新しいウィンドウに表示します。
+ * 
+ * @param appPath Microsoft Edgeの実行ファイルのパス 例) C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe
+ * @param url 翻訳サービスのURL 例) https://translate.google.com/?sl=en&tl=ja&text={1}&op=translate
+ * @param title 翻訳サービスのウィンドウ タイトル 例) Google 翻訳
+ */
 Translate(appPath, url, title) {
 
     if (!ClipWait(2)) {
@@ -37,7 +46,11 @@ Translate(appPath, url, title) {
     WinMove(x, y, newW, newH, title)
 }
 
-; URLエンコードします。
+/**
+ * URLエンコードを行います。
+ * 
+ * @param str 
+ */
 UrlEncode(str) {
     byteLen := StrPut(str, "UTF-8") - 1
     buf := Buffer(byteLen)

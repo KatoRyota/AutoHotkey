@@ -1,8 +1,11 @@
 #Requires AutoHotkey v2.0
+/**
+ * 翻訳関連の関数群
+ */
 
-;---------------------------------------
-; Google 翻訳を起動 or アクティブ化します。
-;---------------------------------------
+/**
+ * Google 翻訳を起動又は、アクティブ化します。
+ */
 OpenOrActivateGoogleTranslate() {
     appTitle := "Google 翻訳"
 
@@ -16,9 +19,10 @@ OpenOrActivateGoogleTranslate() {
         )
     }
 }
-;---------------------------------------
-; Microsoft Translatorを起動 or アクティブ化します。
-;---------------------------------------
+
+/**
+ * Microsoft Translatorを起動又は、アクティブ化します。
+ */
 OpenOrActivateMicrosoftTranslator() {
     appTitle := "Microsoft Translator"
 
@@ -32,9 +36,10 @@ OpenOrActivateMicrosoftTranslator() {
         )
     }
 }
-;---------------------------------------
-; DeepL翻訳を起動 or アクティブ化します。
-;---------------------------------------
+
+/**
+ * DeepL翻訳を起動又は、アクティブ化します。
+ */
 OpenOrActivateDeepLTranslate() {
     appTitle := "DeepL翻訳"
 

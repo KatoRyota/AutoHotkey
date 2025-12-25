@@ -1,6 +1,13 @@
 #Requires AutoHotkey v2.0
+/**
+ * 環境情報 表示関連の関数群
+ */
 
-; ホットキー一覧を表示します。
+/**
+ * スクリプト内で登録された、ホットキーの一覧を表示します。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ShowHotkeys(env) {
     oldPopup := env.popup.state.hotkeys
     listViewWidth := env.popup.const.hotkeys.listView.width
@@ -46,7 +53,11 @@ ShowHotkeys(env) {
     popup.Show(popupOptions)
 }
 
-; 環境情報を表示します。
+/**
+ * 環境情報を表示します。
+ * 
+ * @param env 環境情報オブジェクト
+ */
 ShowEnvironment(env) {
     scrollDirection := env.mouse.state.scroll.direction
     scrollSpeed := env.mouse.state.scroll.speed
