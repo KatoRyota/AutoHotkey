@@ -87,7 +87,7 @@ hotkeys := [
     {
         key: "Space & x",
         func: (*) => OpenOrActivateGoogleTranslate(),
-        desc: "Google 翻訳アプリを起動 or アクティブ化"
+        desc: "Google 翻訳を起動 or アクティブ化します。"
     },
     {
         key: "Space & c",
