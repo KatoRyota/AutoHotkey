@@ -59,8 +59,8 @@ ShowHotkeys(env) {
  * @param env 環境情報オブジェクト
  */
 ShowEnvironment(env) {
-    scrollDirection := env.mouse.state.scroll.direction
-    scrollSpeed := env.mouse.state.scroll.speed
+    scrollDirection := env.mouse.state.scroll.direction.name
+    scrollSpeed := env.mouse.state.scroll.speed.name
     oldPopup := env.popup.state.env
     listViewWidth := env.popup.const.env.listView.width
     listViewHeight := env.popup.const.env.listView.height
