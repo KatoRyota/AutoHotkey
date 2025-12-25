@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
+#Include Mouse.ahk
 /**
- * @deprecated 環境設定関連の定数・変数群
+ * 環境設定関連の定数・変数群
  */
 
 env := {
@@ -20,8 +21,12 @@ env := {
             },
             scroll: {
                 direction: {
-                    vertical: "vertical",
-                    horizontal: "horizontal"
+                    vertical: {
+                        name: "vertical"
+                    },
+                    horizontal: {
+                        name: "horizontal"
+                    }
                 },
                 speed: {
                     page: {
@@ -39,11 +44,17 @@ env := {
         },
         state: {
             pointer: {
-                speed: "default"
+                speed: {
+                    name: "default"
+                }
             },
             scroll: {
-                direction: "vertical",
-                speed: "default"
+                direction: {
+                    name: "vertical"
+                },
+                speed: {
+                    name: "default"
+                }
             }
         }
     },

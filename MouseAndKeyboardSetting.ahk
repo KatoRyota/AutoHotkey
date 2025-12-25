@@ -2,8 +2,7 @@
 #SingleInstance Force
 #Warn
 #UseHook
-; #Include Environment.ahk
-#Include Environment-v2.ahk
+#Include Environment.ahk
 #Include IME.ahk
 #Include Mouse.ahk
 ; #Include Translation.ahk
