@@ -1,6 +1,6 @@
 #Requires AutoHotkey v2.0
 /**
- * 環境設定関連の定数・変数群
+ * @deprecated 環境設定関連の定数・変数群
  */
 
 env := {
