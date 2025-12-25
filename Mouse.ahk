@@ -20,8 +20,8 @@ ResetMouseSettings(env) {
  * @param env 環境情報オブジェクト
  */
 WheelUpOrLeft(env) {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+    direction := env.mouse.state.scroll.direction.name
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal.name
 
     if (direction = horizontalDirection) {
         Send("{WheelLeft}")
@@ -36,8 +36,8 @@ WheelUpOrLeft(env) {
  * @param env 環境情報オブジェクト
  */
 WheelDownOrRight(env) {
-    direction := env.mouse.state.scroll.direction
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal
+    direction := env.mouse.state.scroll.direction.name
+    horizontalDirection := env.mouse.const.scroll.direction.horizontal.name
 
     if (direction = horizontalDirection) {
         Send("{WheelRight}")
@@ -52,8 +52,8 @@ WheelDownOrRight(env) {
  * @param env 環境情報オブジェクト
  */
 ChangeVerticalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.vertical
-    env.mouse.state.scroll.direction := direction
+    direction := env.mouse.const.scroll.direction.vertical.name
+    env.mouse.state.scroll.direction.name := direction
 }
 
 /**
@@ -62,8 +62,8 @@ ChangeVerticalScrollDirectionMode(env) {
  * @param env 環境情報オブジェクト
  */
 ChangeHorizontalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.horizontal
-    env.mouse.state.scroll.direction := direction
+    direction := env.mouse.const.scroll.direction.horizontal.name
+    env.mouse.state.scroll.direction.name := direction
 }
 
 /**
@@ -72,7 +72,7 @@ ChangeHorizontalScrollDirectionMode(env) {
  * @param env 環境情報オブジェクト
  */
 ChangeDefaultMouseSpeedMode(env) {
-    currentSpeed := env.mouse.state.pointer.speed
+    currentSpeed := env.mouse.state.pointer.speed.name
     defaultName := env.mouse.const.pointer.speed.default.name
 
     if (currentSpeed = defaultName) {
@@ -80,7 +80,7 @@ ChangeDefaultMouseSpeedMode(env) {
     }
 
     speedValue := env.mouse.const.pointer.speed.default.value
-    env.mouse.state.pointer.speed := defaultName
+    env.mouse.state.pointer.speed.name := defaultName
 
     SetMouseSpeed(speedValue)
 }
@@ -91,7 +91,7 @@ ChangeDefaultMouseSpeedMode(env) {
  * @param env 環境情報オブジェクト
  */
 ChangeSlowMouseSpeedMode(env) {
-    currentSpeed := env.mouse.state.pointer.speed
+    currentSpeed := env.mouse.state.pointer.speed.name
     slowName := env.mouse.const.pointer.speed.slow.name
 
     if (currentSpeed = slowName) {
@@ -99,7 +99,7 @@ ChangeSlowMouseSpeedMode(env) {
     }
 
     speedValue := env.mouse.const.pointer.speed.slow.value
-    env.mouse.state.pointer.speed := slowName
+    env.mouse.state.pointer.speed.name := slowName
 
     SetMouseSpeed(speedValue)
 }
@@ -110,7 +110,7 @@ ChangeSlowMouseSpeedMode(env) {
  * @param env 環境情報オブジェクト
  */
 ChangeDefaultScrollSpeedMode(env) {
-    currentSpeed := env.mouse.state.scroll.speed
+    currentSpeed := env.mouse.state.scroll.speed.name
     defaultName := env.mouse.const.scroll.speed.default.name
 
     if (currentSpeed = defaultName) {
@@ -121,7 +121,7 @@ ChangeDefaultScrollSpeedMode(env) {
     verticalSpeed := env.mouse.const.scroll.speed.default.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
 
-    env.mouse.state.scroll.speed := speed
+    env.mouse.state.scroll.speed.name := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
@@ -133,7 +133,7 @@ ChangeDefaultScrollSpeedMode(env) {
  * @param env 環境情報オブジェクト
  */
 ChangePageScrollSpeedMode(env) {
-    currentSpeed := env.mouse.state.scroll.speed
+    currentSpeed := env.mouse.state.scroll.speed.name
     pageName := env.mouse.const.scroll.speed.page.name
 
     if (currentSpeed = pageName) {
@@ -144,7 +144,7 @@ ChangePageScrollSpeedMode(env) {
     verticalSpeed := env.mouse.const.scroll.speed.page.vertical
     horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
 
-    env.mouse.state.scroll.speed := speed
+    env.mouse.state.scroll.speed.name := speed
 
     SetWheelScrollLines(verticalSpeed)
     SetWheelScrollChars(horizontalSpeed)
