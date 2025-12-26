@@ -13,9 +13,6 @@
  * https://github.com/KatoRyota/AutoHotkey
  */
 
-ProcessSetPriority("AboveNormal")
-InstallKeybdHook()
-InstallMouseHook()
 SendMode("Input")
 OnExit(ExitFunc)
 
