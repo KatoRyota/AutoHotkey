@@ -1,9 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include Mouse.ahk
 /**
- * 環境設定関連の定数・変数群
+ * 環境情報
  */
-
 env := {
     mouse: {
         const: {
