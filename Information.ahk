@@ -23,7 +23,7 @@ ShowHotkeys(env, hotkeys) {
 
     popup := Gui("", "ホットキー一覧")
     env.popup.state.hotkeys := popup
-    popup.Opt("+AlwaysOnTop -DPIScale")
+    popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "Meiryo UI")
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
@@ -42,16 +42,16 @@ ShowHotkeys(env, hotkeys) {
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
 
-    WinGetPos(&wx, &wy, &ww, &wh, "A")
-
-    popup.Show("AutoSize Hide")
-    popup.GetPos(, , &gw, &gh)
-
-    x := wx + Floor((ww - gw) / 2)
-    y := wy + Floor((wh - gh) / 2)
-
-    popupOptions := Format("x{1} y{2}", x, y)
-
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&cx, &cy)
+    count := MonitorGetCount()
+    loop count {
+        MonitorGet(A_Index, &l, &t, &r, &b)
+        if (cx >= l && cx < r && cy >= t && cy < b) {
+            break
+        }
+    }
+    popupOptions := Format("x{1} y{2}", l, t)
     popup.Show(popupOptions)
 }
 
@@ -75,7 +75,7 @@ ShowEnvironment(env) {
 
     popup := Gui("", "環境情報")
     env.popup.state.env := popup
-    popup.Opt("+AlwaysOnTop -DPIScale")
+    popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "Meiryo UI")
 
     listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
@@ -95,15 +95,15 @@ ShowEnvironment(env) {
     popup.OnEvent("Close", (*) => popup.Destroy())
     popup.OnEvent("Escape", (*) => popup.Destroy())
 
-    WinGetPos(&wx, &wy, &ww, &wh, "A")
-
-    popup.Show("AutoSize Hide")
-    popup.GetPos(, , &gw, &gh)
-
-    x := wx + Floor((ww - gw) / 2)
-    y := wy + Floor((wh - gh) / 2)
-
-    popupOptions := Format("x{1} y{2}", x, y)
-
+    CoordMode("Mouse", "Screen")
+    MouseGetPos(&cx, &cy)
+    count := MonitorGetCount()
+    loop count {
+        MonitorGet(A_Index, &l, &t, &r, &b)
+        if (cx >= l && cx < r && cy >= t && cy < b) {
+            break
+        }
+    }
+    popupOptions := Format("x{1} y{2}", l, t)
     popup.Show(popupOptions)
 }
