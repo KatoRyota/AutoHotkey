@@ -15,7 +15,7 @@ OpenOrActivateGoogleTranslate() {
         } else {
             WinRestore(appTitle)
             WinActivate(appTitle)
-            WinWaitActive(appTitle, , 0.2)
+            WinWaitActive(appTitle, , 2)
         }
     } else {
         Run(
@@ -36,7 +36,7 @@ OpenOrActivateMicrosoftTranslator() {
         } else {
             WinRestore(appTitle)
             WinActivate(appTitle)
-            WinWaitActive(appTitle, , 0.2)
+            WinWaitActive(appTitle, , 2)
         }
     } else {
         Run(
@@ -57,7 +57,7 @@ OpenOrActivateDeepLTranslate() {
         } else {
             WinRestore(appTitle)
             WinActivate(appTitle)
-            WinWaitActive(appTitle, , 0.2)
+            WinWaitActive(appTitle, , 2)
         }
     } else {
         Run(
