@@ -26,6 +26,28 @@ CloseTab() {
 }
 
 /**
+ * ウィンドウの次のタブに移動します。
+ */
+NextTab() {
+    if (WinActive("ahk_exe explorer.exe")) {
+        Send("^{Tab}")
+    } else {
+        Send("^{PgDn}")
+    }
+}
+
+/**
+ * ウィンドウの前のタブに移動します。
+ */
+PreviousTab() {
+    if (WinActive("ahk_exe explorer.exe")) {
+        Send("^+{Tab}")
+    } else {
+        Send("^{PgUp}")
+    }
+}
+
+/**
  * {WheelUp}／{WheelLeft} を送信します。
  * 
  * @param env 環境情報オブジェクト

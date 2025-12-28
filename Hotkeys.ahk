@@ -419,6 +419,16 @@ hotkeys := [
         desc: "ウィンドウのタブを閉じます。"
     },
     {
+        key: "^PgDn",
+        func: (*) => NextTab(),
+        desc: "ウィンドウの次のタブに移動します。"
+    },
+    {
+        key: "^PgUp",
+        func: (*) => PreviousTab(),
+        desc: "ウィンドウの前のタブに移動します。"
+    },
+    {
         key: "WheelUp",
         func: (*) => WheelUpOrLeft(env),
         desc: "{WheelUp}／{WheelLeft} を送信します。"
