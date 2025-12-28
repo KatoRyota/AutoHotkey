@@ -15,6 +15,17 @@ ResetMouseSettings(env) {
 }
 
 /**
+ * ウィンドウのタブを閉じます。
+ */
+CloseTab() {
+    if (WinActive("ahk_exe Code.exe")) {
+        Send("^{F4}")
+    } else {
+        Send("^w")
+    }
+}
+
+/**
  * {WheelUp}／{WheelLeft} を送信します。
  * 
  * @param env 環境情報オブジェクト

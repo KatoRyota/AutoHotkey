@@ -414,6 +414,11 @@ hotkeys := [
         desc: "【Alt+F24】キーを送信します。"
     },
     {
+        key: "^w",
+        func: (*) => CloseTab(),
+        desc: "ウィンドウのタブを閉じます。"
+    },
+    {
         key: "WheelUp",
         func: (*) => WheelUpOrLeft(env),
         desc: "{WheelUp}／{WheelLeft} を送信します。"
