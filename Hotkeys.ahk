@@ -24,6 +24,21 @@ hotkeys := [
         desc: "キーヒストリーを表示します。組み込みKeyHistory関数。"
     },
     {
+        key: "!Space",
+        func: (*) => Send("{Space}"),
+        desc: "【Space】キーを送信します。"
+    },
+    {
+        key: "^Space",
+        func: (*) => Send("^{Space}"),
+        desc: "【Ctrl+Space】キーを送信します。"
+    },
+    {
+        key: "+Space",
+        func: (*) => Send("+{Space}"),
+        desc: "【Shift+Space】キーを送信します。"
+    },
+    {
         key: "Space & f",
         func: (*) => ImeOnHanEisu(),
         desc: "IMEをオンにします（半英数）"
@@ -39,29 +54,14 @@ hotkeys := [
         desc: "IMEをオンにします（全英数）"
     },
     {
+        key: "Space & LWin",
+        func: (*) => Send("{LWin}"),
+        desc: "【LWin】キーを送信します。"
+    },
+    {
         key: "Space & q",
         func: (*) => ResetMouseSettings(env),
         desc: "マウスの設定をリセットします。"
-    },
-    {
-        key: "Space & w",
-        func: (*) => ChangeHorizontalScrollDirectionMode(env),
-        desc: "水平 スクロール方向モードに切り替えます。"
-    },
-    {
-        key: "Space & e",
-        func: (*) => ChangeSlowMouseSpeedMode(env),
-        desc: "スロウ マウススピードモードに切り替えます。"
-    },
-    {
-        key: "Space & r",
-        func: (*) => ChangePageScrollSpeedMode(env),
-        desc: "1画面 スクロールスピードモードに切り替えます。"
-    },
-    {
-        key: "Space & a",
-        func: (*) => Send("^{F4}"),
-        desc: "【Ctrl+F4】キーを送信します。"
     },
     {
         key: "Space & z",
@@ -77,21 +77,6 @@ hotkeys := [
         key: "Space & c",
         func: (*) => OpenOrActivateDeepLTranslate(),
         desc: "DeepL翻訳を起動又は、アクティブ化します。"
-    },
-    {
-        key: "!Space",
-        func: (*) => Send("{Space}"),
-        desc: "【Space】キーを送信します。"
-    },
-    {
-        key: "^Space",
-        func: (*) => Send("^{Space}"),
-        desc: "【Ctrl+Space】キーを送信します。"
-    },
-    {
-        key: "+Space",
-        func: (*) => Send("+{Space}"),
-        desc: "【Shift+Space】キーを送信します。"
     },
     {
         key: "F1 & 1",
@@ -431,12 +416,12 @@ hotkeys := [
     {
         key: "WheelUp",
         func: (*) => WheelUpOrLeft(env),
-        desc: "{WheelUp}／{WheelLeft} を送信します。"
+        desc: "【WheelUp・WheelLeft】ボタンを送信します。"
     },
     {
         key: "WheelDown",
         func: (*) => WheelDownOrRight(env),
-        desc: "{WheelDown}／{WheelRight} を送信します。"
+        desc: "【WheelDown・WheelRight】ボタンを送信します。"
     },
     {
         key: "XButton1",

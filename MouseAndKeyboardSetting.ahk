@@ -26,6 +26,11 @@ ExitFunc(exitReason, exitCode) {
     ResetMouseSettings(env)
 }
 
+; 単体のAltキーとWinキーを無効化。
+~LAlt:: Send("{Blind}{vkE8}")
+~RAlt:: Send("{Blind}{vkE8}")
+~LWin:: Send("{Blind}{vkE8}")
+
 /**
  * ホットキーを登録します。
  */
