@@ -11,9 +11,9 @@ Space:: return
 CapsLock & Space:: Send("{Space}")
 
 ; 単独のAlt, Winキーを無効化。
-~LAlt:: Send("{Blind}{vkE8}")
-~RAlt:: Send("{Blind}{vkE8}")
-~LWin:: Send("{Blind}{vkE8}")
+*~LAlt:: Send("{Blind}{vkE8}")
+*~RAlt:: Send("{Blind}{vkE8}")
+*~LWin:: Send("{Blind}{vkE8}")
 CapsLock & LWin:: Send("{LWin}")
 
 ; NumLock, ScrollLock キーを無効化。
