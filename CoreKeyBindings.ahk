@@ -9,8 +9,12 @@ SetCapsLockState("AlwaysOff")
 ; Spaceキーの修飾キー化。
 *Space:: Send("{Blind}{vkE8}")
 CapsLock & Space:: Send("{Space}")
+!Space:: Send("{Space}")
+^Space:: Send("^{Space}")
++Space:: Send("+{Space}")
+^+Space:: Send("^+{Space}")
 
-; 単独のCtrl, Shift, Alt, Winキーを無効化。
+; 単独のCtrl, Shift, Alt, Win キーを無効化。
 *~LCtrl:: Send("{Blind}{vkE8}")
 *~RCtrl:: Send("{Blind}{vkE8}")
 *~LShift:: Send("{Blind}{vkE8}")

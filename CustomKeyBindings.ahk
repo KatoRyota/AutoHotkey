@@ -5,11 +5,6 @@
 #Include Translation.ahk
 #Include Utility.ahk
 
-!Space:: Send("{Space}")
-^Space:: Send("^{Space}")
-+Space:: Send("+{Space}")
-^+Space:: Send("^+{Space}")
-
 Space & f:: ImeOnHanEisu()
 Space & j:: ImeOnHiragana()
 Space & k:: ImeOnZenEisu()
