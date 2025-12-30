@@ -6,7 +6,7 @@
 #Include IME.ahk
 #Include Mouse.ahk
 #Include Translation.ahk
-#Include Information.ahk
+#Include Utility.ahk
 #Include CoreKeyBindings.ahk
 #Include CustomKeyBindings.ahk
 /**
