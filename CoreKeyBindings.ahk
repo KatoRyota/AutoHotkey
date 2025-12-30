@@ -4,25 +4,21 @@ SendMode("Input")
 
 ; CapsLockキーの修飾キー化。
 SetCapsLockState("AlwaysOff")
-*CapsLock:: Send("{Blind}{vkE8}")
+CapsLock:: return
 
 ; Spaceキーの修飾キー化。
-*Space:: Send("{Blind}{vkE8}")
+Space:: return
 CapsLock & Space:: Send("{Space}")
 !Space:: Send("{Space}")
 ^Space:: Send("^{Space}")
 +Space:: Send("+{Space}")
 ^+Space:: Send("^+{Space}")
 
-; 単独のCtrl, Shift, Alt, Win キーを無効化。
-*~LCtrl:: Send("{Blind}{vkE8}")
-*~RCtrl:: Send("{Blind}{vkE8}")
-*~LShift:: Send("{Blind}{vkE8}")
-*~RShift:: Send("{Blind}{vkE8}")
-*~LAlt:: Send("{Blind}{vkE8}")
-*~RAlt:: Send("{Blind}{vkE8}")
-*~LWin:: Send("{Blind}{vkE8}")
-*~RWin:: Send("{Blind}{vkE8}")
+; 単独の Alt, Win キーを無効化。
+~LAlt:: Send("{Blind}{vkE8}")
+~RAlt:: Send("{Blind}{vkE8}")
+~LWin:: Send("{Blind}{vkE8}")
+~RWin:: Send("{Blind}{vkE8}")
 CapsLock & LWin:: Send("{LWin}")
 
 ; NumLock, ScrollLock キーを無効化。
