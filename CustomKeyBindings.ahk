@@ -18,9 +18,9 @@ Space & k:: ImeOnZenEisu()
 ^#l:: ListHotkeys()
 ^#k:: KeyHistory()
 
-Space & z:: OpenOrActivateMicrosoftTranslator()
-Space & x:: OpenOrActivateGoogleTranslate()
-Space & c:: OpenOrActivateDeepLTranslate()
+Space & z:: OpenMicrosoftTranslator()
+Space & x:: OpenGoogleTranslate()
+Space & c:: OpenDeepLTranslate()
 
 ^w:: CloseTab()
 ^PgDn:: NextTab()

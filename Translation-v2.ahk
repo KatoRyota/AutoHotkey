@@ -6,7 +6,7 @@
 /**
  * Google 翻訳を起動又は、アクティブ化します。
  */
-OpenOrActivateGoogleTranslate() {
+OpenGoogleTranslate() {
     appTitle := "Google 翻訳"
 
     if WinExist(appTitle) {
@@ -27,7 +27,7 @@ OpenOrActivateGoogleTranslate() {
 /**
  * Microsoft Translatorを起動又は、アクティブ化します。
  */
-OpenOrActivateMicrosoftTranslator() {
+OpenMicrosoftTranslator() {
     appTitle := "Microsoft Translator"
 
     if WinExist(appTitle) {
@@ -48,7 +48,7 @@ OpenOrActivateMicrosoftTranslator() {
 /**
  * DeepL翻訳を起動又は、アクティブ化します。
  */
-OpenOrActivateDeepLTranslate() {
+OpenDeepLTranslate() {
     appTitle := "DeepL翻訳"
 
     if WinExist(appTitle) {
