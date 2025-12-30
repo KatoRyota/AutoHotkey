@@ -5,57 +5,6 @@
  */
 
 /**
- * @deprecated スクリプト内で登録された、ホットキーの一覧を表示します。
- * 
- * @param env 環境情報オブジェクト
- * @param hotkeys スクリプト内で登録された、ホットキーのリスト
- */
-ShowHotkeys(env, hotkeys) {
-    oldPopup := env.popup.state.hotkeys
-    listViewWidth := env.popup.const.hotkeys.listView.width
-    listViewHeight := env.popup.const.hotkeys.listView.height
-
-    try {
-        oldPopup.Destroy()
-    } catch as e {
-        ; 何もしない。ポップアップが存在しない場合、エラーが発生するが、初期化処理の為、問題なし。
-    }
-
-    popup := Gui("", "ホットキー一覧")
-    env.popup.state.hotkeys := popup
-    popup.Opt("+AlwaysOnTop")
-    popup.SetFont("s12 q5", "Meiryo UI")
-
-    listViewOptions := Format("NoSort Grid ReadOnly w{1} h{2}", listViewWidth, listViewHeight)
-    listView := popup.Add("ListView", listViewOptions, [
-        "ホットキー",
-        "説明"
-    ])
-
-    for (i in hotkeys) {
-        listView.Add("", i.key, i.desc)
-    }
-
-    listView.ModifyCol()
-
-    popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
-    popup.OnEvent("Close", (*) => popup.Destroy())
-    popup.OnEvent("Escape", (*) => popup.Destroy())
-
-    CoordMode("Mouse", "Screen")
-    MouseGetPos(&cx, &cy)
-    count := MonitorGetCount()
-    loop count {
-        MonitorGet(A_Index, &l, &t, &r, &b)
-        if (cx >= l && cx < r && cy >= t && cy < b) {
-            break
-        }
-    }
-    popupOptions := Format("x{1} y{2}", l, t)
-    popup.Show(popupOptions)
-}
-
-/**
  * 環境情報を表示します。
  * 
  * @param env 環境情報オブジェクト
