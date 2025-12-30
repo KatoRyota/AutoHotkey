@@ -5,7 +5,8 @@
 #Include Environment.ahk
 #Include Mouse.ahk
 #Include Information.ahk
-#Include Hotkeys.ahk
+#Include CoreKeyBindings.ahk
+#Include CustomKeyBindings.ahk
 /**
  * マウスとキーボードの設定を行うスクリプト
  * 
@@ -13,7 +14,6 @@
  * https://github.com/KatoRyota/AutoHotkey
  */
 
-SendMode("Input")
 OnExit(ExitFunc)
 
 /**
@@ -25,20 +25,3 @@ OnExit(ExitFunc)
 ExitFunc(exitReason, exitCode) {
     ResetMouseSettings(env)
 }
-
-; 単体のAltキーとWinキーを無効化。
-~LAlt:: Send("{Blind}{vkE8}")
-~RAlt:: Send("{Blind}{vkE8}")
-~LWin:: Send("{Blind}{vkE8}")
-
-/**
- * ホットキーを登録します。
- */
-RegisterHotkeys() {
-    for (i in hotkeys) {
-        Hotkey(i.key, i.func)
-    }
-    Hotkey("^#h", (*) => ShowHotkeys(env, hotkeys))
-}
-
-RegisterHotkeys()
