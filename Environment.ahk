@@ -59,12 +59,6 @@ env := {
     },
     popup: {
         const: {
-            hotkeys: {
-                listView: {
-                    width: 1100,
-                    height: 700
-                }
-            },
             env: {
                 listView: {
                     width: 1100,
@@ -73,27 +67,7 @@ env := {
             }
         },
         state: {
-            hotkeys: {},
             env: {}
-        }
-    },
-    translation: {
-        const: {
-            bing: {
-                appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-                url: "https://www.bing.com/translator?from=en&to=ja&text={1}",
-                title: "Microsoft Translator"
-            },
-            google: {
-                appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-                url: "https://translate.google.com/?sl=en&tl=ja&text={1}&op=translate",
-                title: "Google 翻訳"
-            },
-            deepl: {
-                appPath: "C:\Program Files (x86)\Microsoft\Edge\Application\msedge.exe",
-                url: "https://www.deepl.com/translator#en/ja/{1}",
-                title: "DeepL翻訳"
-            }
         }
     }
 }

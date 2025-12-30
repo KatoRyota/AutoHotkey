@@ -10,7 +10,7 @@
 #Include CoreKeyBindings.ahk
 #Include CustomKeyBindings.ahk
 /**
- * マウスとキーボードの設定を行うスクリプト
+ * キーバインド設定スクリプト
  * 
  * ソースコードは、以下のGitHubリポジトリで管理してます。
  * https://github.com/KatoRyota/AutoHotkey
