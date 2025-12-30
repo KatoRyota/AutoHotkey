@@ -1,54 +1,59 @@
-# MouseAndKeyboardSetting
+# AutoHotkey キーバインド & ユーティリティ集
 
-Windows 向けの AutoHotkey v2 スクリプトです。マウス速度・スクロール方向・スクロール速度の切替、クリップボード翻訳、拡張キー送信などをホットキーで操作できます。
+このリポジトリは、AutoHotkey v2.0 用のキーバインド設定・IME制御・マウス操作・翻訳ツール起動など、日常作業を効率化するためのスクリプト集です。
 
-- スクリプト本体: [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk)
+## 特徴
 
-## 主な機能
+- **CapsLock/Spaceの修飾キー化**  
+  [CoreKeyBindings.ahk](CoreKeyBindings.ahk) でCapsLockやSpaceを修飾キーとして活用。
+- **カスタムキーバインド**  
+  [CustomKeyBindings.ahk](CustomKeyBindings.ahk) でIME切替や翻訳ツール起動など独自ショートカットを多数定義。
+- **マウス・スクロール制御**  
+  [Mouse.ahk](Mouse.ahk) と [Environment.ahk](Environment.ahk) でマウス速度やスクロール方向・速度を柔軟に切替。
+- **IME制御**  
+  [IME.ahk](IME.ahk)・[IMEv2.ahk](IMEv2.ahk) でIMEのON/OFFや入力モード切替を簡単に実現。
+- **翻訳ツールの即時起動**  
+  [Translation.ahk](Translation.ahk) でGoogle翻訳、Microsoft Translator、DeepLをショートカットで起動。
+- **環境情報のGUI表示**  
+  [Utility.ahk](Utility.ahk) で現在のマウス・スクロール設定をGUIで確認可能。
 
-- マウス設定の即時切替（ポインタ速度・スクロール方向・スクロール速度）
-- クリップボード翻訳（Bing / Google / DeepL）
-- ホットキー一覧・環境情報の GUI 表示
-- F13〜F24 などの拡張キー送信や XButton の多機能割当
+## ファイル構成
 
-## 必要環境
+- [CoreKeyBindings.ahk](CoreKeyBindings.ahk) … 基本キーバインド定義
+- [CustomKeyBindings.ahk](CustomKeyBindings.ahk) … カスタムキーバインド定義
+- [Environment.ahk](Environment.ahk) … 環境情報管理
+- [IME.ahk](IME.ahk) / [IMEv2.ahk](IMEv2.ahk) … IME制御
+- [KeyBindings.ahk](KeyBindings.ahk) … メインスクリプト
+- [Mouse.ahk](Mouse.ahk) … マウス・スクロール制御
+- [Translation.ahk](Translation.ahk) … 翻訳ツール起動
+- [Utility.ahk](Utility.ahk) … 環境情報表示
 
-- Windows 10 / 11
-- [AutoHotkey v2](https://www.autohotkey.com/)
-- Microsoft Edge（翻訳機能をアプリモードで起動する場合）
+## 使い方
 
-## インストール
+1. [AutoHotkey v2.0](https://www.autohotkey.com/) をインストール
+2. このリポジトリをクローンまたはダウンロード
+3. `KeyBindings.ahk` を実行
 
-1. AutoHotkey v2 をインストール
-2. 本リポジトリをクローンまたは ZIP ダウンロード
-3. [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk) をダブルクリックして実行
+## 主なショートカット例
 
-## 使い方（主要ホットキー）
-
-- Ctrl + Win + H: ホットキー一覧表示（[`ShowHotkeys()`](MouseAndKeyboardSetting.ahk)）
-- Ctrl + Win + S: 環境情報表示（[`ShowEnvironment()`](MouseAndKeyboardSetting.ahk)）
-- Space + s / d / f: クリップボード翻訳（[`Translate()`](MouseAndKeyboardSetting.ahk)）
-- XButton1 / XButton2: マウス設定リセット／水平スクロール切替
-- WheelUp / WheelDown: 現在のスクロール方向に合わせて左右/上下を送信（[`WheelUpOrLeft()`](MouseAndKeyboardSetting.ahk), [`WheelDownOrRight()`](MouseAndKeyboardSetting.ahk)）
-
-詳細なホットキー一覧はスクリプト実行後に Ctrl + Win + H を押して確認してください。
-
-## 主要関数（実装場所: [MouseAndKeyboardSetting.ahk](MouseAndKeyboardSetting.ahk)）
-
-- [`ShowHotkeys()`](MouseAndKeyboardSetting.ahk) — ホットキー一覧を GUI 表示
-- [`ShowEnvironment()`](MouseAndKeyboardSetting.ahk) — マウス・スクロール設定を GUI 表示
-- [`ResetMouseSettings()`](MouseAndKeyboardSetting.ahk) — マウス設定をデフォルトに戻す
-- マウス速度・スクロール切替: [`ChangeDefaultMouseSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangeSlowMouseSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangeDefaultScrollSpeedMode()`](MouseAndKeyboardSetting.ahk), [`ChangePageScrollSpeedMode()`](MouseAndKeyboardSetting.ahk) など
-- [`Translate(appPath, url, title)`](MouseAndKeyboardSetting.ahk) — クリップボード翻訳（内部で [`UrlEncode()`](MouseAndKeyboardSetting.ahk) を利用）
-- [`RegisterHotkeys()`](MouseAndKeyboardSetting.ahk) — ホットキー登録
-
-## カスタマイズ
-
-- 翻訳先ブラウザや URL はスクリプト上部の `env.translation.const` を編集して変更できます。
-- スクロール速度やポインタ速度の値は `env.mouse.const` 内で定義済みなので必要に応じて調整してください。
+| キー操作  | 機能                     |
+| --------- | ------------------------ |
+| Space & f | IME 半英数オン           |
+| Space & j | IME ひらがなオン         |
+| Space & k | IME 全英数オン           |
+| ^#s       | 環境情報GUI表示          |
+| Space & z | Microsoft Translator起動 |
+| Space & x | Google翻訳起動           |
+| Space & c | DeepL翻訳起動            |
+| XButton1  | マウス設定リセット       |
+| XButton2  | 水平スクロール切替       |
+| ^XButton2 | マウススピード低速       |
+| +XButton2 | 1画面スクロール          |
 
 ## ライセンス
 
-MIT License
+各ファイルの先頭コメントを参照してください。
 
-© 2025 Ryota Kato
+---
+
+AutoHotkeyスクリプトの詳細やカスタマイズ方法は、[各スクリプトファイル](CoreKeyBindings.ahk)のコメントを参照してください。
