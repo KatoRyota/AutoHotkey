@@ -10,10 +10,15 @@ SetCapsLockState("AlwaysOff")
 *Space:: Send("{Blind}{vkE8}")
 CapsLock & Space:: Send("{Space}")
 
-; 単独のAlt, Winキーを無効化。
+; 単独のCtrl, Shift, Alt, Winキーを無効化。
+*~LCtrl:: Send("{Blind}{vkE8}")
+*~RCtrl:: Send("{Blind}{vkE8}")
+*~LShift:: Send("{Blind}{vkE8}")
+*~RShift:: Send("{Blind}{vkE8}")
 *~LAlt:: Send("{Blind}{vkE8}")
 *~RAlt:: Send("{Blind}{vkE8}")
 *~LWin:: Send("{Blind}{vkE8}")
+*~RWin:: Send("{Blind}{vkE8}")
 CapsLock & LWin:: Send("{LWin}")
 
 ; NumLock, ScrollLock キーを無効化。
