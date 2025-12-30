@@ -1,5 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include Mouse.ahk
+/**
+ * ユーティリティ関数群
+ */
 
 /**
  * スクリプトの終了処理を行います。
