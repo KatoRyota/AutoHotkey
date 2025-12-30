@@ -4,10 +4,10 @@ SendMode("Input")
 
 ; CapsLockキーの修飾キー化。
 SetCapsLockState("AlwaysOff")
-CapsLock:: return
+*CapsLock:: Send("{Blind}{vkE8}")
 
 ; Spaceキーの修飾キー化。
-Space:: return
+*Space:: Send("{Blind}{vkE8}")
 CapsLock & Space:: Send("{Space}")
 
 ; 単独のAlt, Winキーを無効化。
