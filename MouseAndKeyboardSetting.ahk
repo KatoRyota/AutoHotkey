@@ -3,7 +3,9 @@
 #Warn
 #UseHook
 #Include Environment.ahk
+#Include IME.ahk
 #Include Mouse.ahk
+#Include Translation-v2.ahk
 #Include Information.ahk
 #Include CoreKeyBindings.ahk
 #Include CustomKeyBindings.ahk
