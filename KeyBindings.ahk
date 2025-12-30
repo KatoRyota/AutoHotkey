@@ -5,7 +5,7 @@
 #Include Environment.ahk
 #Include IME.ahk
 #Include Mouse.ahk
-#Include Translation-v2.ahk
+#Include Translation.ahk
 #Include Information.ahk
 #Include CoreKeyBindings.ahk
 #Include CustomKeyBindings.ahk
