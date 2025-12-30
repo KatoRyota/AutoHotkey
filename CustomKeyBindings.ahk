@@ -8,6 +8,7 @@
 !Space:: Send("{Space}")
 ^Space:: Send("^{Space}")
 +Space:: Send("+{Space}")
+^+Space:: Send("^+{Space}")
 
 Space & f:: ImeOnHanEisu()
 Space & j:: ImeOnHiragana()
