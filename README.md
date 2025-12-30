@@ -1,59 +1,77 @@
-# AutoHotkey キーバインド & ユーティリティ集
+# AutoHotkey Keybindings & Utility Scripts
 
-このリポジトリは、AutoHotkey v2.0 用のキーバインド設定・IME制御・マウス操作・翻訳ツール起動など、日常作業を効率化するためのスクリプト集です。
+## 概要
 
-## 特徴
+本リポジトリは、Windows環境での作業効率を向上させるためのAutoHotkey v2.0用キーバインド・ユーティリティスクリプト集です。  
+CapsLockやSpaceキーの修飾キー化、IME操作、マウス・スクロール制御、翻訳アプリの起動など、多彩な機能を提供します。
+
+## 主な機能
 
 - **CapsLock/Spaceの修飾キー化**  
-  [CoreKeyBindings.ahk](CoreKeyBindings.ahk) でCapsLockやSpaceを修飾キーとして活用。
-- **カスタムキーバインド**  
-  [CustomKeyBindings.ahk](CustomKeyBindings.ahk) でIME切替や翻訳ツール起動など独自ショートカットを多数定義。
+  誤操作防止やキー割り当ての拡張。
+- **IME操作**  
+  ショートカットでIMEのオン/オフや入力モード（半英数・ひらがな・全英数）を切替。
 - **マウス・スクロール制御**  
-  [Mouse.ahk](Mouse.ahk) と [Environment.ahk](Environment.ahk) でマウス速度やスクロール方向・速度を柔軟に切替。
-- **IME制御**  
-  [IME.ahk](IME.ahk)・[IMEv2.ahk](IMEv2.ahk) でIMEのON/OFFや入力モード切替を簡単に実現。
-- **翻訳ツールの即時起動**  
-  [Translation.ahk](Translation.ahk) でGoogle翻訳、Microsoft Translator、DeepLをショートカットで起動。
-- **環境情報のGUI表示**  
-  [Utility.ahk](Utility.ahk) で現在のマウス・スクロール設定をGUIで確認可能。
+  スクロール方向・スピードの動的切替、マウススピードの変更。
+- **翻訳アプリの起動**  
+  Google翻訳、Microsoft Translator、DeepL翻訳をショートカットで起動・アクティブ化。
+- **環境情報の表示**  
+  マウスやスクロールの設定値をGUIで表示。
+- **タブ操作**  
+  Ctrl+Wなどでタブを閉じる、PgDn/PgUpでタブ移動。
 
 ## ファイル構成
 
-- [CoreKeyBindings.ahk](CoreKeyBindings.ahk) … 基本キーバインド定義
-- [CustomKeyBindings.ahk](CustomKeyBindings.ahk) … カスタムキーバインド定義
-- [Environment.ahk](Environment.ahk) … 環境情報管理
-- [IME.ahk](IME.ahk) / [IMEv2.ahk](IMEv2.ahk) … IME制御
-- [KeyBindings.ahk](KeyBindings.ahk) … メインスクリプト
-- [Mouse.ahk](Mouse.ahk) … マウス・スクロール制御
-- [Translation.ahk](Translation.ahk) … 翻訳ツール起動
-- [Utility.ahk](Utility.ahk) … 環境情報表示
+- [`KeyBindings.ahk`](KeyBindings.ahk)  
+  メインスクリプト。各種設定・キーバインドのエントリーポイント。
+- [`CoreKeyBindings.ahk`](CoreKeyBindings.ahk)  
+  基本的なキーバインド定義。
+- [`CustomKeyBindings.ahk`](CustomKeyBindings.ahk)  
+  ユーザー独自のキーバインド定義。
+- [`Environment.ahk`](Environment.ahk)  
+  環境情報（マウス・ポップアップ等）の管理。
+- [`IME.ahk`](IME.ahk), [`IMEv2.ahk`](IMEv2.ahk)  
+  IME制御用関数群。
+- [`Mouse.ahk`](Mouse.ahk)  
+  マウス・スクロール制御関数群。
+- [`Translation.ahk`](Translation.ahk)  
+  翻訳アプリ起動用関数群。
+- [`Utility.ahk`](Utility.ahk)  
+  補助的なユーティリティ関数群。
 
 ## 使い方
 
-1. [AutoHotkey v2.0](https://www.autohotkey.com/) をインストール
-2. このリポジトリをクローンまたはダウンロード
-3. `KeyBindings.ahk` を実行
+1. [AutoHotkey v2.0](https://www.autohotkey.com/) をインストールしてください。
+2. このリポジトリを任意のフォルダにクローンまたはダウンロードします。
+3. `KeyBindings.ahk` をダブルクリック、またはAutoHotkeyで実行してください。
 
 ## 主なショートカット例
 
-| キー操作  | 機能                     |
-| --------- | ------------------------ |
-| Space & f | IME 半英数オン           |
-| Space & j | IME ひらがなオン         |
-| Space & k | IME 全英数オン           |
-| ^#s       | 環境情報GUI表示          |
-| Space & z | Microsoft Translator起動 |
-| Space & x | Google翻訳起動           |
-| Space & c | DeepL翻訳起動            |
-| XButton1  | マウス設定リセット       |
-| XButton2  | 水平スクロール切替       |
-| ^XButton2 | マウススピード低速       |
-| +XButton2 | 1画面スクロール          |
+| キー操作      | 機能                     |
+| ------------- | ------------------------ |
+| Space & f     | IMEオン（半英数）        |
+| Space & j     | IMEオン（ひらがな）      |
+| Space & k     | IMEオン（全英数）        |
+| ^#s           | 環境情報を表示           |
+| Space & z     | Microsoft Translator起動 |
+| Space & x     | Google翻訳起動           |
+| Space & c     | DeepL翻訳起動            |
+| ^w            | タブを閉じる             |
+| ^PgDn / ^PgUp | タブ移動                 |
+| XButton1      | マウス設定リセット       |
+| XButton2      | 水平スクロールモード切替 |
+| ^XButton2     | マウススピード低速化     |
+| +XButton2     | 1画面スクロールモード    |
+
+## 注意事項
+
+- 一部の機能はWindowsの設定やアプリケーションによって動作が異なる場合があります。
+- IME制御やマウス設定変更はシステム全体に影響するため、自己責任でご利用ください。
 
 ## ライセンス
 
-各ファイルの先頭コメントを参照してください。
+各スクリプトファイルの先頭コメントをご参照ください。
 
 ---
 
-AutoHotkeyスクリプトの詳細やカスタマイズ方法は、[各スクリプトファイル](CoreKeyBindings.ahk)のコメントを参照してください。
+ご質問・要望は[Issues](https://github.com/KatoRyota/AutoHotkey/issues)までどうぞ。
