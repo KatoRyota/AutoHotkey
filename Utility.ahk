@@ -1,11 +1,18 @@
 #Requires AutoHotkey v2.0
 #Include Mouse.ahk
-/**
- * 環境情報 表示関連の関数群
- */
 
 /**
- * 環境情報を表示します。
+ * スクリプトの終了処理を行います。
+ * 
+ * @param exitReason 終了理由
+ * @param exitCode 終了コード
+ */
+ExitFunc(exitReason, exitCode) {
+    ResetMouseSettings(env)
+}
+
+/**
+ * スクリプトの実行環境の情報を表示します。
  * 
  * @param env 環境情報オブジェクト
  */

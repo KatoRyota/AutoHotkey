@@ -10,20 +10,10 @@
 #Include CoreKeyBindings.ahk
 #Include CustomKeyBindings.ahk
 /**
- * キーバインド設定スクリプト
+ * キーバインド設定のメインスクリプト
  * 
  * ソースコードは、以下のGitHubリポジトリで管理してます。
  * https://github.com/KatoRyota/AutoHotkey
  */
 
 OnExit(ExitFunc)
-
-/**
- * スクリプトの終了処理を行います。
- * 
- * @param exitReason 終了理由
- * @param exitCode 終了コード
- */
-ExitFunc(exitReason, exitCode) {
-    ResetMouseSettings(env)
-}
