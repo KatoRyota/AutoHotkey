@@ -27,7 +27,7 @@ SetScrollLockState("AlwaysOff")
 NumLock:: return
 ScrollLock:: return
 
-; F13～F24キーの設定。
+; F13～F24キーの割り当て。
 F1 & 1:: Send("{F1}")
 F1 & 2:: Send("^{F1}")
 F1 & 3:: Send("+{F1}")
@@ -45,7 +45,7 @@ F1 & w:: Send("{F22}")
 F1 & e:: Send("{F23}")
 F1 & r:: Send("{F24}")
 
-; Ctrl+F13～F24キーの設定。
+; Ctrl+F13～F24キーの割り当て。
 F2 & 1:: Send("{F2}")
 F2 & 2:: Send("^{F2}")
 F2 & 3:: Send("+{F2}")
@@ -63,7 +63,7 @@ F2 & w:: Send("^{F22}")
 F2 & e:: Send("^{F23}")
 F2 & r:: Send("^{F24}")
 
-; Shift+F13～F24キーの設定。
+; Shift+F13～F24キーの割り当て。
 F12 & 1:: Send("{F12}")
 F12 & 2:: Send("^{F12}")
 F12 & 3:: Send("+{F12}")
@@ -81,7 +81,7 @@ F12 & w:: Send("+{F22}")
 F12 & e:: Send("+{F23}")
 F12 & r:: Send("+{F24}")
 
-; Alt+F13～F24キーの設定。
+; Alt+F13～F24キーの割り当て。
 F11 & 1:: Send("{F11}")
 F11 & 2:: Send("^{F11}")
 F11 & 3:: Send("+{F11}")
