@@ -23,8 +23,8 @@ XButton2:: ChangeHorizontalScrollDirectionMode(env)
 +XButton2:: ChangePageScrollSpeedMode(env)
 
 #HotIf IsHorizontalScrolling(env)
-WheelUp:: Send("{WheelLeft}")
-WheelDown:: Send("{WheelRight}")
+WheelUp::WheelLeft
+WheelDown::WheelRight
 #HotIf
 
 #HotIf WinActive("ahk_exe explorer.exe")
