@@ -17,12 +17,17 @@ Space & z:: OpenMicrosoftTranslator()
 Space & x:: OpenGoogleTranslate()
 Space & c:: OpenDeepLTranslate()
 
-^w:: CloseTab()
-^PgDn:: NextTab()
-^PgUp:: PreviousTab()
-WheelUp:: WheelUpOrLeft(env)
-WheelDown:: WheelDownOrRight(env)
 XButton1:: ResetMouseSettings(env)
 XButton2:: ChangeHorizontalScrollDirectionMode(env)
 ^XButton2:: ChangeSlowMouseSpeedMode(env)
 +XButton2:: ChangePageScrollSpeedMode(env)
+
+#HotIf IsHorizontalScrolling(env)
+WheelUp:: Send("{WheelLeft}")
+WheelDown:: Send("{WheelRight}")
+#HotIf
+
+#HotIf WinActive("ahk_exe explorer.exe")
+^PgDn:: Send("^{Tab}")
+^PgUp:: Send("^+{Tab}")
+#HotIf
