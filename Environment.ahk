@@ -8,13 +8,13 @@ env := {
         const: {
             pointer: {
                 speed: {
-                    slow: {
-                        name: "slow",
-                        value: 1
-                    },
                     default: {
                         name: "default",
                         value: GetMouseSpeed()
+                    },
+                    slow: {
+                        name: "slow",
+                        value: 1
                     }
                 }
             },
@@ -28,15 +28,15 @@ env := {
                     }
                 },
                 speed: {
-                    page: {
-                        name: "page",
-                        vertical: 0xFFFFFFFF,
-                        horizontal: GetWheelScrollChars() * 6
-                    },
                     default: {
                         name: "default",
                         vertical: GetWheelScrollLines(),
                         horizontal: GetWheelScrollChars()
+                    },
+                    page: {
+                        name: "page",
+                        vertical: 0xFFFFFFFF,
+                        horizontal: GetWheelScrollChars() * 6
                     }
                 }
             }

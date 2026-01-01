@@ -1,77 +1,65 @@
-# AutoHotkey Keybindings & Utility Scripts
+# AutoHotkey Key Bindings
 
 ## 概要
 
-本リポジトリは、Windows環境での作業効率を向上させるためのAutoHotkey v2.0用キーバインド・ユーティリティスクリプト集です。  
-CapsLockやSpaceキーの修飾キー化、IME操作、マウス・スクロール制御、翻訳アプリの起動など、多彩な機能を提供します。
-
-## 主な機能
-
-- **CapsLock/Spaceの修飾キー化**  
-  誤操作防止やキー割り当ての拡張。
-- **IME操作**  
-  ショートカットでIMEのオン/オフや入力モード（半英数・ひらがな・全英数）を切替。
-- **マウス・スクロール制御**  
-  スクロール方向・スピードの動的切替、マウススピードの変更。
-- **翻訳アプリの起動**  
-  Google翻訳、Microsoft Translator、DeepL翻訳をショートカットで起動・アクティブ化。
-- **環境情報の表示**  
-  マウスやスクロールの設定値をGUIで表示。
-- **タブ操作**  
-  Ctrl+Wなどでタブを閉じる、PgDn/PgUpでタブ移動。
+このリポジトリは、Windows環境でのキーバインド・マウス操作・IME制御・翻訳ツール起動などをカスタマイズするAutoHotkey v2.0用スクリプト集です。  
+主に日本語入力や効率的なウィンドウ操作を目的としています。
 
 ## ファイル構成
 
-- [`KeyBindings.ahk`](KeyBindings.ahk)  
-  メインスクリプト。各種設定・キーバインドのエントリーポイント。
-- [`CoreKeyBindings.ahk`](CoreKeyBindings.ahk)  
-  基本的なキーバインド定義。
-- [`CustomKeyBindings.ahk`](CustomKeyBindings.ahk)  
-  ユーザー独自のキーバインド定義。
-- [`Environment.ahk`](Environment.ahk)  
-  環境情報（マウス・ポップアップ等）の管理。
-- [`IME.ahk`](IME.ahk), [`IMEv2.ahk`](IMEv2.ahk)  
-  IME制御用関数群。
-- [`Mouse.ahk`](Mouse.ahk)  
-  マウス・スクロール制御関数群。
-- [`Translation.ahk`](Translation.ahk)  
-  翻訳アプリ起動用関数群。
-- [`Utility.ahk`](Utility.ahk)  
-  補助的なユーティリティ関数群。
+- `KeyBindings.ahk`  
+  メインスクリプト。各種機能・キーバインドのエントリーポイントです。
+- `CoreKeyBindings.ahk`  
+  CapsLockやSpaceキーの修飾キー化、F13～F24キーの割り当てなどの基本キーバインド。
+- `CustomKeyBindings.ahk`  
+  IME切替、翻訳ツール起動、マウス操作などのカスタムキーバインド。
+- `Environment.ahk`  
+  マウスやポップアップの状態など、環境情報の管理。
+- `IME.ahk`  
+  IMEのオン/オフや入力モード切替の関数群。
+- `IMEv2.ahk`  
+  IME制御の低レベル実装（外部ライブラリ）。
+- `Mouse.ahk`  
+  マウススピードやスクロール設定の取得・変更、リセットなど。
+- `Translation.ahk`  
+  Google翻訳、Microsoft Translator、DeepLの起動・アクティブ化。
+- `Utility.ahk`  
+  ユーティリティ関数（環境情報表示、終了処理など）。
+
+## 必要環境
+
+- [AutoHotkey v2.0](https://www.autohotkey.com/)
+- Windows 10/11
 
 ## 使い方
 
-1. [AutoHotkey v2.0](https://www.autohotkey.com/) をインストールしてください。
-2. このリポジトリを任意のフォルダにクローンまたはダウンロードします。
-3. `KeyBindings.ahk` をダブルクリック、またはAutoHotkeyで実行してください。
+1. [AutoHotkey v2.0](https://www.autohotkey.com/) をインストールします。
+2. このリポジトリをクローンまたはダウンロードします。
+3. `KeyBindings.ahk` をダブルクリックして実行します。
 
-## 主なショートカット例
+## 主な機能
 
-| キー操作      | 機能                     |
-| ------------- | ------------------------ |
-| Space & f     | IMEオン（半英数）        |
-| Space & j     | IMEオン（ひらがな）      |
-| Space & k     | IMEオン（全英数）        |
-| ^#s           | 環境情報を表示           |
-| Space & z     | Microsoft Translator起動 |
-| Space & x     | Google翻訳起動           |
-| Space & c     | DeepL翻訳起動            |
-| ^w            | タブを閉じる             |
-| ^PgDn / ^PgUp | タブ移動                 |
-| XButton1      | マウス設定リセット       |
-| XButton2      | 水平スクロールモード切替 |
-| ^XButton2     | マウススピード低速化     |
-| +XButton2     | 1画面スクロールモード    |
+- **CapsLock/Spaceの修飾キー化**
+- **F13～F24キーの割り当て**
+- **IME入力モードのワンキー切替**
+- **Google翻訳・Microsoft Translator・DeepLのワンキー起動**
+- **マウススピード・スクロール設定の即時変更**
+- **エクスプローラー用タブ切替ショートカット**
 
-## 注意事項
+## カスタマイズ
 
-- 一部の機能はWindowsの設定やアプリケーションによって動作が異なる場合があります。
-- IME制御やマウス設定変更はシステム全体に影響するため、自己責任でご利用ください。
+- キーバインドは `CustomKeyBindings.ahk` で自由に追加・変更できます。
+- マウスやIMEの動作は `Environment.ahk` で初期値を調整できます。
 
 ## ライセンス
 
-各スクリプトファイルの先頭コメントをご参照ください。
+- 一部外部ライブラリ（`IMEv2.ahk`）はNYSLライセンスです。詳細は各ファイルのコメント参照。
+
+## クレジット
+
+- [KatoRyota/AutoHotkey](https://github.com/KatoRyota/AutoHotkey)
+- IME制御: eamat氏, Ken'ichiro Ayaki氏
 
 ---
 
-ご質問・要望は[Issues](https://github.com/KatoRyota/AutoHotkey/issues)までどうぞ。
+ご質問・要望はIssueまたはPRでお知らせください。
