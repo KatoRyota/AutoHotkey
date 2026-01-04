@@ -7,17 +7,26 @@
 /**
  * スクリプトの終了処理を行います。
  * 
- * @param exitReason 終了理由
- * @param exitCode 終了コード
+ * @param {Object} env 環境情報オブジェクト
+ * @returns {ExitFunc~_ExitFunc} 
  */
-ExitFunc(exitReason, exitCode) {
-    ResetMouseSettings(env)
+ExitFunc(env) {
+    /**
+     * スクリプトの終了処理を行います。
+     * 
+     * @param {String} exitReason 終了理由
+     * @param {Integer} exitCode 終了コード
+     */
+    _ExitFunc(exitReason, exitCode) {
+        ResetMouseSettings(env)
+    }
+    return _ExitFunc
 }
 
 /**
  * スクリプトの実行環境の情報を表示します。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ShowEnvironment(env) {
     scrollDirection := env.mouse.state.scroll.direction.name

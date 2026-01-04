@@ -16,4 +16,4 @@
  * https://github.com/KatoRyota/AutoHotkey
  */
 
-OnExit(ExitFunc)
+OnExit(ExitFunc(env))
