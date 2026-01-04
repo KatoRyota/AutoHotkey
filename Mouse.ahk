@@ -6,7 +6,7 @@
 /**
  * マウスの設定をリセットします。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ResetMouseSettings(env) {
     ChangeDefaultMouseSpeedMode(env)
@@ -17,7 +17,8 @@ ResetMouseSettings(env) {
 /**
  * 水平 スクロール方向モードかどうかを判定します。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
+ * @returns {Integer} 水平 スクロール方向モードの場合は true、そうでない場合は false
  */
 IsHorizontalScrolling(env) {
     direction := env.mouse.state.scroll.direction.name
@@ -29,7 +30,7 @@ IsHorizontalScrolling(env) {
 /**
  * 垂直 スクロール方向モードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangeVerticalScrollDirectionMode(env) {
     direction := env.mouse.const.scroll.direction.vertical.name
@@ -39,7 +40,7 @@ ChangeVerticalScrollDirectionMode(env) {
 /**
  * 水平 スクロール方向モードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangeHorizontalScrollDirectionMode(env) {
     direction := env.mouse.const.scroll.direction.horizontal.name
@@ -49,7 +50,7 @@ ChangeHorizontalScrollDirectionMode(env) {
 /**
  * デフォルト マウススピードモードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangeDefaultMouseSpeedMode(env) {
     currentSpeed := env.mouse.state.pointer.speed.name
@@ -68,7 +69,7 @@ ChangeDefaultMouseSpeedMode(env) {
 /**
  * スロウ マウススピードモードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangeSlowMouseSpeedMode(env) {
     currentSpeed := env.mouse.state.pointer.speed.name
@@ -87,7 +88,7 @@ ChangeSlowMouseSpeedMode(env) {
 /**
  * デフォルト スクロールスピードモードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangeDefaultScrollSpeedMode(env) {
     currentSpeed := env.mouse.state.scroll.speed.name
@@ -110,7 +111,7 @@ ChangeDefaultScrollSpeedMode(env) {
 /**
  * 1画面 スクロールスピードモードに切り替えます。
  * 
- * @param env 環境情報オブジェクト
+ * @param {Object} env 環境情報オブジェクト
  */
 ChangePageScrollSpeedMode(env) {
     currentSpeed := env.mouse.state.scroll.speed.name
@@ -151,7 +152,7 @@ GetMouseSpeed() {
 /**
  * マウススピードを変更します。
  * 
- * @param mouseSpeed マウススピード (1〜20)
+ * @param {Number} mouseSpeed マウススピード (1〜20)
  */
 SetMouseSpeed(mouseSpeed) {
     spiSetmousespeed := 0x0071
@@ -186,7 +187,7 @@ GetWheelScrollLines() {
 /**
  * 垂直スクロールの行数を変更します。
  * 
- * @param wheelScrollLines 垂直スクロールの行数
+ * @param {Number} wheelScrollLines 垂直スクロールの行数
  */
 SetWheelScrollLines(wheelScrollLines) {
     spiSetwheelscrolllines := 0x0069
@@ -221,7 +222,7 @@ GetWheelScrollChars() {
 /**
  * 水平スクロールの文字数を変更します。
  * 
- * @param wheelScrollChars 水平スクロールの文字数
+ * @param {Number} wheelScrollChars 水平スクロールの文字数
  */
 SetWheelScrollChars(wheelScrollChars) {
     spiSetwheelscrollchars := 0x006D

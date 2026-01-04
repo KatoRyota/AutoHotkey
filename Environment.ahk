@@ -1,7 +1,8 @@
 #Requires AutoHotkey v2.0
 #Include Mouse.ahk
+
 /**
- * 環境情報
+ * @type {Object} 環境情報オブジェクト
  */
 env := {
     mouse: {
