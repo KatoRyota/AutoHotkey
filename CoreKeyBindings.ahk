@@ -3,24 +3,19 @@
 SendMode("Input")
 A_MenuMaskKey := ""
 
-; CapsLockキーの修飾キー化。
+; CapsLockをSpaceにリマップ。
 SetCapsLockState("AlwaysOff")
-CapsLock:: return
+CapsLock::Space
 
 ; Spaceキーの修飾キー化。
 Space:: return
-CapsLock & Space:: Send("{Space}")
-!Space:: Send("{Space}")
-^Space:: Send("^{Space}")
-+Space:: Send("+{Space}")
-^+Space:: Send("^+{Space}")
 
 ; 単独の Alt, Win キーを無効化。
 ~LAlt:: Send("{Blind}{vkE8}")
 ~RAlt:: Send("{Blind}{vkE8}")
 ~LWin:: Send("{Blind}{vkE8}")
 ~RWin:: Send("{Blind}{vkE8}")
-CapsLock & LWin:: Send("{LWin}")
+Space & LWin:: Send("{LWin}")
 
 ; NumLock, ScrollLock キーを無効化。
 SetNumLockState("AlwaysOff")
