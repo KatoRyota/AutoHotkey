@@ -1,6 +1,7 @@
 #Requires AutoHotkey v2.0
 
 SendMode("Input")
+A_MenuMaskKey := "vkFF"
 
 ; CapsLockキーの修飾キー化。
 SetCapsLockState("AlwaysOff")
