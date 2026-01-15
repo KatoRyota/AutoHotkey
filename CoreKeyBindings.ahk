@@ -5,7 +5,11 @@ A_MenuMaskKey := ""
 
 ; CapsLockをSpaceにリマップ。
 SetCapsLockState("AlwaysOff")
-CapsLock::Space
+CapsLock:: Send("{Space}")
+^CapsLock:: Send("^{Space}")
++CapsLock:: Send("+{Space}")
+!CapsLock:: Send("!{Space}")
+^+CapsLock:: Send("^+{Space}")
 
 ; Spaceキーの修飾キー化。
 Space:: return
