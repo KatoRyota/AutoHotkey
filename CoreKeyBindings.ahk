@@ -1,25 +1,25 @@
 #Requires AutoHotkey v2.0
 
 SendMode("Input")
-A_MenuMaskKey := ""
 
-; CapsLockをSpaceにリマップ。
+; CapsLockキーの修飾キー化。
 SetCapsLockState("AlwaysOff")
-CapsLock:: Send("{Space}")
-^CapsLock:: Send("^{Space}")
-+CapsLock:: Send("+{Space}")
-!CapsLock:: Send("!{Space}")
-^+CapsLock:: Send("^+{Space}")
+CapsLock:: return
 
 ; Spaceキーの修飾キー化。
 Space:: return
+CapsLock & Space:: Send("{Space}")
+!Space:: Send("{Space}")
+^Space:: Send("^{Space}")
++Space:: Send("+{Space}")
+^+Space:: Send("^+{Space}")
 
 ; 単独の Alt, Win キーを無効化。
 ~LAlt:: Send("{Blind}{vkE8}")
 ~RAlt:: Send("{Blind}{vkE8}")
 ~LWin:: Send("{Blind}{vkE8}")
 ~RWin:: Send("{Blind}{vkE8}")
-Space & LWin:: Send("{LWin}")
+CapsLock & LWin:: Send("{LWin}")
 
 ; NumLock, ScrollLock キーを無効化。
 SetNumLockState("AlwaysOff")
