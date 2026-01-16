@@ -23,7 +23,7 @@ Space & LWin:: Send("{LWin}")
 SetNumLockState("AlwaysOff")
 NumLock:: return
 
-; ScrollLock キーを無効化。
+; ScrollLockキーを無効化。
 SetScrollLockState("AlwaysOff")
 ScrollLock:: return
 
