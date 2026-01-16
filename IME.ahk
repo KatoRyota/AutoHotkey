@@ -5,7 +5,7 @@
  */
 
 /**
- * IMEをオンにします（半英数）
+ * IME 半英数モード
  */
 ImeOnHanEisu() {
     IME_SET(1)
@@ -13,17 +13,17 @@ ImeOnHanEisu() {
 }
 
 /**
- * IMEをオンにします（ひらがな）
+ * IME ひらがなモード
  */
 ImeOnHiragana() {
     IME_SET(1)
-    IME_SetConvMode(9)
+    IME_SetConvMode(25)
 }
 
 /**
- * IMEをオンにします（全英数）
+ * IME 全英数モード
  */
 ImeOnZenEisu() {
     IME_SET(1)
-    IME_SetConvMode(8)
+    IME_SetConvMode(24)
 }
