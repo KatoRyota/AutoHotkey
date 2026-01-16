@@ -7,7 +7,7 @@ SetCapsLockState("AlwaysOff")
 SetStoreCapsLockMode(false)
 SC03A::Space
 
-; Spaceキーの修飾キー化。
+; 単独のSpaceキーを無効化。
 Space:: return
 
 ; 単独のAltキーを無効化。
@@ -19,10 +19,12 @@ Space:: return
 ~RWin:: Send("{Blind}{vkE8}")
 Space & LWin:: Send("{LWin}")
 
-; NumLock, ScrollLock キーを無効化。
+; NumLockキーを無効化。
 SetNumLockState("AlwaysOff")
-SetScrollLockState("AlwaysOff")
 NumLock:: return
+
+; ScrollLock キーを無効化。
+SetScrollLockState("AlwaysOff")
 ScrollLock:: return
 
 ; F13～F24キーの割り当て。
