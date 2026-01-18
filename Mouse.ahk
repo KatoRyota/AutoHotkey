@@ -21,10 +21,7 @@ ResetMouseSettings(env) {
  * @returns {Integer} 水平 スクロール方向モードの場合は true、そうでない場合は false
  */
 IsHorizontalScrolling(env) {
-    direction := env.mouse.state.scroll.direction.name
-    horizontalDirection := env.mouse.const.scroll.direction.horizontal.name
-
-    return (direction = horizontalDirection) ? true : false
+    return env.mouse.scroll.direction.horizontal
 }
 
 /**
@@ -33,8 +30,7 @@ IsHorizontalScrolling(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangeVerticalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.vertical.name
-    env.mouse.state.scroll.direction.name := direction
+    env.mouse.scroll.direction.horizontal := false
 }
 
 /**
@@ -43,8 +39,7 @@ ChangeVerticalScrollDirectionMode(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangeHorizontalScrollDirectionMode(env) {
-    direction := env.mouse.const.scroll.direction.horizontal.name
-    env.mouse.state.scroll.direction.name := direction
+    env.mouse.scroll.direction.horizontal := true
 }
 
 /**
@@ -53,17 +48,11 @@ ChangeHorizontalScrollDirectionMode(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangeDefaultMouseSpeedMode(env) {
-    currentSpeed := env.mouse.state.pointer.speed.name
-    defaultName := env.mouse.const.pointer.speed.default.name
+    speed := env.mouse.pointer.speed.default
 
-    if (currentSpeed = defaultName) {
-        return
+    if (GetMouseSpeed() != speed) {
+        SetMouseSpeed(speed)
     }
-
-    speedValue := env.mouse.const.pointer.speed.default.value
-    env.mouse.state.pointer.speed.name := defaultName
-
-    SetMouseSpeed(speedValue)
 }
 
 /**
@@ -72,17 +61,11 @@ ChangeDefaultMouseSpeedMode(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangeSlowMouseSpeedMode(env) {
-    currentSpeed := env.mouse.state.pointer.speed.name
-    slowName := env.mouse.const.pointer.speed.slow.name
+    speed := env.mouse.pointer.speed.slow
 
-    if (currentSpeed = slowName) {
-        return
+    if (GetMouseSpeed() != speed) {
+        SetMouseSpeed(speed)
     }
-
-    speedValue := env.mouse.const.pointer.speed.slow.value
-    env.mouse.state.pointer.speed.name := slowName
-
-    SetMouseSpeed(speedValue)
 }
 
 /**
@@ -91,21 +74,17 @@ ChangeSlowMouseSpeedMode(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangeDefaultScrollSpeedMode(env) {
-    currentSpeed := env.mouse.state.scroll.speed.name
-    defaultName := env.mouse.const.scroll.speed.default.name
+    lines := env.mouse.scroll.speed.default.vertical
 
-    if (currentSpeed = defaultName) {
-        return
+    if (GetWheelScrollLines() != lines) {
+        SetWheelScrollLines(lines)
     }
 
-    speed := defaultName
-    verticalSpeed := env.mouse.const.scroll.speed.default.vertical
-    horizontalSpeed := env.mouse.const.scroll.speed.default.horizontal
+    chars := env.mouse.scroll.speed.default.horizontal
 
-    env.mouse.state.scroll.speed.name := speed
-
-    SetWheelScrollLines(verticalSpeed)
-    SetWheelScrollChars(horizontalSpeed)
+    if (GetWheelScrollChars() != chars) {
+        SetWheelScrollChars(chars)
+    }
 }
 
 /**
@@ -114,21 +93,17 @@ ChangeDefaultScrollSpeedMode(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ChangePageScrollSpeedMode(env) {
-    currentSpeed := env.mouse.state.scroll.speed.name
-    pageName := env.mouse.const.scroll.speed.page.name
+    lines := env.mouse.scroll.speed.page.vertical
 
-    if (currentSpeed = pageName) {
-        return
+    if (GetWheelScrollLines() != lines) {
+        SetWheelScrollLines(lines)
     }
 
-    speed := pageName
-    verticalSpeed := env.mouse.const.scroll.speed.page.vertical
-    horizontalSpeed := env.mouse.const.scroll.speed.page.horizontal
+    chars := env.mouse.scroll.speed.page.horizontal
 
-    env.mouse.state.scroll.speed.name := speed
-
-    SetWheelScrollLines(verticalSpeed)
-    SetWheelScrollChars(horizontalSpeed)
+    if (GetWheelScrollChars() != chars) {
+        SetWheelScrollChars(chars)
+    }
 }
 
 /**

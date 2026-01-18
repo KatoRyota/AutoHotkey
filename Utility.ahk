@@ -29,11 +29,9 @@ ExitFunc(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ShowEnvironment(env) {
-    scrollDirection := env.mouse.state.scroll.direction.name
-    scrollSpeed := env.mouse.state.scroll.speed.name
-    oldPopup := env.popup.state.env
-    listViewWidth := env.popup.const.env.listView.width
-    listViewHeight := env.popup.const.env.listView.height
+    oldPopup := env.popup.env.current
+    listViewWidth := env.popup.env.listView.width
+    listViewHeight := env.popup.env.listView.height
 
     try {
         oldPopup.Destroy()
@@ -42,7 +40,7 @@ ShowEnvironment(env) {
     }
 
     popup := Gui("", "環境情報")
-    env.popup.state.env := popup
+    env.popup.env.current := popup
     popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "Meiryo UI")
 
@@ -55,8 +53,6 @@ ShowEnvironment(env) {
     listView.Add("", "マウススピード", GetMouseSpeed())
     listView.Add("", "垂直スクロールの行数", GetWheelScrollLines())
     listView.Add("", "水平スクロールの文字数", GetWheelScrollChars())
-    listView.Add("", "スクロール方向", scrollDirection)
-    listView.Add("", "スクロールスピード", scrollSpeed)
     listView.ModifyCol()
 
     popup.Add("Button", "Default", "閉じる").OnEvent("Click", (*) => popup.Destroy())
