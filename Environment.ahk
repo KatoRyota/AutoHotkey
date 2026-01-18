@@ -29,8 +29,6 @@ env := {
         }
     },
     popup: {
-        env: {
-            current: {}
-        }
+        env: {}
     }
 }

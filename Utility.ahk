@@ -29,7 +29,7 @@ ExitFunc(env) {
  * @param {Object} env 環境情報オブジェクト
  */
 ShowEnvironment(env) {
-    oldPopup := env.popup.env.current
+    oldPopup := env.popup.env
     listViewWidth := 1100
     listViewHeight := 700
 
@@ -40,7 +40,7 @@ ShowEnvironment(env) {
     }
 
     popup := Gui("", "環境情報")
-    env.popup.env.current := popup
+    env.popup.env := popup
     popup.Opt("+AlwaysOnTop")
     popup.SetFont("s12 q5", "Meiryo UI")
 
