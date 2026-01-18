@@ -12,6 +12,7 @@ Space & k:: ImeOnZenEisu()
 ^#s:: ShowEnvironment(env)
 ^#l:: ListHotkeys()
 ^#k:: KeyHistory()
+^#e:: ExitApp()
 
 Space & z:: OpenMicrosoftTranslator()
 Space & x:: OpenGoogleTranslate()
