@@ -30,10 +30,6 @@ env := {
     },
     popup: {
         env: {
-            listView: {
-                width: 1100,
-                height: 700
-            },
             current: {}
         }
     }

@@ -30,8 +30,8 @@ ExitFunc(env) {
  */
 ShowEnvironment(env) {
     oldPopup := env.popup.env.current
-    listViewWidth := env.popup.env.listView.width
-    listViewHeight := env.popup.env.listView.height
+    listViewWidth := 1100
+    listViewHeight := 700
 
     try {
         oldPopup.Destroy()
