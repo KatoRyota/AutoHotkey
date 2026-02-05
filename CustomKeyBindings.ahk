@@ -24,7 +24,7 @@ XButton2:: ChangeHorizontalScrollDirectionMode(env)
 +XButton2:: ChangePageScrollSpeedMode(env)
 Pause:: Send("^{F4}")
 
-#HotIf GetKeyState("Alt", "P") || IsHorizontalScrolling(env)
+#HotIf GetKeyState("Space", "P") || IsHorizontalScrolling(env)
 WheelUp::WheelLeft
 WheelDown::WheelRight
 #HotIf

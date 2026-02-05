@@ -7,9 +7,6 @@ SetCapsLockState("AlwaysOff")
 SetStoreCapsLockMode(false)
 SC03A::Space
 
-; 単独のSpaceキーを無効化。
-Space:: return
-
 ; 単独のAltキーを無効化。
 ~LAlt:: Send("{Blind}{vkE8}")
 ~RAlt:: Send("{Blind}{vkE8}")
