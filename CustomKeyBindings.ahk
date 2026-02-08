@@ -18,6 +18,8 @@ Space & z:: OpenMicrosoftTranslator()
 Space & x:: OpenGoogleTranslate()
 Space & c:: OpenDeepLTranslate()
 
+Space & v:: Send("^{F16}")
+
 XButton1:: ResetMouseSettings(env)
 XButton2:: ChangeHorizontalScrollDirectionMode(env)
 ^XButton2:: ChangeSlowMouseSpeedMode(env)
