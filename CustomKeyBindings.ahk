@@ -5,9 +5,8 @@
 #Include Translation.ahk
 #Include Utility.ahk
 
-Space & f:: ImeOnHanEisu()
-Space & j:: ImeOnHiragana()
-Space & k:: ImeOnZenEisu()
+Space & f:: Send("{vk1D}")
+Space & j:: Send("{vk1C}")
 
 ^#s:: ShowEnvironment(env)
 ^#l:: ListHotkeys()
