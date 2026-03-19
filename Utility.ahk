@@ -71,3 +71,13 @@ ShowEnvironment(env) {
     popupOptions := Format("x{1} y{2}", l, t)
     popup.Show(popupOptions)
 }
+
+/**
+ * ウィンドウのタブを閉じます。
+ */
+CloseTab() {
+    MouseGetPos(, , &win)
+    WinActivate("ahk_id " . win)
+    WinWaitActive("ahk_id " . win, , 1)
+    Send("^{F4}")
+}

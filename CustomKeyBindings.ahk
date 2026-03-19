@@ -25,7 +25,7 @@ XButton1:: ResetMouseSettings(env)
 XButton2:: ChangeHorizontalScrollDirectionMode(env)
 ^XButton2:: ChangeSlowMouseSpeedMode(env)
 +XButton2:: ChangePageScrollSpeedMode(env)
-F22:: Send("^{F4}")
+F22:: CloseTab()
 
 #HotIf GetKeyState("Space", "P") || IsHorizontalScrolling(env)
 WheelUp::WheelLeft
