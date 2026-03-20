@@ -2,6 +2,7 @@
 #SingleInstance Force
 #Warn
 #UseHook
+#WinActivateForce
 #Include Environment.ahk
 #Include IME.ahk
 #Include Mouse.ahk

@@ -76,6 +76,7 @@ ShowEnvironment(env) {
  * ウィンドウのタブを閉じます。
  */
 CloseTab() {
+    CoordMode("Mouse", "Screen")
     MouseGetPos(, , &win)
     WinActivate("ahk_id " . win)
     WinWaitActive("ahk_id " . win, , 1)
