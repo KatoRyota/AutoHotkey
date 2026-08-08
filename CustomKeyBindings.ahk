@@ -33,7 +33,7 @@ Space & /:: return
 ^#k:: KeyHistory()
 ^#e:: ExitApp()
 
-F20:: CloseTab()
+F24:: CloseTab()
 
 #HotIf GetKeyState("Space", "P") || IsHorizontalScrolling(env)
 WheelUp::WheelLeft
