@@ -5,23 +5,28 @@
 #Include Translation.ahk
 #Include Utility.ahk
 
-Space & v:: return
-Space & b:: return
+Space & a:: OpenGoogleTranslate()
+Space & s:: return
+Space & d:: return
 Space & f:: Send("{vk1D}")
 Space & g:: return
-Space & r:: OpenGoogleTranslate()
-Space & t:: return
-Space & 4:: return
-Space & 5:: return
-
-Space & n:: return
-Space & m:: return
 Space & h:: return
 Space & j:: Send("{vk1C}")
-Space & y:: return
-Space & u:: return
-Space & 6:: return
-Space & 7:: return
+Space & k:: return
+Space & l:: return
+Space & `;:: return
+Space & ':: return
+
+Space & z:: return
+Space & x:: return
+Space & c:: return
+Space & v:: return
+Space & b:: return
+Space & n:: return
+Space & m:: return
+Space & ,:: return
+Space & .:: return
+Space & /:: return
 
 ^#s:: ShowEnvironment(env)
 ^#l:: ListHotkeys()
