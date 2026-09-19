@@ -32,7 +32,7 @@ Space & 0:: Send("^+!0")
 Space & -:: Send("^+!-")
 Space & =:: Send("^+!=")
 
-#HotIf WinActive("ahk_exe brave.exe")
+#HotIf WinActive("ahk_exe brave.exe") || WinActive("ahk_exe firefox.exe")
 Space & q:: Send("+!q")
 Space & w:: Send("+!w")
 Space & e:: Send("+!e")
